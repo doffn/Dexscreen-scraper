@@ -9,6 +9,6 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         bot = telebot.TeleBot("5628135628:AAH_41TGhCSaK6lq5UFK7fjlaq4Jq8dYRBA")
         bot.send_message(chat_id="5628135628", text="Hi there bitch it worked")
-        self.wfile.write('Hello, world!'.encode('utf-8'))
+        #self.wfile.write('Hello, world!'.encode('utf-8'))
         print("well done")
         return
