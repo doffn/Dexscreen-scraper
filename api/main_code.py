@@ -236,8 +236,8 @@ def commands():
     bot.polling()
 
 
-session = ["data/session", "data/session1"]
-
+cookies = [{"ct0": os.environ["CT0"], "auth_token": os.environ["AUTH0"]},]
+# {"ct0": os.environ["CT1"], "auth_token": os.environ["AUTH1"]},]
 
 def get_values(values):
   index = 0
@@ -246,54 +246,77 @@ def get_values(values):
       index = (index + 1) % len(values)
 
 
-values_generator = get_values(session)
-
+values_generator = get_values(cookies)
 
 
 #####################################################################
-def get_tweet_by_username(usernames, replies=False):
+def get_tweet_by_userid(usernames_id, usernames, replies=True):
     """
     Retrieves tweets from the specified usernames.
 
-    usernames: list of usernames
-    replies: whether to include replies (default: False)
+    usernames_id: list of usernames
+    replies: whether to include replies (default: True)
 
     Returns: a list of scraped tweets
     """
-    session = next(values_generator)
-    app = Twitter(session)
-    app.connect()
-    report(str(app.me))
-
     all_tweets = []
     try:
-
-        for p, user in enumerate(usernames):
+        cookies = next(values_generator)
+        scraper = Scraper(cookies=cookies)
+        if replies is True:
+            scraped_tweets = scraper.tweets_and_replies(usernames_id, limit=10, pbar=True)
+        else:
+            scraped_tweets = scraper.tweets(usernames_id, limit=10)
+        if len(scraped_tweets) < len(usernames_id):
+            return([[]]*len(scraped_tweets))
+        piner = 0
+        for p, tweets_new in enumerate(scraped_tweets):
+            tweets_list = []
             try:
-                tweets_list = []
-                tweets = app.get_tweets(user[1:],  replies=True)
-                for tweet in tweets:
-                    if "all_tweets_id" in tweet.keys():
-                        #print("got a reply")
-                        tweet = tweet["tweets"][-1]
+                pin_check = tweets_new["data"]["user"]["result"]["timeline_v2"]["timeline"]["instructions"]
+                if "Pin" in pin_check[1]["type"] and piner == 0:
+                    tweet_new = pin_check[1]["entry"]["content"]["itemContent"]["tweet_results"]["result"]["legacy"]
+
                     tweet_new = (
-                      False,
-                      tweet["id"],
-                      tweet["text"],
-                      tweet["date"],
-                      f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
-                      list(map(str, tweet["urls"]))
+                        True,
+                        tweet_new["id_str"],
+                        tweet_new["full_text"],
+                        tweet_new["created_at"],
+                        f"https://vxtwitter.com/{usernames[p]}/status/{tweet_new['id_str']}"
                     )
                     tweets_list.append(tweet_new)
+                    piner = 1
 
-                all_tweets.append(tweets_list)
-                print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
+                tweets = tweets_new["data"]["user"]["result"]["timeline_v2"]["timeline"]["instructions"][-1]["entries"]
+
+                for j, tweet in enumerate(tweets):
+                    try:
+                        if "promoted" in tweet["entryId"]:
+                            continue
+                        if "conversation" in tweet["entryId"]:
+                            tweet_new = tweet["content"]["items"][-1]["item"]["itemContent"]["tweet_results"]["result"]["legacy"]
+                        elif "tweet" in tweet["entryId"]:
+                            #return tweet["content"]
+                            tweet_new = tweet["content"]["itemContent"]["tweet_results"]["result"]["legacy"]
+                        else:
+                            continue
+
+                        tweet_new = (
+                            False,
+                            tweet_new["id_str"],
+                            tweet_new["full_text"],
+                            tweet_new["created_at"],
+                            f"https://vxtwitter.com/{usernames[p][1:]}/status/{tweet_new['id_str']}"
+                        )
+                        tweets_list.append(tweet_new)
+                    except:
+                        pass
             except Exception as e:
-                print(e)
-                all_tweets.append([])
+                print(f"There is an error : {e}")
+            all_tweets.append(tweets_list)
+
     except Exception as e:
-        report(f" It can not scrape cause {e}")
-    report(all_tweets[0])
+        print("There is an error on the main loop ===============================")
     return all_tweets
 
 
@@ -303,6 +326,7 @@ get_tweet_by_username("@doffneri")
 print('/////////PROGRAM RUNNING////////')
 
 def main_function():
+    
   night = False
   while True:
       #start_time_main = time.time
@@ -433,6 +457,66 @@ def reviewer():
         print(e)
 
 
+print('/////////PROGRAM RUNNING////////')
+
+def main_function_old():
+  #start_time_main = time.time()
+  try:
+      iter = 0
+      data = get_mongo()
+      usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
+      USER_ID = []
+      for username in usernames:
+          if data["usernames"][username]["Active"]:
+            USER_ID.append(data["usernames"][username]["User_ID"])
+
+
+      all_data = get_tweet_by_userid(USER_ID, usernames)
+
+      #print(all_data)
+      
+      try:
+          for u, data_new in enumerate(all_data):
+              user_name = usernames[u]
+              tweet_ids = []
+              for j in range(0, len(data["usernames"][user_name]["recent_tweets"])):
+                  tweet_ids.append(data["usernames"][user_name]["recent_tweets"][j]["Tweet_Id"])
+                
+              new_ids = [id[1] for id in data_new]
+              #print(len(new_ids))
+              diff_ids = list(set(new_ids) - set(tweet_ids))
+              #print(len(tweet_ids))
+              data_new = data_new[::-1]
+              #report(f"{user_name} ----- retrieve {len(data_new)} data and got {len(diff_ids)} data")
+              if len(diff_ids) > 0:
+                  for j, new_tweet in enumerate(data_new):
+                      Pin, Id, text, Date, url = new_tweet
+                      if Id in diff_ids:
+                          Date = datetime.strptime(Date, "%a %b %d %H:%M:%S %z %Y").strftime("%b %d, %Y · %I:%M %p UTC")
+                          message = f"""[{user_name}]({url})\n{text}\n\n{Date}"""
+                          new_tweet = {
+                              "Pinned": Pin,
+                              "Tweet_Id": Id,
+                              "Text": text,
+                              "Tweet_date": Date,
+                              "Tweet_URL": url
+                          }
+                          if Pin is True:
+                              data["usernames"][user_name]["recent_tweets"].insert(0, new_tweet)
+                          else:
+                              data["usernames"][user_name]["recent_tweets"].insert(j, new_tweet) 
+                          data["usernames"][user_name]["total_tweet"] += 1
+                          data["usernames"][user_name]["day_tweets"] += 1
+                          mongo_update(data)
+                          print(iter)
+                          print(message)
+                          iter += 1
+                          #report(message)
+      except Exception as e:
+          print(f"There is an error at the message sender of {user_name} ::  {e}")
+
+  except Exception as e:
+      print(f"There is an error in main function ::  {e}")
 
 
 
