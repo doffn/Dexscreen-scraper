@@ -1,4 +1,5 @@
 from http.server import BaseHTTPRequestHandler
+from main_code import *
 import telebot
 
 class handler(BaseHTTPRequestHandler):
