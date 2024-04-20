@@ -239,7 +239,7 @@ def commands():
 try:
     cookies_value = os.environ['newsec']
     cookies = os.environ["new_cook"]
-
+    report("reached_here")
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
         # Define the path to the file inside the temporary directory
