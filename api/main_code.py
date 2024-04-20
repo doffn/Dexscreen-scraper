@@ -88,6 +88,7 @@ def get_mongo():
         client.close()
 
 
+get_mongo()
 
 def mongo_update(files, remove=False, set_empty=False):
     """
@@ -458,6 +459,8 @@ def reviewer():
     except Exception as e:
         print(e)
 
+
+"""
 def review():
     # Schedule the function to run at 12 PM
     schedule.every().day.at("12:00",).do(reviewer)
@@ -494,7 +497,7 @@ except Exception as e:
 
 
 
-
+"""
 
 
 
