@@ -253,11 +253,12 @@ try:
         print(f"File created at: {file_path}")
         app =  Twitter(file_path)
         app.load_cookies(cookies=cookies_value)
-        print(app.me)
-        report(app.me)
+        me = str(app.me)
+        print(me)
+        report(me)
 except Exception as e:
     print(e)
-    report(e)
+    report(f" There is an error {e}")
 
 
 
