@@ -57,7 +57,31 @@ def report(message, channel_id=ID):
         print(e)
         return False
 
+try:
+    cookies_value = os.environ['newsec']
+    cookies = os.environ["new_cook"]
+    report("reached_here")
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Define the path to the file inside the temporary directory
+        file_path = temp_dir + '/session.tw_session'
+    
+        # Write text into the file
+        text = "This is some example text."
+        with open(file_path, 'w') as file:
+            file.write(cookies)
+    
+        print(f"File created at: {file_path}")
+        app =  Twitter(file_path)
+        app.load_cookies(cookies=cookies_value)
+        me = str(app.me)
+        print(me)
+        report(me)
+except Exception as e:
+    print(e)
+    report(f" There is an error {e}")
 
+report("tempfile donot work")
         
 def get_mongo():
     client = MongoClient(URL, server_api=ServerApi('1'))
@@ -236,29 +260,6 @@ def commands():
 
     bot.polling()
 
-try:
-    cookies_value = os.environ['newsec']
-    cookies = os.environ["new_cook"]
-    report("reached_here")
-    # Create a temporary directory
-    with tempfile.TemporaryDirectory() as temp_dir:
-        # Define the path to the file inside the temporary directory
-        file_path = temp_dir + '/session.tw_session'
-    
-        # Write text into the file
-        text = "This is some example text."
-        with open(file_path, 'w') as file:
-            file.write(cookies)
-    
-        print(f"File created at: {file_path}")
-        app =  Twitter(file_path)
-        app.load_cookies(cookies=cookies_value)
-        me = str(app.me)
-        print(me)
-        report(me)
-except Exception as e:
-    print(e)
-    report(f" There is an error {e}")
 
 
 
@@ -275,8 +276,6 @@ def get_tweet_by_username(usernames, replies=False):
     session = next(values_generator)
     app = Twitter(session)
     app.connect()
-    report(str(app.me))
-    return None
     all_tweets = []
     try:
 
