@@ -47,17 +47,6 @@ def send_group_message(message):
 
 
 
-def fix_json():
-      try:
-          with open('data.json', 'r') as file:
-                #data = json.load(file)
-                # Create a backup of the main JSON file
-                shutil.copy2('data.json', 'data_backup.json')
-      except Exception as e:
-          print(f"JSON error : {e}")
-          os.remove('data.json')
-          shutil.copy2('data_backup.json', 'data.json')
-
 
 def report(message, channel_id=ID):
     try:
@@ -66,6 +55,8 @@ def report(message, channel_id=ID):
     except Exception as e:
         print(e)
         return False
+
+
         
 def get_mongo():
     client = MongoClient(URL, server_api=ServerApi('1'))
@@ -86,7 +77,7 @@ def get_mongo():
         # Close the connection in a finally block to ensure it is always closed
         client.close()
 
-get_mongo()
+
 
 def mongo_update(files, remove=False, set_empty=False):
     """
@@ -125,24 +116,6 @@ def mongo_update(files, remove=False, set_empty=False):
         client.close()
 
 
-
-
-
-
-
-def restart_program():
-    """Restarts the current program, with file objects and descriptors
-       cleanup
-    """
-    try:
-        p = psutil.Process(os.getpid())
-        for handler in p.open_files() + p.connections():
-            os.close(handler.fd)
-    except Exception as e:
-        logging.error(e)
-
-    python = sys.executable
-    os.execl(python, python, *sys.argv)
 
 
 
@@ -458,8 +431,6 @@ def reviewer():
         print(e)
 
 
-
-reviewer()
 
 
 
