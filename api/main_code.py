@@ -22,7 +22,6 @@ from tweety import Twitter
 from telebot import formatting
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from twitter.scraper import Scraper
 
 import shutil
 import json
@@ -321,12 +320,12 @@ def get_tweet_by_userid(usernames_id, usernames, replies=True):
     return all_tweets
 
 
-
+get_tweet_by_username("@doffneri")
 
 
 print('/////////PROGRAM RUNNING////////')
 
-def main_function():
+def main_function_old():
   #start_time_main = time.time()
   try:
       iter = 0
@@ -407,14 +406,14 @@ def main_function():
 
                           except Exception as e:
                               print(f"Bot cannot send message Successfully :: {e}")
+
                           iter += 1
-                          #report(message)
+                          report(message)
       except Exception as e:
           print(f"There is an error at the message sender of {user_name} ::  {e}")
 
   except Exception as e:
       print(f"There is an error in main function ::  {e}")
-
 
 
 
@@ -444,5 +443,18 @@ def reviewer():
         report(formatting.escape_markdown(text))
     except Exception as e:
         print(e)
+
+
+
+
+
+
+
+
+main_function()
+
+
+
+
 
 
