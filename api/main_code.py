@@ -76,7 +76,8 @@ def get_mongo():
 
         # Retrieve a single document from the collection based on the query
         document = collection.find_one()
-        report(document[:30])
+        username = [i for i in document["usernames"] if document["usernames"][i]["Active"]]
+        report(username)
         return document
 
     except Exception as e:
@@ -88,7 +89,6 @@ def get_mongo():
         client.close()
 
 
-get_mongo()
 
 def mongo_update(files, remove=False, set_empty=False):
     """
