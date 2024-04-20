@@ -263,8 +263,8 @@ def get_tweet_by_username(usernames, replies=False):
     session = next(values_generator)
     app = Twitter(session)
     app.connect()
-    print(app.me)
-
+    report(str(app.me))
+    return None
     all_tweets = []
     try:
 
@@ -296,10 +296,9 @@ def get_tweet_by_username(usernames, replies=False):
 
     return all_tweets
 
+get_tweet_by_username("@doffneri")
 
 print('/////////PROGRAM RUNNING////////')
-
-report(get_tweet_by_username("@doffneri")[0])
 
 
 def main_function():
