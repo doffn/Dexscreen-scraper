@@ -29,8 +29,8 @@ import json
 
 
 
-API = "6227128550:AAGTVw8ERRRAdZK0kSaRqXLkEXeloIXGg_0"
-ID = "-1001802310005"
+API = "6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY"
+ID = "-1001873201570"
 bot = telebot.TeleBot(API)
 bot2 = telebot.TeleBot('5649885726:AAE1JFJlvrbqXE6d8ww-LKoq54wO5OpjNYY')
 chat_id = "-1001707169481"
