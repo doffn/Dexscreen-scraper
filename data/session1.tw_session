@@ -1,0 +1,45 @@
+{
+    "cookies": "guest_id=3A170942132371270714;guest_id_marketing=3A170942132371270714;guest_id_ads=3A170942132371270714;kdt=kdt_value;auth_token=bc5265b8934c0f0351d9a9059a4de2512b35772f;ct0=b907974ca8397ac7ccb9b4b64f8004d40d35be048eac193fd47834cb80d4c6d7f8ac5e059dc7283a37d1ae98630d3c26c9bf9ca9297d4eb81a7827a4286005f99929ea6878d05638c8f05e81830eaec0;twid=3D1615940002902380544;personalization_id=\"v1_gHHxCPfLFm3liI5Zwj5EUw;",
+    "user": {
+        "id": "1615940002902380544",
+        "rest_id": "1615940002902380544",
+        "created_at": "2023-01-19 05:11:48+00:00",
+        "date": "2023-01-19 05:11:48+00:00",
+        "entities": {
+            "description": {
+                "urls": []
+            }
+        },
+        "description": "kc",
+        "bio": "kc",
+        "fast_followers_count": "0",
+        "favourites_count": "0",
+        "followers_count": "0",
+        "friends_count": "1",
+        "has_custom_timelines": "False",
+        "is_translator": "False",
+        "listed_count": "0",
+        "location": null,
+        "media_count": "0",
+        "name": "kc",
+        "normal_followers_count": "0",
+        "profile_banner_url": null,
+        "profile_image_url_https": "https://pbs.twimg.com/profile_images/1619635431775129602/BkwJOG6o_normal.jpg",
+        "profile_interstitial_type": null,
+        "protected": "False",
+        "screen_name": "Alana78361676",
+        "username": "Alana78361676",
+        "statuses_count": "18",
+        "translator_type": "none",
+        "verified": "False",
+        "can_dm": "True",
+        "following": "False",
+        "community_role": null,
+        "notifications_enabled": "False",
+        "notifications": "False",
+        "possibly_sensitive": "False",
+        "pinned_tweets": null,
+        "profile_url": "https://twitter.com/Alana78361676",
+        "is_blocked": "False"
+    }
+}
