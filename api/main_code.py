@@ -236,7 +236,7 @@ def commands():
     bot.polling()
 
 
-session = ["session", "session1"]
+session = ["data/session", "data/session1"]
 
 
 def get_values(values):
@@ -263,7 +263,7 @@ def get_tweet_by_username(usernames, replies=False):
     session = next(values_generator)
     app = Twitter(session)
     app.connect()
-    print(app.me)
+    report(str(app.me))
 
     all_tweets = []
     try:
@@ -293,9 +293,11 @@ def get_tweet_by_username(usernames, replies=False):
                 all_tweets.append([])
     except Exception as e:
         report(f" It can not scrape cause {e}")
-
+    report(all_tweets[0])
     return all_tweets
 
+
+get_tweet_by_username("@doffneri")
 
 
 print('/////////PROGRAM RUNNING////////')
