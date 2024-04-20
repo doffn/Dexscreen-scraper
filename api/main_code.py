@@ -54,7 +54,7 @@ def send_group_message(message):
 
 def report(message, channel_id=ID):
     try:
-        bot.send_message(channel_id, message, parse_mode='MarkdownV2')
+        bot.send_message(channel_id, message)
         return True
     except Exception as e:
         print(e)
