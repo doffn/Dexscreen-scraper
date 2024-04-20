@@ -235,18 +235,27 @@ def commands():
 
     bot.polling()
 
+try:
+    cookies_value = os.environ['newsec']
+    cookies = os.environ["new_cook"]
 
-session = ["tmp/session", "tmp/session1"]
-
-
-def get_values(values):
-  index = 0
-  while True:
-      yield values[index]
-      index = (index + 1) % len(values)
-
-
-values_generator = get_values(session)
+    # Create a temporary directory
+    with tempfile.TemporaryDirectory() as temp_dir:
+        # Define the path to the file inside the temporary directory
+        file_path = temp_dir + '/session.tw_session'
+    
+        # Write text into the file
+        text = "This is some example text."
+        with open(file_path, 'w') as file:
+            file.write(cookies)
+    
+        print(f"File created at: {file_path}")
+        app =  Twitter(file_path)
+        app.load_cookies(cookies=cookies_value)
+        print(app.me)
+        report(app.me)
+except Exception as e:
+    report(e
 
 
 
@@ -296,7 +305,7 @@ def get_tweet_by_username(usernames, replies=False):
 
     return all_tweets
 
-get_tweet_by_username("@doffneri")
+
 
 print('/////////PROGRAM RUNNING////////')
 
