@@ -76,7 +76,6 @@ def get_mongo():
 
         # Retrieve a single document from the collection based on the query
         document = collection.find_one()
-        print(document.keys())
         return document
 
     except Exception as e:
@@ -195,7 +194,7 @@ def commands():
                 bot.reply_to(message, f'{message.text[5:]} User is Activated...')
                 data["usernames"][message.text[5:]]["Active"] = True
                 mongo_update(data)
-                restart_program()
+                #restart_program()
 
             else:
                 try:
@@ -216,7 +215,7 @@ def commands():
                     bot.reply_to(message, f'{message.text[5:]} is added to your account list\n-------╔( •̀ з •́)╝╚(•̀ ▪ •́ )╗-------')
 
                     mongo_update(data)
-                    restart_program()
+                    #restart_program()
                 except Exception as e:
                     bot.reply_to(message, f'{message.text[5:]} is not a twitter user. Please try again')
                     print(e)
@@ -230,7 +229,7 @@ def commands():
                 data["usernames"][message.text[5:]]["Active"] = False
                 bot.reply_to(message, f'{message.text[5:]} is removed\n-------〵(•ʘ̥ᴗʘ̥ •〵)-------')
                 mongo_update(data)
-                restart_program()
+                #restart_program()
 
 
     @bot.channel_post_handler(commands=['del'])
@@ -244,7 +243,7 @@ def commands():
                 bot.reply_to(message, f'{message.text[5:]} is Deleteded\n-------〵(•ʘ̥ᴗʘ̥ •〵)-------')
                 mongo_update(data)
 
-                restart_program()
+                #restart_program()
 
 
     @bot.channel_post_handler(commands=['ls'])
@@ -459,48 +458,8 @@ def reviewer():
         print(e)
 
 
-"""
-def review():
-    # Schedule the function to run at 12 PM
-    schedule.every().day.at("12:00",).do(reviewer)
 
-    # Keep the schedule running continuously
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-def fixer():
-    # Schedule the function to run at 12 PM
-    schedule.every(10).minutes.do(fix_json)
-
-    # Keep the schedule running continuously
-    while True:
-        schedule.run_pending()
-        time.sleep(1)
-
-
-thread1 = threading.Thread(target=main_function)
-
-# Create the second thread object
-thread2 = threading.Thread(target=commands)
-thread3 = threading.Thread(target=review)
-
-try:
-    # Start the main function
-    thread1.start()
-    thread2.start()
-    thread3.start()
-except Exception as e:
-    print(f" There is an error {e}")
-    restart_program()
-
-
-
-"""
-
-
-
-
+reviewer()
 
 
 
