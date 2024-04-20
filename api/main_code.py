@@ -255,7 +255,7 @@ try:
         print(app.me)
         report(app.me)
 except Exception as e:
-    report(e
+    report(e)
 
 
 
