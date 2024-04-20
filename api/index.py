@@ -10,7 +10,7 @@ class handler(BaseHTTPRequestHandler):
         self.end_headers()
         try:
             bot = telebot.TeleBot("6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY")
-            bot.send_message(chat_id="-1001873201570", text="Hi there bitch it worked")
+            #bot.send_message(chat_id="-1001873201570", text="Hi there bitch it worked")
         except Exception as e:
             print(e)
         self.wfile.write('Hello, world!'.encode('utf-8'))
