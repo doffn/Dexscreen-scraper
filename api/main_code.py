@@ -76,8 +76,7 @@ def get_mongo():
 
         # Retrieve a single document from the collection based on the query
         document = collection.find_one()
-        username = [i for i in document["usernames"] if document["usernames"][i]["Active"]]
-        report(username)
+        print(document.keys())
         return document
 
     except Exception as e:
