@@ -33,9 +33,12 @@ API = "6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY"
 ID = "-1001873201570"
 bot = telebot.TeleBot(API)
 bot2 = telebot.TeleBot('5649885726:AAE1JFJlvrbqXE6d8ww-LKoq54wO5OpjNYY')
+cookies_value = os.environ['newsec']
+cookies = os.environ["new_cook"]
 chat_id = "-1001707169481"
 URL = os.environ["URL"]
 
+print("HI THERE")
 def send_group_message(message):
     try:
         message = bot2.send_message(chat_id=chat_id, text=message, parse_mode='MarkdownV2')
@@ -58,8 +61,7 @@ def report(message, channel_id=ID):
         return False
 
 #try:
-cookies_value = os.environ['newsec']
-cookies = os.environ["new_cook"]
+
 report("reached_here")
 # Create a temporary directory
 with tempfile.TemporaryDirectory() as temp_dir:
