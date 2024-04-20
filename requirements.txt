@@ -5,4 +5,3 @@ schedule
 logging
 psutil
 pymongo==4.6.3
-twitter-api-client 
