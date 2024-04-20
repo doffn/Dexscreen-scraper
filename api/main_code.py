@@ -236,7 +236,7 @@ def commands():
     bot.polling()
 
 
-session = ["data/session", "data/session1"]
+session = ["session", "data/session1"]
 
 
 def get_values(values):
