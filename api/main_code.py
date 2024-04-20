@@ -33,7 +33,7 @@ ID = "-1001802310005"
 bot = telebot.TeleBot(API)
 bot2 = telebot.TeleBot('5649885726:AAE1JFJlvrbqXE6d8ww-LKoq54wO5OpjNYY')
 chat_id = "-1001707169481"
-URL = "mongodb+srv://doffneri:Jkll2okBSwvKOLaQ@cluster0.g3hk4tc.mongodb.net/?retryWrites=true&w=majority"
+URL = os.environ["URL"]
 
 def send_group_message(message):
     try:
@@ -88,7 +88,7 @@ def get_mongo():
         # Close the connection in a finally block to ensure it is always closed
         client.close()
 
-
+get_mongo()
 
 def mongo_update(files, remove=False, set_empty=False):
     """
