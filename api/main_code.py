@@ -38,7 +38,7 @@ cookies = os.environ["new_cook"]
 chat_id = "-1001707169481"
 URL = os.environ["URL"]
 
-print("HI THERE")
+report("HI THERE")
 def send_group_message(message):
     try:
         message = bot2.send_message(chat_id=chat_id, text=message, parse_mode='MarkdownV2')
