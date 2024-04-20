@@ -16,6 +16,7 @@ import schedule
 import logging
 import psutil
 import time
+import tempfile
 import os
 import sys
 from tweety import Twitter
