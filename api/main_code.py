@@ -37,8 +37,7 @@ chat_id = "-1001707169481"
 URL = os.environ["URL"]
 
 
-cookies = [{"session": os.environ["session0"]},
- {"session": os.environ["session1"]},]
+cookies = [os.environ["session0"], os.environ["session1"]]
 
 
 
@@ -62,10 +61,6 @@ def report(message, channel_id=ID):
     except Exception as e:
         print(e)
         return False
-
-
-
-
 
 
         
@@ -268,7 +263,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             # Write text into the file
             text = "This is some example text."
             with open(file_path, 'w') as file:
-                file.write(cookies[lis]["session"])
+                file.write(cookies[lis])
         
             print(f"File created at: {file_path}")
             app =  Twitter(file_path)
