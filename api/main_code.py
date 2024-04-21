@@ -331,7 +331,7 @@ def main_function():
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
               lis = data["cookies"]
               report(f"this is the index {lis}")
-              all_data = get_tweet_by_username(usernames, replies=data["replies"], lis)
+              all_data = get_tweet_by_username(usernames, replies=data["replies"], ind=lis)
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
