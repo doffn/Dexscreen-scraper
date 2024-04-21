@@ -13,13 +13,11 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    """
+
     @app.after_response
     def add_close_action(response):
-        @response.call_on_close
-        def process_after_request():
-            main_function()
-    """
+        main_function()
+
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
