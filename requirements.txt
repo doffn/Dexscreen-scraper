@@ -1,5 +1,5 @@
 pyTelegramBotAPI==4.15.4
-tweety==1.1.2
+tweety-ns==1.1.2
 datetime
 schedule
 logging
