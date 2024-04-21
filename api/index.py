@@ -31,5 +31,3 @@ def service():
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
 
-if __name__ == '__main__':
-    app.run()
