@@ -241,8 +241,9 @@ def commands():
 
 
 
-#####################################################################
-def get_tweet_by_username(usernames, lis, replies=False,):
+import concurrent.futures
+
+def get_tweet_by_username(usernames, lis, replies=False):
     """
     Retrieves tweets from the specified usernames.
 
@@ -253,58 +254,61 @@ def get_tweet_by_username(usernames, lis, replies=False,):
     """
     all_tweets = []
     try:
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            futures = []
+            for user in usernames:
+                future = executor.submit(scrape_tweets, user, replies)
+                futures.append(future)
+
+            for future in concurrent.futures.as_completed(futures):
+                tweets_list = future.result()
+                all_tweets.append(tweets_list)
+                print(f"Scraped {len(tweets_list)} tweets")
+
+        return all_tweets
+
+    except Exception as e:
+        print(e)
+        report(f" There is an error {e}")
+        return None
+
+def scrape_tweets(user, replies):
+    tweets_list = []
+    try:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Define the path to the file inside the temporary directory
             file_path = temp_dir + '/session.tw_session'
-        
+
             # Write text into the file
             text = cookies[0]["session"]
             with open(file_path, 'w') as file:
                 file.write(text)
-        
+
             print(f"File created at: {file_path}")
             cookies_value = os.environ["cook"]
             app =  Twitter(file_path)
             app.connect()
             me = str(app.me)
             report(me)
-          
-            try:
-                for p, user in enumerate(usernames):
-                    try:
-                        tweets_list = []
-                        tweets = app.get_tweets(user[1:],  replies=True)
-                        try:
-                            report(tweets)
-                        except Exception as e:
-                            report(e)
-                        for tweet in tweets:
-                            if "all_tweets_id" in tweet.keys():
-                                #print("got a reply")
-                                tweet = tweet["tweets"][-1]
-                            tweet_new = (
-                              False,
-                              tweet["id"],
-                              tweet["text"],
-                              tweet["date"],
-                              f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
-                              list(map(str, tweet["urls"]))
-                            )
-                            tweets_list.append(tweet_new)
-        
-                        all_tweets.append(tweets_list)
-                        print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
-                    except Exception as e:
-                        print(e)
-                        all_tweets.append([])
-            except Exception as e:
-                report(f" It can not scrape cause {e}")
-            return all_tweets
 
+            tweets = app.get_tweets(user[1:], replies=True)
+            for tweet in tweets:
+                if "all_tweets_id" in tweet.keys():
+                    tweet = tweet["tweets"][-1]
+                tweet_new = (
+                    False,
+                    tweet["id"],
+                    tweet["text"],
+                    tweet["date"],
+                    f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
+                    list(map(str, tweet["urls"]))
+                )
+                tweets_list.append(tweet_new)
     except Exception as e:
         print(e)
-        report(f" There is an error {e}")
-        return None
+        tweets_list = []
+
+    return tweets_list
     
 
 print('/////////PROGRAM RUNNING////////')
@@ -324,7 +328,6 @@ def main_function():
               data["cookies"] = 0
           else:
               data["cookies"] = lis
-          report(str(all_data))
           try:
               for u, data_new in enumerate(all_data):
     
