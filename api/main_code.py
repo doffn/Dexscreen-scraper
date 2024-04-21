@@ -243,8 +243,9 @@ def commands():
 
 #####################################################################
 import multiprocessing
-
-import multiprocessing
+import os
+import shutil
+import tempfile
 
 def get_tweet_by_username(usernames, lis, replies=False):
     """
@@ -258,49 +259,47 @@ def get_tweet_by_username(usernames, lis, replies=False):
     def process_username(index, username):
         # Your existing code for individual username processing goes here
         try:
-            with tempfile.TemporaryDirectory() as temp_dir:
-                # Define the path to the file inside the temporary directory
-                file_path = temp_dir + '/session.tw_session'
+            temp_dir = tempfile.mkdtemp()
+            file_path = os.path.join(temp_dir, 'session.tw_session')
             
-                # Write text into the file
-                text = cookies[0]["session"]
-                with open(file_path, 'w') as file:
-                    file.write(text)
+            # Write text into the file
+            text = cookies[0]["session"]
+            with open(file_path, 'w') as file:
+                file.write(text)
             
-                print(f"File created at: {file_path}")
-                cookies_value = os.environ["cook"]
-                app =  Twitter(file_path)
-                app.connect()
-                me = str(app.me)
-                report(me)
+            print(f"File created at: {file_path}")
+            cookies_value = os.environ["cook"]
+            app = Twitter(file_path)
+            app.connect()
+            me = str(app.me)
+            report(me)
               
+            try:
+                tweets_list = []
+                tweets = app.get_tweets(username[1:], replies=True)
                 try:
-                    tweets_list = []
-                    tweets = app.get_tweets(username[1:], replies=True)
-                    try:
-                        report(tweets)
-                    except Exception as e:
-                        report(e)
-                    for tweet in tweets:
-                        if "all_tweets_id" in tweet.keys():
-                            #print("got a reply")
-                            tweet = tweet["tweets"][-1]
-                        tweet_new = (
-                          False,
-                          tweet["id"],
-                          tweet["text"],
-                          tweet["date"],
-                          f"https://vxtwitter.com/{username[1:]}/status/{tweet['id']}",
-                          list(map(str, tweet["urls"]))
-                        )
-                        tweets_list.append(tweet_new)
-
-                    print(f"Scraped {len(tweets_list)} tweets from {username}")
-                    return index, tweets_list
-
+                    report(tweets)
                 except Exception as e:
-                    print(e)
-                    return index, []
+                    report(e)
+                for tweet in tweets:
+                    if "all_tweets_id" in tweet.keys():
+                        tweet = tweet["tweets"][-1]
+                    tweet_new = (
+                        False,
+                        tweet["id"],
+                        tweet["text"],
+                        tweet["date"],
+                        f"https://vxtwitter.com/{username[1:]}/status/{tweet['id']}",
+                        list(map(str, tweet["urls"]))
+                    )
+                    tweets_list.append(tweet_new)
+
+                print(f"Scraped {len(tweets_list)} tweets from {username}")
+                return index, tweets_list
+
+            except Exception as e:
+                print(e)
+                return index, []
 
         except Exception as e:
             print(e)
