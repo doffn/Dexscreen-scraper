@@ -16,7 +16,7 @@ def service():
 
     thread1 = threading.Thread(target=main_function)
     #thread1.daemon = True
-    thread1.join()
+    #thread1.join()
     thread1.start()
 
     if request.method == 'POST':
