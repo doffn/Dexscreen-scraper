@@ -241,7 +241,10 @@ def commands():
 
 
 
-import concurrent.futures
+#####################################################################
+import multiprocessing
+
+import multiprocessing
 
 def get_tweet_by_username(usernames, lis, replies=False):
     """
@@ -252,64 +255,69 @@ def get_tweet_by_username(usernames, lis, replies=False):
 
     Returns: a list of scraped tweets
     """
+    def process_username(index, username):
+        # Your existing code for individual username processing goes here
+        try:
+            with tempfile.TemporaryDirectory() as temp_dir:
+                # Define the path to the file inside the temporary directory
+                file_path = temp_dir + '/session.tw_session'
+            
+                # Write text into the file
+                text = cookies[0]["session"]
+                with open(file_path, 'w') as file:
+                    file.write(text)
+            
+                print(f"File created at: {file_path}")
+                cookies_value = os.environ["cook"]
+                app =  Twitter(file_path)
+                app.connect()
+                me = str(app.me)
+                report(me)
+              
+                try:
+                    tweets_list = []
+                    tweets = app.get_tweets(username[1:], replies=True)
+                    try:
+                        report(tweets)
+                    except Exception as e:
+                        report(e)
+                    for tweet in tweets:
+                        if "all_tweets_id" in tweet.keys():
+                            #print("got a reply")
+                            tweet = tweet["tweets"][-1]
+                        tweet_new = (
+                          False,
+                          tweet["id"],
+                          tweet["text"],
+                          tweet["date"],
+                          f"https://vxtwitter.com/{username[1:]}/status/{tweet['id']}",
+                          list(map(str, tweet["urls"]))
+                        )
+                        tweets_list.append(tweet_new)
+
+                    print(f"Scraped {len(tweets_list)} tweets from {username}")
+                    return index, tweets_list
+
+                except Exception as e:
+                    print(e)
+                    return index, []
+
+        except Exception as e:
+            print(e)
+            report(f"There is an error: {e}")
+            return index, []
+    
     all_tweets = []
     try:
-        with concurrent.futures.ThreadPoolExecutor() as executor:
-            futures = []
-            for user in usernames:
-                future = executor.submit(scrape_tweets, user, replies)
-                futures.append(future)
-
-            for future in concurrent.futures.as_completed(futures):
-                tweets_list = future.result()
-                all_tweets.append(tweets_list)
-                print(f"Scraped {len(tweets_list)} tweets")
-
-        return all_tweets
-
+        with multiprocessing.Pool() as pool:
+            results = pool.starmap(process_username, enumerate(usernames))
+        all_tweets = [[] for _ in range(len(usernames))]
+        for index, tweets_list in results:
+            all_tweets[index] = tweets_list
     except Exception as e:
         print(e)
-        report(f" There is an error {e}")
-        return None
-
-def scrape_tweets(user, replies):
-    tweets_list = []
-    try:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Define the path to the file inside the temporary directory
-            file_path = temp_dir + '/session.tw_session'
-
-            # Write text into the file
-            text = cookies[0]["session"]
-            with open(file_path, 'w') as file:
-                file.write(text)
-
-            print(f"File created at: {file_path}")
-            cookies_value = os.environ["cook"]
-            app =  Twitter(file_path)
-            app.connect()
-            me = str(app.me)
-            report(me)
-
-            tweets = app.get_tweets(user[1:], replies=True)
-            for tweet in tweets:
-                if "all_tweets_id" in tweet.keys():
-                    tweet = tweet["tweets"][-1]
-                tweet_new = (
-                    False,
-                    tweet["id"],
-                    tweet["text"],
-                    tweet["date"],
-                    f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
-                    list(map(str, tweet["urls"]))
-                )
-                tweets_list.append(tweet_new)
-    except Exception as e:
-        print(e)
-        tweets_list = []
-
-    return tweets_list
-    
+        report(f"There is an error: {e}")
+    return all_tweets
 
 print('/////////PROGRAM RUNNING////////')
 
