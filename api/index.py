@@ -8,7 +8,10 @@ bot = telebot.TeleBot("YOUR_TOKEN")
 
 
 executor = ThreadPoolExecutor()
-
+def run_main_function():
+    # Simulate a time-consuming task
+    reviewer()
+    
 @app.route('/', methods=['GET'])
 def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
@@ -35,9 +38,7 @@ def service():
     else:
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
-def run_main_function():
-    # Simulate a time-consuming task
-    reviewer()
+
 
 
 if __name__ == '__main__':
