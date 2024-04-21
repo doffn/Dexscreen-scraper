@@ -270,43 +270,43 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             app.connect()
             me = str(app.me)
             report(me)
+            try:
+                for p, user in enumerate(usernames):
+                    try:
+                        tweets_list = []
+                        tweets = app.get_tweets(user[1:],  replies=True)
+                        try:
+                            report(tweets)
+                        except Exception as e:
+                            report(e)
+                        for tweet in tweets:
+                            if "all_tweets_id" in tweet.keys():
+                                #print("got a reply")
+                                tweet = tweet["tweets"][-1]
+                            tweet_new = (
+                              False,
+                              tweet["id"],
+                              tweet["text"],
+                              tweet["date"],
+                              f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
+                              list(map(str, tweet["urls"]))
+                            )
+                            tweets_list.append(tweet_new)
+        
+                        all_tweets.append(tweets_list)
+                        print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
+                    except Exception as e:
+                        print(e)
+                        all_tweets.append([])
+            except Exception as e:
+                report(f" It can not scrape cause {e}")
+            report(all_tweets)
+            return all_tweets
+
     except Exception as e:
         print(e)
         report(f" There is an error {e}")
-    try:
-
-        for p, user in enumerate(usernames):
-            try:
-                tweets_list = []
-                tweets = app.get_tweets(user[1:],  replies=True)
-                try:
-                    report(tweets)
-                except Exception as e:
-                    report(e)
-                for tweet in tweets:
-                    if "all_tweets_id" in tweet.keys():
-                        #print("got a reply")
-                        tweet = tweet["tweets"][-1]
-                    tweet_new = (
-                      False,
-                      tweet["id"],
-                      tweet["text"],
-                      tweet["date"],
-                      f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
-                      list(map(str, tweet["urls"]))
-                    )
-                    tweets_list.append(tweet_new)
-
-                all_tweets.append(tweets_list)
-                print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
-            except Exception as e:
-                print(e)
-                all_tweets.append([])
-    except Exception as e:
-        report(f" It can not scrape cause {e}")
-    report(all_tweets)
-    return all_tweets
-
+    
 
 print('/////////PROGRAM RUNNING////////')
 
