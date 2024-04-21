@@ -339,6 +339,9 @@ def main_function():
               else:
                   data["cookies"] = lis
 
+             mongo_update(data)
+             break
+
               try:
                   for u, data_new in enumerate(all_data):
 
@@ -450,7 +453,7 @@ def reviewer():
     except Exception as e:
         print(e)
 
-main_function()
+
 
 
 
