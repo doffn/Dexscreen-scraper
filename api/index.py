@@ -19,6 +19,7 @@ def service():
         try:
             # Code for the '/service' POST endpoint
             # Perform any necessary actions or computations
+            main_function()
             return 'Service endpoint accessed'
         except Exception as e:
             print(e)
