@@ -6,3 +6,4 @@ logging
 psutil
 pymongo==4.6.3
 flask
+-e git+https://github.com/mahrtayyab/tweety.git@main#egg=tweety
