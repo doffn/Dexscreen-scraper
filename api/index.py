@@ -14,9 +14,10 @@ def root():
 @app.route('/service', methods=['GET', 'POST'])
 def service():
 
-    @app.after_response
-    def add_close_action(response):
-        main_function()
+    thread1 = threading.Thread(target=main_function)
+    thread1.daemon = True
+    thread1.join()
+    thread1.start()
 
     if request.method == 'POST':
         try:
