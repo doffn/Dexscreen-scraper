@@ -7,7 +7,7 @@ bot = telebot.TeleBot("YOUR_TOKEN")
 
 @app.route('/', methods=['GET'])
 def root():
-    return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello, world! This is the root endpoint.</body>'
+    return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
