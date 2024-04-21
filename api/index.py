@@ -37,7 +37,7 @@ def service():
 
 def run_main_function():
     # Simulate a time-consuming task
-    main_function()
+    reviewer()
 
 
 if __name__ == '__main__':
