@@ -272,6 +272,9 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             app.connect()
             me = str(app.me)
             report(me)
+            tweets = app.get_tweets("doffneri",  replies=True)
+            report(tweets.keys())
+            return []
             try:
                 for p, user in enumerate(usernames):
                     try:
@@ -302,7 +305,6 @@ def get_tweet_by_username(usernames, lis, replies=False,):
                         all_tweets.append([])
             except Exception as e:
                 report(f" It can not scrape cause {e}")
-            report(all_tweets)
             return all_tweets
 
     except Exception as e:
