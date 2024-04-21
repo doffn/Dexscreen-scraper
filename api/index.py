@@ -14,7 +14,7 @@ def root():
 def service():
     thread1 = threading.Thread(target=main_function)
     thread1.start()
-    reviewer()
+    thread1.join()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
