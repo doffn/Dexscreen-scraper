@@ -332,7 +332,7 @@ def main_function():
           try:
               data = get_mongo()
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-              all_data = get_tweet_by_username(usernames, replies=data["replies"], data=data)
+              all_data = get_tweet_by_username(usernames, replies=data["replies"], data)
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
