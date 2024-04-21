@@ -33,7 +33,7 @@ def service():
     else:
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
-thread1.join()
 
 if __name__ == '__main__':
+    thread1.join()
     app.run()
