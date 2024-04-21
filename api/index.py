@@ -1,6 +1,8 @@
 from flask import Flask, request
 from api.main_code import *  # Assuming main_code defines reviewer()
 import threading
+import asyncio
+
 
 app = Flask(__name__)
 
@@ -16,7 +18,8 @@ def root():
  
 
 @app.route('/service', methods=['GET', 'POST'])
-def service():
+async def service():
+    asyncio.create_task(main_function())
     thread1.start()
     if request.method == 'POST':
         try:
@@ -30,4 +33,7 @@ def service():
     else:
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
+
+if __name__ == '__main__':
+    app.run()
 
