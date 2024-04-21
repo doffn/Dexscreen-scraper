@@ -15,10 +15,12 @@
     {
       "src": "/(.*)",
       "dest": "api/index.py"
-    }
-  ],
-  "functions": {
-    "api/*.py": {
-    "maxDuration": 300
-    }}
+    },
+    {
+    "functions": {
+      "api/*.py": {
+      "maxDuration": 300
+      }}}
+  ]
+  
 }
