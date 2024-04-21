@@ -250,7 +250,7 @@ def commands():
 
 
 #####################################################################
-def get_tweet_by_username(usernames, replies=False, data):
+def get_tweet_by_username(usernames, data, replies=False,):
     """
     Retrieves tweets from the specified usernames.
 
@@ -332,7 +332,7 @@ def main_function():
           try:
               data = get_mongo()
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-              all_data = get_tweet_by_username(usernames, replies=data["replies"], data)
+              all_data = get_tweet_by_username(usernames, data, replies=data["replies"], )
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
