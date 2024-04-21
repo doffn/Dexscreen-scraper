@@ -432,7 +432,7 @@ def reviewer():
 
 
 def main_run():
-    thread1 = threading.Thread(target=main_function)
+    thread1 = threading.Thread(target=main_function, daemon=True)
     thread1.start()
     thread1.join()
 
