@@ -1,19 +1,28 @@
-from http.server import BaseHTTPRequestHandler
+from flask import Flask, request
 from api.main_code import *
 import telebot
 
-class handler(BaseHTTPRequestHandler):
+app = Flask(__name__)
+bot = telebot.TeleBot("YOUR_TOKEN")
 
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type','text/plain')
-        self.end_headers()
+@app.route('/', methods=['GET'])
+def root():
+    main_function()
+    return 'Hello, world! This is the root endpoint.'
+
+@app.route('/service', methods=['GET', 'POST'])
+def service():
+    if request.method == 'POST':
         try:
-            bot = telebot.TeleBot("6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY")
-            main_function()
-            #bot.send_message(chat_id="-1001873201570", text="Hi there bitch it worked")
+            # Code for the '/service' POST endpoint
+            # Perform any necessary actions or computations
+            return 'Service endpoint accessed'
         except Exception as e:
             print(e)
-        self.wfile.write('Hello, world!'.encode('utf-8'))
-        print("well done")
-        return
+            return 'An error occurred'
+    else:
+        return 'Service endpoint accessed'
+
+
+if __name__ == '__main__':
+    app.run()
