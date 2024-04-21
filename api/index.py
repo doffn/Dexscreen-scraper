@@ -1,5 +1,6 @@
 from flask import Flask, request
 from api.main_code import *
+import threading
 import telebot
 
 app = Flask(__name__)
@@ -11,7 +12,10 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    main_function()
+    thread1 = threading.Thread(target=main_function)
+    # Set the thread as a daemon
+    thread1.daemon = True
+    thread1.start()
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
