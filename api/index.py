@@ -4,7 +4,7 @@ import threading
 
 app = Flask(__name__)
 
-@app.after_response
+@app.teardown_request
 def main_run():
     thread1 = threading.Thread(target=main_function)
     thread1.start()
@@ -13,7 +13,7 @@ def main_run():
 @app.route('/', methods=['GET'])
 def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
-
+ 
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
