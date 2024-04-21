@@ -2,8 +2,6 @@ from flask import Flask, request
 from api.main_code import *
 import threading
 import telebot
-import asyncio
-
 app = Flask(__name__)
 bot = telebot.TeleBot("YOUR_TOKEN")
 
