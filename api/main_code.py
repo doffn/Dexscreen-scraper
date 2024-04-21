@@ -431,10 +431,9 @@ def reviewer():
 
 
 
-
-
-
-
-
-
+def main_run():
+    thread1 = threading.Thread(target=main_function)
+    thread1.start()
+    thread1.daemon = True
+    thread1.join()
 

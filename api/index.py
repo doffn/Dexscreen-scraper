@@ -5,10 +5,7 @@ import threading
 app = Flask(__name__)
 
 
-def main_run():
-    thread1 = threading.Thread(target=main_function)
-    thread1.start()
-    thread1.join()
+
 
 @app.route('/', methods=['GET'])
 def root():
