@@ -268,10 +268,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             app.connect()
             me = str(app.me)
             report(me)
-            tweets = app.get_tweets("doffneri", replies=True)
-            print(tweets)
-            report(str(tweets[:100]))
-            return []
+          
             try:
                 for p, user in enumerate(usernames):
                     try:
@@ -307,6 +304,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
     except Exception as e:
         print(e)
         report(f" There is an error {e}")
+        return None
     
 
 print('/////////PROGRAM RUNNING////////')
@@ -326,7 +324,7 @@ def main_function():
               data["cookies"] = 0
           else:
               data["cookies"] = lis
-          report(f"Length of {all_data}")
+          report(str(all_data))
           try:
               for u, data_new in enumerate(all_data):
     
