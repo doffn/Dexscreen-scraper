@@ -15,7 +15,7 @@ def root():
 def service():
 
     thread1 = threading.Thread(target=main_function)
-    #thread1.daemon = True
+    thread1.setDaemon(True)
     thread1.join()
     thread1.start()
 
