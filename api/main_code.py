@@ -328,7 +328,7 @@ def main_function():
           night = False
           try:
               data = get_mongo()
-              lis = data["cookies"]
+              lis = int(data["cookies"])
               report(f"this is the index {lis}")
 
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
