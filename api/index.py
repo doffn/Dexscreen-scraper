@@ -17,8 +17,9 @@ def root():
  
 
 @app.route('/service', methods=['GET', 'POST'])
-async def service():
-    asyncio.create_task(main_function())
+def service():
+    #asyncio.create_task(main_function())
+    thread1.start()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
