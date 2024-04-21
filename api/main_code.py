@@ -279,6 +279,10 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             try:
                 tweets_list = []
                 tweets = app.get_tweets(user[1:],  replies=True)
+                try:
+                    report(tweets)
+                except Exception as e:
+                    report(e)
                 for tweet in tweets:
                     if "all_tweets_id" in tweet.keys():
                         #print("got a reply")
@@ -321,7 +325,7 @@ def main_function():
               data["cookies"] = 0
           else:
               data["cookies"] = lis
-          report(f"Length of {len(all_data)}")
+          report(f"Length of {all_data}")
           try:
               for u, data_new in enumerate(all_data):
     
