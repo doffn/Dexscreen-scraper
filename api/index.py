@@ -16,11 +16,11 @@ def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
  
 
+
 @app.route('/service', methods=['GET', 'POST'])
 def service():
     #asyncio.create_task(main_function())
     thread1.start()
-    thread1.join()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
@@ -33,6 +33,7 @@ def service():
     else:
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
+thread1.join()
 
 if __name__ == '__main__':
     app.run()
