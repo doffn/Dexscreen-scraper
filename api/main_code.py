@@ -33,10 +33,13 @@ API = "6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY"
 ID = "-1001873201570"
 bot = telebot.TeleBot(API)
 bot2 = telebot.TeleBot('5649885726:AAE1JFJlvrbqXE6d8ww-LKoq54wO5OpjNYY')
-cookies_value = os.environ['newsec']
-cookies = os.environ["new_cook"]
 chat_id = "-1001707169481"
 URL = os.environ["URL"]
+
+
+cookies = [{"session": os.environ["session0"]},
+ {"session": os.environ["session1"]},]
+
 
 
 def send_group_message(message):
@@ -264,14 +267,12 @@ def get_tweet_by_username(usernames, replies=False):
             # Write text into the file
             text = "This is some example text."
             with open(file_path, 'w') as file:
-                file.write(cookies)
+                file.write(cookies[ind]["session"])
         
             print(f"File created at: {file_path}")
             app =  Twitter(file_path)
-            app.load_cookies(cookies=cookies_value)
             app.connect()
             me = str(app.me)
-            print(me)
             report(me)
     except Exception as e:
         print(e)
@@ -308,10 +309,9 @@ def get_tweet_by_username(usernames, replies=False):
     return all_tweets
 
 
-
 print('/////////PROGRAM RUNNING////////')
 
-report(get_tweet_by_username("@doffneri"))
+
 
 def main_function():
   night = False
@@ -329,8 +329,14 @@ def main_function():
           try:
               data = get_mongo()
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
+              lis = data["cookies"]
+              report(f"this is the index {lis}")
               all_data = get_tweet_by_username(usernames, replies=data["replies"])
-
+              lis += 1
+              if lis == len(cookies):
+                  data["cookies"] = 0
+              else:
+                  data["cookies"] = lis
 
               try:
                   for u, data_new in enumerate(all_data):
@@ -413,7 +419,7 @@ def main_function():
               report(formatting.mbold("🌙 Nighty Night 🌟"))
               night = True
       print("FINISHED")
-      time.sleep(5*60)
+      break
 
 
 def reviewer():
@@ -443,6 +449,7 @@ def reviewer():
     except Exception as e:
         print(e)
 
+main_function()
 
 
 
