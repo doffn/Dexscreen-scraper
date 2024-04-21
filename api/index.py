@@ -15,8 +15,7 @@ def service():
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
-            thread = threading.Thread(target=reviewer)
-            thread.start()
+            reviewer()
             # For now, return a success message without time estimate
             return '<body style="background-color:black; color:white;">Review submitted. Please wait for results.</body>'
 
