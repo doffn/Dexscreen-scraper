@@ -12,10 +12,11 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    thread1 = threading.Thread(target=main_function)
+    #thread1 = threading.Thread(target=main_function)
     # Set the thread as a daemon
-    thread1.daemon = True
-    thread1.start()
+    #thread1.daemon = True
+    #thread1.start()
+    main_function()
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
