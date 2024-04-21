@@ -2,7 +2,7 @@
   "version": 2,
   "builds": [
     {
-    "src": "vercel_app/wsgi.py",
+    "src": "api/index.py",
     "use": "@vercel/python",
     "config": { "maxLambdaSize": "15mb", "runtime": "python3.8" }
   }
