@@ -123,9 +123,6 @@ def mongo_update(files, remove=False, set_empty=False):
 
 
 
-
-
-
 def commands():
     try:
       data = get_mongo()
@@ -273,7 +270,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             report(me)
             tweets = app.get_tweets("doffneri", replies=True)
             print(tweets)
-            report(str(tweets[100]))
+            report(str(tweets[:100]))
             return []
             try:
                 for p, user in enumerate(usernames):
