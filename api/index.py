@@ -7,7 +7,7 @@ bot = telebot.TeleBot("YOUR_TOKEN")
 
 @app.route('/', methods=['GET'])
 def root():
-    return '\x1b[42m\x1b[34mHello, world! This is the root endpoint.\x1b[0m'
+    return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello, world! This is the root endpoint.</body>'
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
@@ -17,12 +17,12 @@ def service():
             # Code for the '/service' POST endpoint
             # Perform any necessary actions or computations
             
-            return '\x1b[42m\x1b[34mService endpoint accessed\x1b[0m'
+            return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
         except Exception as e:
             print(e)
-            return '\x1b[42m\x1b[34mAn error occurred\x1b[0m'
+            return '<body style="background-color:black; color:white;">An error occurred</body>'
     else:
-        return '\x1b[42m\x1b[34mService endpoint accessed\x1b[0m'
+        return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
 if __name__ == '__main__':
     app.run()
