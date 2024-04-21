@@ -300,7 +300,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
                 all_tweets.append([])
     except Exception as e:
         report(f" It can not scrape cause {e}")
-
+    report(all_tweets)
     return all_tweets
 
 
