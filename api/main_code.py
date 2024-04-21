@@ -273,7 +273,6 @@ def get_tweet_by_username(usernames, lis, replies=False,):
     except Exception as e:
         print(e)
         report(f" There is an error {e}")
-    return all_tweets
     try:
 
         for p, user in enumerate(usernames):
@@ -310,115 +309,95 @@ print('/////////PROGRAM RUNNING////////')
 
 
 def main_function():
-  night = False
-  while True:
-
-      current_time = datetime.now().time()
-      print(current_time)
-      start_time = datetime.strptime("07:00:00", "%H:%M:%S").time()
-      end_time = datetime.strptime("23:00:00", "%H:%M:%S").time()
-      if start_time <= current_time <= end_time:
-          if night == True:
-              report(formatting.mbold("RISE AND SHINE KING"))
-          night = False
+      try:
+          data = get_mongo()
+          lis = int(data["cookies"])
+          report(f"this is the index {lis}")
+    
+          usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
+          all_data = get_tweet_by_username(usernames, lis, replies=data["replies"], )
+          lis += 1
+          if lis == len(cookies):
+              data["cookies"] = 0
+          else:
+              data["cookies"] = lis
+    
           try:
-              data = get_mongo()
-              lis = int(data["cookies"])
-              report(f"this is the index {lis}")
-
-              usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-              all_data = get_tweet_by_username(usernames, lis, replies=data["replies"], )
-              lis += 1
-              if lis == len(cookies):
-                  data["cookies"] = 0
-              else:
-                  data["cookies"] = lis
-
-              mongo_update(data)
-              break
-
-              try:
-                  for u, data_new in enumerate(all_data):
-
-                      user_name = usernames[u]
-                      tweet_ids = []
-                      for j in range(0, len(data["usernames"][user_name]["recent_tweets"])):
-                          tweet_ids.append(data["usernames"][user_name]["recent_tweets"][j]["Tweet_Id"])
-
-                      new_ids = [id[1] for id in data_new]
-                      #print(len(new_ids))
-                      diff_ids = list(set(new_ids) - set(tweet_ids))
-                      #print(len(tweet_ids))
-                      data_new = data_new[::-1]
-                      #report(f"{user_name} ----- retrieve {len(data_new)} data and got {len(diff_ids)} data")
-                      if len(diff_ids) > 0:
-                          for j, new_tweet in enumerate(data_new):
-                              Pin, Id, text, Date, url, urls = new_tweet
-                              if Id in diff_ids:
-                                  #print(Date)
-                                  Date = str(datetime.fromisoformat(str(Date)).strftime("%b %d, %Y · %I:%M %p UTC"))
-
-                                  message = f"""{formatting.mbold(' 🎉 New Tweet from')} [{formatting.escape_markdown(user_name)}]({url})\n\n{"💬 " if text.startswith("@") else "🐦 "}{formatting.escape_markdown(text)}\n\n{formatting.mbold("📅 Date: ")}{Date}"""
-                                  new_tweet = {
-                                      "Pinned": Pin,
-                                      "Tweet_Id": Id,
-                                      "Text": text,
-                                      "Tweet_date": Date,
-                                      "Tweet_URL": url
-                                  }
-                                  if Pin is True:
-                                      data["usernames"][user_name]["recent_tweets"].insert(0, new_tweet)
+              for u, data_new in enumerate(all_data):
+    
+                  user_name = usernames[u]
+                  tweet_ids = []
+                  for j in range(0, len(data["usernames"][user_name]["recent_tweets"])):
+                      tweet_ids.append(data["usernames"][user_name]["recent_tweets"][j]["Tweet_Id"])
+    
+                  new_ids = [id[1] for id in data_new]
+                  #print(len(new_ids))
+                  diff_ids = list(set(new_ids) - set(tweet_ids))
+                  #print(len(tweet_ids))
+                  data_new = data_new[::-1]
+                  #report(f"{user_name} ----- retrieve {len(data_new)} data and got {len(diff_ids)} data")
+                  if len(diff_ids) > 0:
+                      for j, new_tweet in enumerate(data_new):
+                          Pin, Id, text, Date, url, urls = new_tweet
+                          if Id in diff_ids:
+                              #print(Date)
+                              Date = str(datetime.fromisoformat(str(Date)).strftime("%b %d, %Y · %I:%M %p UTC"))
+    
+                              message = f"""{formatting.mbold(' 🎉 New Tweet from')} [{formatting.escape_markdown(user_name)}]({url})\n\n{"💬 " if text.startswith("@") else "🐦 "}{formatting.escape_markdown(text)}\n\n{formatting.mbold("📅 Date: ")}{Date}"""
+                              new_tweet = {
+                                  "Pinned": Pin,
+                                  "Tweet_Id": Id,
+                                  "Text": text,
+                                  "Tweet_date": Date,
+                                  "Tweet_URL": url
+                              }
+                              if Pin is True:
+                                  data["usernames"][user_name]["recent_tweets"].insert(0, new_tweet)
+                              else:
+                                  data["usernames"][user_name]["recent_tweets"].insert(j, new_tweet)
+                              data["usernames"][user_name]["total_tweet"] += 1
+                              data["usernames"][user_name]["day_tweets"] += 1
+                              try:
+                                  print("message sent")
+                                  #print(message)
+                                  send = report(message)
+                                  if send is True:
+                                      try:
+                                          mongo_update(data)
+                                          text = text.split()
+                                          for t in text:
+                                              with open('url.json', 'r') as file:
+                                                  data1 = json.load(file)
+                                                  id = data1["url"]
+                                              if "t.co" in t:
+                                                  for u in urls:
+                                                      if "dex" in u :
+                                                          if u not in id:
+                                                              send_group_message(f"""[{formatting.escape_markdown(user_name)}]({url})\n\n{formatting.escape_markdown(u)}""")
+                                                              id.append(u)
+                                              elif t.startswith("0x") or ("https://" not in t and len(t) == 44):
+                                                  if t not in id:
+                                                      send_group_message(f"""[{formatting.escape_markdown(user_name)}]({url})\n\n{formatting.escape_markdown(t)}""")
+                                                      id.append(t)
+                                              data1["url"] = id
+                                              with open('url.json', 'w') as file:
+                                                  json.dump(data1, file, indent=4)
+    
+                                      except Exception as e:
+                                          print(f"there was an error on the group sender : {e}")
                                   else:
-                                      data["usernames"][user_name]["recent_tweets"].insert(j, new_tweet)
-                                  data["usernames"][user_name]["total_tweet"] += 1
-                                  data["usernames"][user_name]["day_tweets"] += 1
-                                  try:
-                                      print("message sent")
-                                      #print(message)
-                                      send = report(message)
-                                      if send is True:
-                                          try:
-                                              mongo_update(data)
-                                              text = text.split()
-                                              for t in text:
-                                                  with open('url.json', 'r') as file:
-                                                      data1 = json.load(file)
-                                                      id = data1["url"]
-                                                  if "t.co" in t:
-                                                      for u in urls:
-                                                          if "dex" in u :
-                                                              if u not in id:
-                                                                  send_group_message(f"""[{formatting.escape_markdown(user_name)}]({url})\n\n{formatting.escape_markdown(u)}""")
-                                                                  id.append(u)
-                                                  elif t.startswith("0x") or ("https://" not in t and len(t) == 44):
-                                                      if t not in id:
-                                                          send_group_message(f"""[{formatting.escape_markdown(user_name)}]({url})\n\n{formatting.escape_markdown(t)}""")
-                                                          id.append(t)
-                                                  data1["url"] = id
-                                                  with open('url.json', 'w') as file:
-                                                      json.dump(data1, file, indent=4)
-
-                                          except Exception as e:
-                                              print(f"there was an error on the group sender : {e}")
-                                      else:
-                                          print("Message cannot be sent :: Try again later")
-
-                                  except Exception as e:
-                                      print(f"Bot cannot send message Successfully :: {e}")
-
-
-              except Exception as e:
-                  print(f"There is an error at the message sender of {user_name} ::  {e}")
-
+                                      print("Message cannot be sent :: Try again later")
+    
+                              except Exception as e:
+                                  print(f"Bot cannot send message Successfully :: {e}")
+    
+    
           except Exception as e:
-              print(f"There is an error in main function ::  {e}")
-      else:
-          print("You are sleeping")
-          if night == False:
-              report(formatting.mbold("🌙 Nighty Night 🌟"))
-              night = True
-      print("FINISHED")
-      break
+              print(f"There is an error at the message sender of {user_name} ::  {e}")
+    
+      except Exception as e:
+          print(f"There is an error in main function ::  {e}")
+
 
 
 def reviewer():
