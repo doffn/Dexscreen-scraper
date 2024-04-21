@@ -5,5 +5,5 @@ schedule
 logging
 psutil
 pymongo==4.6.3
-flask
+flask[async]
 

@@ -11,7 +11,6 @@ thread1 = threading.Thread(target=main_function, daemon=True)
     
 
 
-
 @app.route('/', methods=['GET'])
 def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
@@ -20,7 +19,6 @@ def root():
 @app.route('/service', methods=['GET', 'POST'])
 async def service():
     asyncio.create_task(main_function())
-    thread1.start()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
