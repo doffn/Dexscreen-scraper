@@ -11,6 +11,7 @@ bot = telebot.TeleBot("YOUR_TOKEN")
 
 @app.route('/', methods=['GET'])
 def root():
+    reviewer()
     return 'Hello, world! This is the root endpoint.'
 
 @app.route('/service', methods=['GET', 'POST'])
