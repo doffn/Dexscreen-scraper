@@ -20,6 +20,7 @@ def root():
 def service():
     #asyncio.create_task(main_function())
     thread1.start()
+    thread1.join()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
@@ -35,4 +36,3 @@ def service():
 
 if __name__ == '__main__':
     app.run()
-    thread1.join()
