@@ -6,6 +6,9 @@ import telebot
 app = Flask(__name__)
 bot = telebot.TeleBot("YOUR_TOKEN")
 
+def run_main_function():
+    main_function()
+    
 @app.route('/', methods=['GET'])
 def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
@@ -14,9 +17,9 @@ def root():
 def service():
     #thread1 = threading.Thread(target=main_function)
     # Set the thread as a daemon
-    #thread1.daemon = True
-    #thread1.start()
-    main_function()
+    # Create a thread targeting the run_main_function
+    thread1 = threading.Thread(target=run_main_function)
+    thread1.start()
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
