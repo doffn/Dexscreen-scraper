@@ -268,7 +268,6 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             print(f"File created at: {file_path}")
             cookies_value = os.environ["cook"]
             app =  Twitter(file_path)
-            app.load_cookies(cookies=cookies_value)
             app.connect()
             me = str(app.me)
             report(me)
