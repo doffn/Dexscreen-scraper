@@ -9,7 +9,8 @@ app = Flask(__name__)
 
 thread1 = threading.Thread(target=main_function, daemon=True)
     
-
+def join_thread():
+    thread1.join()
 
 @app.route('/', methods=['GET'])
 def root():
@@ -35,5 +36,5 @@ def service():
 
 
 if __name__ == '__main__':
-    thread1.join()
     app.run()
+    join_thread()
