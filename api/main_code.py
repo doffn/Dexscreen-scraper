@@ -250,7 +250,7 @@ def commands():
 
 
 #####################################################################
-def get_tweet_by_username(usernames, data, replies=False,):
+def get_tweet_by_username(usernames, lis, replies=False,):
     """
     Retrieves tweets from the specified usernames.
 
@@ -260,9 +260,6 @@ def get_tweet_by_username(usernames, data, replies=False,):
     Returns: a list of scraped tweets
     """
     all_tweets = []
-    lis = data["cookies"]
-    report(f"this is the index {lis}")
-    report(f"this is ind value{lis}")
     try:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Define the path to the file inside the temporary directory
@@ -281,7 +278,7 @@ def get_tweet_by_username(usernames, data, replies=False,):
     except Exception as e:
         print(e)
         report(f" There is an error {e}")
-        return all_tweets
+    return all_tweets
     try:
 
         for p, user in enumerate(usernames):
@@ -331,6 +328,9 @@ def main_function():
           night = False
           try:
               data = get_mongo()
+              lis = data["cookies"]
+              report(f"this is the index {lis}")
+
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
               all_data = get_tweet_by_username(usernames, data, replies=data["replies"], )
               lis += 1
