@@ -13,12 +13,12 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    #thread1 = threading.Thread(target=main_function)
-    # Set the thread as a daemon
-    # Create an event loop and run the main_task asynchronously
-    thread1 = threading(Thread=main_function)
-    thread1.setDaemon(True)
-    thread1.start()
+    @app.after_response
+    def add_close_action(response):
+        @response.call_on_close
+        def process_after_request():
+            main_function()
+    
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
