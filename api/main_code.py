@@ -62,7 +62,6 @@ def report(message, channel_id=ID):
 
 
 try:
-    report("reached_here")
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
         # Define the path to the file inside the temporary directory
