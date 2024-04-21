@@ -35,4 +35,4 @@ def service():
 
 if __name__ == '__main__':
     app.run()
-
+    thread1.join()
