@@ -37,7 +37,7 @@ chat_id = "-1001707169481"
 URL = os.environ["URL"]
 
 
-cookies = [os.environ["session0"], os.environ["session1"]]
+cookies = [{"session" : os.environ["session0"], "cook-value" : os.environ["cook0"]}, {"session" : os.environ["session1"], "cook-value" : os.environ["cook1"]}]
 
 
 
