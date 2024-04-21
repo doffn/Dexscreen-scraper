@@ -271,10 +271,9 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             app.connect()
             me = str(app.me)
             report(me)
-            tweets = app.get_user_followings("doffneri")
-            user = [ i for i in tweets][:20]
-            print(user)
-            report(str(user))
+            tweets = app.get_tweets("doffneri", replies=True)
+            print(tweets)
+            report(str(tweets[100]))
             return []
             try:
                 for p, user in enumerate(usernames):
