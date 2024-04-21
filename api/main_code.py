@@ -261,7 +261,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
-            text = f"{cookies[lis]}"
+            text = cookies[lis]
             with open(file_path, 'w') as file:
                 file.write(text)
         
@@ -327,7 +327,7 @@ def main_function():
               report(f"this is the index {lis}")
 
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-              all_data = get_tweet_by_username(usernames, data, replies=data["replies"], )
+              all_data = get_tweet_by_username(usernames, lis, replies=data["replies"], )
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
