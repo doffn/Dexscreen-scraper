@@ -12,10 +12,10 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
+    reviewer()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
-            reviewer()
             # For now, return a success message without time estimate
             return '<body style="background-color:black; color:white;">Review submitted. Please wait for results.</body>'
 
