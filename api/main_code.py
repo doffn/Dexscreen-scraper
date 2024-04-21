@@ -250,7 +250,7 @@ def commands():
 
 
 #####################################################################
-def get_tweet_by_username(usernames, replies=False):
+def get_tweet_by_username(usernames, replies=False, ind):
     """
     Retrieves tweets from the specified usernames.
 
@@ -331,7 +331,7 @@ def main_function():
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
               lis = data["cookies"]
               report(f"this is the index {lis}")
-              all_data = get_tweet_by_username(usernames, replies=data["replies"])
+              all_data = get_tweet_by_username(usernames, replies=data["replies"], lis)
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
