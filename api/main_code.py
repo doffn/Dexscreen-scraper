@@ -261,7 +261,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
-            text = cookies[lis]
+            text = f"{cookies[lis]}"
             with open(file_path, 'w') as file:
                 file.write(text)
         
