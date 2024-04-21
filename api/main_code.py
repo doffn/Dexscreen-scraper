@@ -38,7 +38,7 @@ cookies = os.environ["new_cook"]
 chat_id = "-1001707169481"
 URL = os.environ["URL"]
 
-print("HI THERE")
+
 def send_group_message(message):
     try:
         message = bot2.send_message(chat_id=chat_id, text=message, parse_mode='MarkdownV2')
@@ -60,9 +60,8 @@ def report(message, channel_id=ID):
         print(e)
         return False
 
-#try:
 
-def life():
+try:
     report("reached_here")
     # Create a temporary directory
     with tempfile.TemporaryDirectory() as temp_dir:
@@ -80,12 +79,12 @@ def life():
         me = str(app.me)
         print(me)
         report(me)
-    #except Exception as e:
-    #    print(e)
-    #    report(f" There is an error {e}")
+except Exception as e:
+    print(e)
+    report(f" There is an error {e}")
 
 
-life()
+
         
 def get_mongo():
     client = MongoClient(URL, server_api=ServerApi('1'))
