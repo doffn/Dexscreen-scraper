@@ -261,12 +261,14 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
-            text = cookies[lis]
+            text = cookies[0]["session"]
             with open(file_path, 'w') as file:
                 file.write(text)
         
             print(f"File created at: {file_path}")
+            cookies_value =' """guest_id=3A170924935659940324; guest_id_marketing=3A170924935659940324; guest_id_ads=3A170924935659940324; kdt=W7JhC6MGfMILOE9DmKXGtMlgDSWz8Cj0HevSjY9T; auth_token=20027e9e38a994b83d333ce68e4bd937bfe2219b; ct0=e4f2cde502b459ed5e2b27e7797019973a7f74735a2b609585db74684defab75ec7609bb7b02e175d7e3708c73f3c2e8e3ef8c0daea6fcbce7ebfec63317a13572ac2c4924db9aab1c85014bd38877e7; twid=1577680536482496515; personalization_id="v1_GTXp6TUZ3vSmviza2AJYTA" """'
             app =  Twitter(file_path)
+            app.load_cookies(cookies=cookies_value)
             app.connect()
             me = str(app.me)
             report(me)
