@@ -261,9 +261,9 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
-            text = "This is some example text."
+            text = cookies[lis]
             with open(file_path, 'w') as file:
-                file.write(cookies[lis])
+                file.write(text)
         
             print(f"File created at: {file_path}")
             app =  Twitter(file_path)
