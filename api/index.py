@@ -12,6 +12,8 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
+    thread1 = threading.Thread(target=main_function)
+    thread1.start()
     reviewer()
     if request.method == 'POST':
         try:
