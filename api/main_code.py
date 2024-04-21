@@ -316,7 +316,6 @@ print('/////////PROGRAM RUNNING////////')
 def main_function():
   night = False
   while True:
-      #start_time_main = time.time
 
       current_time = datetime.now().time()
       print(current_time)
