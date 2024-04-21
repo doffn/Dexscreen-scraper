@@ -5,10 +5,8 @@ import threading
 app = Flask(__name__)
 
 
-
-def main_run():
-    thread1 = threading.Thread(target=main_function, daemon=True)
-    thread1.start()
+thread1 = threading.Thread(target=main_function, daemon=True)
+    
 
 
 
@@ -19,7 +17,7 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    main_run()
+    thread1.start()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
