@@ -16,5 +16,9 @@
       "src": "/(.*)",
       "dest": "api/index.py"
     }
-  ]
+  ],
+  "functions": {
+    "api/*.py": {
+    "maxDuration": 300
+    }}
 }
