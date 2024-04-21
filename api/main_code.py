@@ -274,6 +274,7 @@ def get_tweet_by_username(usernames, lis, replies=False,):
             report(me)
             tweets = app.get_user_followings("doffneri")
             user = [ i for i in tweets][:20]
+            print(user)
             report(user)
             return []
             try:
