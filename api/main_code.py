@@ -250,7 +250,7 @@ def commands():
 
 
 #####################################################################
-def get_tweet_by_username(usernames, replies=False, ind):
+def get_tweet_by_username(usernames, replies=False, data):
     """
     Retrieves tweets from the specified usernames.
 
@@ -260,7 +260,9 @@ def get_tweet_by_username(usernames, replies=False, ind):
     Returns: a list of scraped tweets
     """
     all_tweets = []
-    report(f"this is ind value{ind}")
+    lis = data["cookies"]
+    report(f"this is the index {lis}")
+    report(f"this is ind value{lis}")
     try:
         with tempfile.TemporaryDirectory() as temp_dir:
             # Define the path to the file inside the temporary directory
@@ -269,7 +271,7 @@ def get_tweet_by_username(usernames, replies=False, ind):
             # Write text into the file
             text = "This is some example text."
             with open(file_path, 'w') as file:
-                file.write(cookies[ind]["session"])
+                file.write(cookies[lis]["session"])
         
             print(f"File created at: {file_path}")
             app =  Twitter(file_path)
@@ -330,9 +332,7 @@ def main_function():
           try:
               data = get_mongo()
               usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-              lis = data["cookies"]
-              report(f"this is the index {lis}")
-              all_data = get_tweet_by_username(usernames, replies=data["replies"], ind=lis)
+              all_data = get_tweet_by_username(usernames, replies=data["replies"], data=data)
               lis += 1
               if lis == len(cookies):
                   data["cookies"] = 0
