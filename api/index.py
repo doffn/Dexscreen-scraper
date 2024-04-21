@@ -7,9 +7,7 @@ import asyncio
 app = Flask(__name__)
 bot = telebot.TeleBot("YOUR_TOKEN")
 
-async def main_task():
-    main_function()
-    await asyncio.sleep(10)  # Example: Sleep for 10 seconds
+
     
 @app.route('/', methods=['GET'])
 def root():
@@ -20,9 +18,9 @@ def service():
     #thread1 = threading.Thread(target=main_function)
     # Set the thread as a daemon
     # Create an event loop and run the main_task asynchronously
-    loop = asyncio.new_event_loop()
-    asyncio.set_event_loop(loop)
-    loop.run_until_complete(main_task())
+    thread1 = threading(Thread=main_function)
+    thread1.setDaemon(True)
+    thread1.start()
     if request.method == 'POST':
         try:
             # Code for the '/service' POST endpoint
