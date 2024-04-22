@@ -22,19 +22,20 @@ def root():
 def service():
     #asyncio.create_task(main_function())
     thread1.start()
-    if request.method == 'POST':
-        try:
-            # Submit the review task asynchronously
-            # For now, return a success message without time estimate
-            return '<body style="background-color:black; color:white;">Review submitted. Please wait for results.</body>'
+    def service1():
+        if request.method == 'POST':
+            try:
+                # Submit the review task asynchronously
+                # For now, return a success message without time estimate
+                return '<body style="background-color:black; color:white;">Review submitted. Please wait for results.</body>'
 
-        except Exception as e:
-            print(f"Error in service endpoint: {e}")
-            return '<body style="background-color:black; color:white;">An error occurred.</body>'
-    else:
-        return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
+            except Exception as e:
+                print(f"Error in service endpoint: {e}")
+                return '<body style="background-color:black; color:white;">An error occurred.</body>'
+        else:
+            return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
+    thread1.join()
 
 
 if __name__ == '__main__':
     app.run()
-    join_thread()
