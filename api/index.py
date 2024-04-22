@@ -1,13 +1,13 @@
 from flask import Flask, request
-from api.main_code import *  # Assuming main_code defines reviewer()
+#from api.main_code import *  # Assuming main_code defines reviewer()
 import threading
-import asyncio
+#import asyncio
 
 
 app = Flask(__name__)
 
 
-thread1 = threading.Thread(target=main_function)
+#thread1 = threading.Thread(target=main_function)
     
 
 
@@ -20,7 +20,7 @@ def root():
 @app.route('/service', methods=['GET', 'POST'])
 def service():
     #asyncio.create_task(main_function())
-    thread1.start()
+    #thread1.start()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
