@@ -23,7 +23,6 @@ from tweety import Twitter
 from telebot import formatting
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-from api.index import keep_alive
 
 import shutil
 import json
@@ -432,6 +431,4 @@ def reviewer():
 
 
 
-
-main_function()
 
