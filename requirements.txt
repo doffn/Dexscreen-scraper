@@ -1,2 +1,9 @@
-flask
+pyTelegramBotAPI==4.15.4
+tweety-ns==1.1.2
+datetime
+schedule
+logging
+psutil
+pymongo==4.6.3
+flask[async]
 
