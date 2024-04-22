@@ -23,8 +23,6 @@ from tweety import Twitter
 from telebot import formatting
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
-import shutil
-import json
 
 
 API = "6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY"
