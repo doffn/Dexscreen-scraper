@@ -14,7 +14,7 @@ def root():
 
 @app.route('/service', methods=['GET', 'POST'])
 def service():
-    main_run()
+    main_function()
     if request.method == 'POST':
         try:
             # Submit the review task asynchronously
