@@ -6,7 +6,7 @@ import threading
 app = Flask(__name__)
 
 
-addr = os.environ['ADDRESS']
+
 Api = os.environ["API"]
 ID = "-1001873201570"
 
@@ -40,17 +40,7 @@ def dex():
     except Exception as e:
         print(e)
 
-    if request.method == 'POST':
-        try:
-            # Submit the review task asynchronously
-            # For now, return a success message without time estimate
-            return '<body style="background-color:black; color:white;">dex screen</body>'
-
-        except Exception as e:
-            print(f"Error in service endpoint: {e}")
-            return '<body style="background-color:black; color:white;">An error occurred.</body>'
-    else:
-        return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
+    return '<body style="background-color:black; color:white;">dex endpoint</body>'
 
 
 if __name__ == '__main__':

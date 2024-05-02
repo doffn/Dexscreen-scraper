@@ -9,8 +9,6 @@ import os
 
 
 addr = os.environ['ADDRESS']
-Api = os.environ["API"]
-ID = "-1001873201570"
 
 headers = {
     "Host": "io.dexscreener.com",
