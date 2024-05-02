@@ -1,6 +1,6 @@
 from flask import Flask, request
 from api.main_code import *  # Assuming main_code defines reviewer()
-from api.dex import DexBot
+from api.dex import *
 import threading
 
 app = Flask(__name__)
@@ -31,10 +31,11 @@ def service():
     else:
         return '<body style="background-color:black; color:white;">Service endpoint accessed</body>'
 
-@app.route('/dex', methods=['GET', 'POST'])
+@app.route('/dex', methods=['GET'])
 def dex():
     try:
         new = DexBot(Api, ID)
+        report(new)
         mes = new.token_getter()
         new.tg_send(str(mes))
     except Exception as e:
