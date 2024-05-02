@@ -30,7 +30,10 @@ def service():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        dex_run()
+        #dex_run()
+        new = DexBot(Api, ID)
+        mes = new.token_getter()
+        report(mes)
     except Exception as e:
         print(e)
 
