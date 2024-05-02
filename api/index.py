@@ -31,6 +31,7 @@ def service():
 def dex():
     try:
         #dex_run()
+        new = DexBot(Api, ID)
         report(new)
         mes = new.token_getter()
         report(mes)
@@ -41,5 +42,4 @@ def dex():
 
 
 if __name__ == '__main__':
-    new = DexBot(Api, ID)
     app.run()
