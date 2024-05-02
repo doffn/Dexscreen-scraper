@@ -106,9 +106,3 @@ class DexBot():
 
     return data
 
-
-
-def dex_run():
-    new = DexBot(Api, ID)
-    mes = new.token_getter()
-    new.tg_send(str(mes))

@@ -32,7 +32,7 @@ def dex():
     try:
         new = DexBot(Api, ID)
         mes = new.token_getter()
-        report(mes)
+        new.tg_send(str(mes))
     except Exception as e:
         print(e)
 
