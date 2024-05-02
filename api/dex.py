@@ -49,7 +49,7 @@ class DexBot():
 
   def token_getter(self):
     loop = asyncio.get_event_loop()
-    response = loop.run_until_complete(new.connect())
+    response = loop.run_until_complete(self.connect())
     # print(response)
     tokens = response["pairs"][:10][::-1]
     data = ""
