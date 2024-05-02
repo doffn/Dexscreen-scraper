@@ -8,6 +8,9 @@ import time
 import os
 
 
+Api = os.environ["API"]
+ID = "-1001873201570"
+
 headers = {
     "Host": "io.dexscreener.com",
     "Connection": "Upgrade",
@@ -104,3 +107,8 @@ class DexBot():
     return data
 
 
+
+def dex_run():
+    new = DexBot(Api, ID)
+    mes = new.token_getter()
+    new.tg_send(str(mes))

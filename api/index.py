@@ -7,10 +7,6 @@ app = Flask(__name__)
 
 
 
-Api = os.environ["API"]
-ID = "-1001873201570"
-
-
 @app.route('/', methods=['GET'])
 def root():
     return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This is my API</body>'
@@ -34,10 +30,7 @@ def service():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        new = DexBot(Api, ID)
-        report(new)
-        mes = new.token_getter()
-        new.tg_send(str(mes))
+        dex_run()
     except Exception as e:
         print(e)
 
