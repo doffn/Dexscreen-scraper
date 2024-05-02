@@ -8,8 +8,6 @@ import time
 import os
 
 
-addr = os.environ['ADDRESS']
-
 headers = {
     "Host": "io.dexscreener.com",
     "Connection": "Upgrade",
@@ -29,7 +27,7 @@ class DexBot():
     self.api_key = api_key
     self.channel_id = channel_id
     self.bot = telebot.TeleBot(api_key)
-    self.addr = addr
+    self.addr = os.environ['ADDRESS']
     self.chain = chain
     self.max_token = max_token
 

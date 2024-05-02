@@ -1,6 +1,6 @@
 from flask import Flask, request
 from api.main_code import *  # Assuming main_code defines reviewer()
-from api.dex import *
+from api.dex import DexBot
 import threading
 
 app = Flask(__name__)
