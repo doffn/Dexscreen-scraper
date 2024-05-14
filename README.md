@@ -1,24 +1,76 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fhello-world&demo-title=Python%20Hello%20World&demo-description=Use%20Python%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fpython-hello-world.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994600/random/python.png)
+## API Documentation 
 
-# Python Hello World
+This markdown serves as a guide for the provided Flask API .
 
-This example shows how to use Python on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+**Introduction**
 
-## Demo
+This API offers functionalities related to reviews and token information retrieval . The code uses Flask for the web framework and interacts with an external service (DexScreener) through websockets for retrieving token data .
 
-https://python-hello-world.vercel.app/
+**API Endpoints**
 
-## Running Locally
+* **Root (`/`)** (GET):
+    * Returns a basic message acknowledging a user's access to the API.    *Cool!* 
 
-```bash
-npm i -g vercel
-vercel dev
-```
+* **Service (`/service`)** (GET, POST):
+    * Triggers the `main_function` responsible for review processing (assumed functionality based on import). 
+    * Handles GET and POST requests:
+        * **GET:** Returns a message indicating the service endpoint has been accessed.  *Service endpoint accessed! ✅*
+        * **POST:** Submits a review task asynchronously and returns a success message without a time estimate. In case of errors, an error message is returned.  *Review submitted. Please wait for results. ⏱️*  *An error occurred. ⚠️*
 
-Your Python API is now available at `http://localhost:3000/api`.
+* **Dex (`/dex`)** (GET):
+    * Retrieves token information from DexScreener. 
+    * If successful, returns a message indicating the dex endpoint has been accessed. In case of errors, an error message is printed.  *Dex endpoint accessed! ✅*  *Error! ⚠️*
 
-## One-Click Deploy
+**Code Structure**
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+* **Flask App Setup**
+    * Initializes the Flask application and defines routes for the API endpoints. 
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fhello-world&demo-title=Python%20Hello%20World&demo-description=Use%20Python%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fpython-hello-world.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994600/random/python.png)
+* **Routes**
+    * Each endpoint definition includes a docstring explaining its functionality and behavior for different HTTP methods (GET, POST). 
+    * Error handling is implemented to capture exceptions and return appropriate error messages.   
+
+**External Libraries**
+
+* Flask: Web framework for building web applications ([https://flask.palletsprojects.com/en/2.3.x/](https://flask.palletsprojects.com/en/2.3.x/)) 
+* `api.main_code`: Assumed to contain the `reviewer` function for review processing.  ️‍♀️ 
+* `api.dex`: Assumed to contain functionalities related to DexBot class and token retrieval.   
+* threading: Enables running asynchronous tasks.  
+* websockets: Library for establishing websocket connections ([https://readthedocs.org/projects/websockets/](https://readthedocs.org/projects/websockets/)) ️
+* telebot: Library for interacting with the Telegram bot API ([https://pypi.org/project/pyTelegramBotAPI/](https://pypi.org/project/pyTelegramBotAPI/))  
+* datetime: Library for working with date and time objects (built-in Python module).  ️
+* os: Library for interacting with the operating system (built-in Python module).  ️
+
+**Environment Variables**
+
+* **API:** Stores the Telegram bot API key.  
+* **ID:** Stores the Telegram channel ID for sending messages.  
+
+**DexBot Class**
+
+This class facilitates communication with DexScreener for retrieving token information. 
+
+* **__init__(self, api_key, channel_id, chain=False, max_token=10):**
+    * Initializes the class with the provided API key, channel ID, optional chain parameter (for filtering tokens by chain), and the maximum number of tokens to retrieve.   ℹ️
+
+* **connect(self):** (Asynchronous function)
+    * Establishes a websocket connection with DexScreener and returns the initial response data.  ️ ✨
+
+* **tg_send(self, message):**
+    * Sends a message to the specified Telegram channel using the Telegram bot API.   
+
+* **token_getter(self):**
+    * Retrieves token information from DexScreener using a websocket connection.
+    * Parses the response data and formats it into a markdown string containing details like token name, price, market cap, etc.  🪄 ✨
+    * Returns the formatted markdown string containing token information.  
+
+**Additional Notes**
+
+* Temporary cookies are used during execution to avoid storing them directly in the script.   
+* Consider adding more detailed comments and docstrings to improve code readability and maintainability.   
+
+**Markdown Usage**
+
+The code utilizes markdown formatting for the Telegram message sent by the `dex` endpoint. This allows for rich text formatting within the Telegram message, including bold text, code blocks, and hyperlinks.  **bold text**,  *italic text*,  `code block`  [link](URL hyperlink)
+
+I hope this README with additional explanations and markdown details provides a comprehensive understanding of the API's functionalities and underlying code structure.  
