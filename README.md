@@ -64,9 +64,6 @@ This class facilitates communication with DexScreener for retrieving token infor
     * Parses the response data and formats it into a markdown string containing details like token name, price, market cap, etc.  🪄 ✨
     * Returns the formatted markdown string containing token information.  
 
-# **Additional Notes**
-
-* Temporary cookies are used during execution to avoid storing them directly in the script.
 
 ## Credits 🙌
 
