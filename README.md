@@ -1,12 +1,12 @@
 ## API Documentation 
 
-This markdown serves as a guide for the provided Flask API .
+This serves as a guide for the provided Flask API .
 
-**Introduction**
+# **Introduction**
 
 This API offers functionalities related to reviews and token information retrieval . The code uses Flask for the web framework and interacts with an external service (DexScreener) through websockets for retrieving token data .
 
-**API Endpoints**
+# **API Endpoints**
 
 * **Root (`/`)** (GET):
     * Returns a basic message acknowledging a user's access to the API.    *Cool!* 
@@ -21,7 +21,7 @@ This API offers functionalities related to reviews and token information retriev
     * Retrieves token information from DexScreener. 
     * If successful, returns a message indicating the dex endpoint has been accessed. In case of errors, an error message is printed.  *Dex endpoint accessed! ✅*  *Error! ⚠️*
 
-**Code Structure**
+# **Code Structure**
 
 * **Flask App Setup**
     * Initializes the Flask application and defines routes for the API endpoints. 
@@ -30,7 +30,7 @@ This API offers functionalities related to reviews and token information retriev
     * Each endpoint definition includes a docstring explaining its functionality and behavior for different HTTP methods (GET, POST). 
     * Error handling is implemented to capture exceptions and return appropriate error messages.   
 
-**External Libraries**
+# **External Libraries**
 
 * Flask: Web framework for building web applications ([https://flask.palletsprojects.com/en/2.3.x/](https://flask.palletsprojects.com/en/2.3.x/)) 
 * `api.main_code`: Assumed to contain the `reviewer` function for review processing.  ️‍♀️ 
@@ -41,12 +41,12 @@ This API offers functionalities related to reviews and token information retriev
 * datetime: Library for working with date and time objects (built-in Python module).  ️
 * os: Library for interacting with the operating system (built-in Python module).  ️
 
-**Environment Variables**
+# **Environment Variables**
 
 * **API:** Stores the Telegram bot API key.  
 * **ID:** Stores the Telegram channel ID for sending messages.  
 
-**DexBot Class**
+# **DexBot Class**
 
 This class facilitates communication with DexScreener for retrieving token information. 
 
@@ -64,13 +64,16 @@ This class facilitates communication with DexScreener for retrieving token infor
     * Parses the response data and formats it into a markdown string containing details like token name, price, market cap, etc.  🪄 ✨
     * Returns the formatted markdown string containing token information.  
 
-**Additional Notes**
+# **Additional Notes**
 
-* Temporary cookies are used during execution to avoid storing them directly in the script.   
-* Consider adding more detailed comments and docstrings to improve code readability and maintainability.   
+* Temporary cookies are used during execution to avoid storing them directly in the script.
 
-**Markdown Usage**
+## Credits 🙌
 
-The code utilizes markdown formatting for the Telegram message sent by the `dex` endpoint. This allows for rich text formatting within the Telegram message, including bold text, code blocks, and hyperlinks.  **bold text**,  *italic text*,  `code block`  [link](URL hyperlink)
+This project was created by **Dawit Neri**
 
-I hope this README with additional explanations and markdown details provides a comprehensive understanding of the API's functionalities and underlying code structure.  
+## Support 💬
+
+If you encounter any issues or have any questions, feel free to reach out to dawitneri888@gmail.com or open an issue in the GitHub repository.  
+
+  
