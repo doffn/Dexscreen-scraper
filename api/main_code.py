@@ -323,11 +323,11 @@ def main_function():
           position = data["pos"]
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-          report(len(usernames))
+          print(usernames)
           username_splited = np.array_split(usernames, 4)
-          report(username_splited[position])
+          print(username_splited[position])
           username_splited = username_splited[position]
-          report(username_splited.tolist())
+          print(username_splited)
           
           all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
         
@@ -414,7 +414,7 @@ def main_function():
       if lis == len(cookies):
           data["cookies"] = 0
       else:
-          data["cookies"] = lis
+        data["cookies"] = lis
       mongo_update(data)
 
 
