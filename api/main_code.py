@@ -259,7 +259,9 @@ def get_tweet_by_username(usernames, lis, username_splited, position, replies=Fa
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
+            print(f"the lis value is: {lis}")
             text = cookies[lis]["session"]
+
             with open(file_path, 'w') as file:
                 file.write(text)
         
@@ -307,7 +309,7 @@ def get_tweet_by_username(usernames, lis, username_splited, position, replies=Fa
     except Exception as e:
         print(e)
         report(f" There is an error {e}")
-        return None
+        return [[] for _ in range(len(usernames))]
     
 
 print('/////////PROGRAM RUNNING////////')
@@ -321,7 +323,7 @@ def main_function():
           position = data["pos"]
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-          report(np.array(usernames))
+          report(len(usernames))
           username_splited = np.array_split(usernames, 4)
           report(np.array(username_splited))
           username_splited = username_splited[position]
