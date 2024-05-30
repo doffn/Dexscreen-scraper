@@ -243,7 +243,7 @@ def commands():
 
 
 #####################################################################
-def get_tweet_by_username(usernames, lis, replies=False,):
+def get_tweet_by_username(usernames, lis, username_splited, position, replies=False,):
     """
     Retrieves tweets from the specified usernames.
 
@@ -324,7 +324,7 @@ def main_function():
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
           username_splited = np.array_split(usernames, 4)
           
-          all_data = get_tweet_by_username(usernames, lis, username_splited=username_splited, replies=data["replies"], position=position)
+          all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
           position += 1
           position %= 4
           data["pos"] = position
