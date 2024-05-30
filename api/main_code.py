@@ -23,6 +23,7 @@ from tweety import Twitter
 from telebot import formatting
 from pymongo.mongo_client import MongoClient
 from pymongo.server_api import ServerApi
+import numpy as np
 
 import shutil
 import json
@@ -271,32 +272,35 @@ def get_tweet_by_username(usernames, lis, replies=False,):
           
             try:
                 for p, user in enumerate(usernames):
-                    try:
-                        tweets_list = []
-                        tweets = app.get_tweets(user[1:],  replies=True)
-                        try:
-                            report(tweets)
-                        except Exception as e:
-                            report(e)
-                        for tweet in tweets:
-                            if "all_tweets_id" in tweet.keys():
-                                #print("got a reply")
-                                tweet = tweet["tweets"][-1]
-                            tweet_new = (
-                              False,
-                              tweet["id"],
-                              tweet["text"],
-                              tweet["date"],
-                              f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
-                              list(map(str, tweet["urls"]))
-                            )
-                            tweets_list.append(tweet_new)
-        
+                    tweets_list = []
+                    if user not in username_splited[position]:
                         all_tweets.append(tweets_list)
-                        print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
-                    except Exception as e:
-                        print(e)
-                        all_tweets.append([])
+                    else:
+                        try:
+                            tweets = app.get_tweets(user[1:],  replies=True)
+                            try:
+                                report(tweets)
+                            except Exception as e:
+                                report(e)
+                            for tweet in tweets:
+                                if "all_tweets_id" in tweet.keys():
+                                    #print("got a reply")
+                                    tweet = tweet["tweets"][-1]
+                                tweet_new = (
+                                False,
+                                tweet["id"],
+                                tweet["text"],
+                                tweet["date"],
+                                f"https://vxtwitter.com/{user[1:]}/status/{tweet['id']}",
+                                list(map(str, tweet["urls"]))
+                                )
+                                tweets_list.append(tweet_new)
+            
+                            all_tweets.append(tweets_list)
+                            print(f"Tring to scrape from {user} and got {len(tweets_list)} tweets")
+                        except Exception as e:
+                            print(e)
+                            all_tweets.append([])
             except Exception as e:
                 report(f" It can not scrape cause {e}")
             return all_tweets
@@ -315,10 +319,15 @@ def main_function():
       try:
           data = get_mongo()
           lis = int(data["cookies"])
+          position = data["pos"]
           report(f"this is the index {lis}")
-    
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-          all_data = get_tweet_by_username(usernames, lis, replies=data["replies"], )
+          username_splited = np.array_split(usernames, 4)
+          
+          all_data = get_tweet_by_username(usernames, lis, username_splited=username_splited, replies=data["replies"], position=position)
+          position += 1
+          position %= 4
+          data["pos"] = position
           lis += 1
           if lis == len(cookies):
               data["cookies"] = 0
