@@ -321,7 +321,7 @@ def main_function():
           position = data["pos"]
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-          report(f"""{usernames}""")
+          report(np.array(usernames))
           username_splited = np.array_split(usernames, 4)
           report(username_splited)
           username_splited = username_splited[position]
