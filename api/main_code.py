@@ -272,7 +272,7 @@ def get_tweet_by_username(usernames, lis, username_splited, position, replies=Fa
             try:
                 for p, user in enumerate(usernames):
                     tweets_list = []
-                    if user not in username_splited[position]:
+                    if user not in username_splited:
                         all_tweets.append(tweets_list)
                     else:
                         try:
@@ -321,7 +321,7 @@ def main_function():
           position = data["pos"]
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
-          report(usernames)
+          report(f"""{usernames}""")
           username_splited = np.array_split(usernames, 4)
           report(username_splited)
           username_splited = username_splited[position]
