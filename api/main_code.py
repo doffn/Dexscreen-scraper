@@ -330,14 +330,6 @@ def main_function():
           report(username_splited.tolist())
           
           all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
-          position += 1
-          position %= 4
-          data["pos"] = position
-          lis += 1
-          if lis == len(cookies):
-              data["cookies"] = 0
-          else:
-              data["cookies"] = lis
         
           for u, data_new in enumerate(all_data):
             
@@ -415,6 +407,16 @@ def main_function():
     
       except Exception as e:
           print(f"There is an error in main function ::  {e}")
+      position += 1
+      position %= 4
+      data["pos"] = position
+      lis += 1
+      if lis == len(cookies):
+          data["cookies"] = 0
+      else:
+          data["cookies"] = lis
+      mongo_update(data)
+
 
 
 
