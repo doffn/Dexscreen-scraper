@@ -323,11 +323,13 @@ def main_function():
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
           username_splited = np.array_split(usernames, 4)
+          username_splited = username_splited[position]
           
           all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
           position += 1
           position %= 4
           data["pos"] = position
+          report("error is in the main function")
           lis += 1
           if lis == len(cookies):
               data["cookies"] = 0
