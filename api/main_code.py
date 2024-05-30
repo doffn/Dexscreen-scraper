@@ -325,7 +325,7 @@ def main_function():
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
           report(len(usernames))
           username_splited = np.array_split(usernames, 4)
-          report(sername_splited[position])
+          report(username_splited[position])
           username_splited = username_splited[position]
           report(username_splited.tolist())
           
