@@ -259,12 +259,11 @@ def get_tweet_by_username(usernames, lis, username_splited, position, replies=Fa
             file_path = temp_dir + '/session.tw_session'
         
             # Write text into the file
-            text = cookies[0]["session"]
+            text = cookies[lis]["session"]
             with open(file_path, 'w') as file:
                 file.write(text)
         
             print(f"File created at: {file_path}")
-            cookies_value = os.environ["cook"]
             app =  Twitter(file_path)
             app.connect()
             me = str(app.me)
@@ -324,20 +323,22 @@ def main_function():
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
           username_splited = np.array_split(usernames, 4)
           username_splited = username_splited[position]
+          report(username_splited)
           
           all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
           position += 1
           position %= 4
           data["pos"] = position
-          report("error is in the main function")
           lis += 1
           if lis == len(cookies):
               data["cookies"] = 0
           else:
               data["cookies"] = lis
-          try:
-              for u, data_new in enumerate(all_data):
-    
+        
+          for u, data_new in enumerate(all_data):
+            
+              try:
+
                   user_name = usernames[u]
                   tweet_ids = []
                   for j in range(0, len(data["usernames"][user_name]["recent_tweets"])):
@@ -405,8 +406,8 @@ def main_function():
                                   print(f"Bot cannot send message Successfully :: {e}")
     
     
-          except Exception as e:
-              print(f"There is an error at the message sender of {user_name} ::  {e}")
+              except Exception as e:
+                  print(f"There is an error at the message sender of {user_name} ::  {e}")
     
       except Exception as e:
           print(f"There is an error in main function ::  {e}")
