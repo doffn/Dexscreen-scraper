@@ -324,10 +324,10 @@ def main_function():
           report(f"this is the index {lis}")
           usernames = [i for i in data["usernames"] if data["usernames"][i]["Active"]]
           report(len(usernames))
-          username_splited = np.array(np.array_split(usernames, 4)).tolist()
-          report(sername_splited)
+          username_splited = np.array_split(usernames, 4)
+          report(sername_splited[position])
           username_splited = username_splited[position]
-          report(username_splited)
+          report(username_splited.tolist())
           
           all_data = get_tweet_by_username(usernames, lis, username_splited, position, replies=data["replies"])
           position += 1
