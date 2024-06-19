@@ -4,6 +4,9 @@ import threading
 
 app = Flask(__name__)
 
+@app.route('/', methods=['GET'])
+def root():
+    return '<body style="background-color:black; color:white; font-family: Arial, sans-serif;">Hello User, This will scrape from Dexscreener trending tokens by running the /dex path</body>'
 
 @app.route('/dex', methods=['GET'])
 def dex():
