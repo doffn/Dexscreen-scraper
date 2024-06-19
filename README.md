@@ -11,12 +11,6 @@ This API offers functionalities related to reviews and token information retriev
 * **Root (`/`)** (GET):
     * Returns a basic message acknowledging a user's access to the API.    *Cool!* 
 
-* **Service (`/service`)** (GET, POST):
-    * Triggers the `main_function` responsible for review processing (assumed functionality based on import). 
-    * Handles GET and POST requests:
-        * **GET:** Returns a message indicating the service endpoint has been accessed.  *Service endpoint accessed! ✅*
-        * **POST:** Submits a review task asynchronously and returns a success message without a time estimate. In case of errors, an error message is returned.  *Review submitted. Please wait for results. ⏱️*  *An error occurred. ⚠️*
-
 * **Dex (`/dex`)** (GET):
     * Retrieves token information from DexScreener. 
     * If successful, returns a message indicating the dex endpoint has been accessed. In case of errors, an error message is printed.  *Dex endpoint accessed! ✅*  *Error! ⚠️*
@@ -27,13 +21,12 @@ This API offers functionalities related to reviews and token information retriev
     * Initializes the Flask application and defines routes for the API endpoints. 
 
 * **Routes**
-    * Each endpoint definition includes a docstring explaining its functionality and behavior for different HTTP methods (GET, POST). 
+    * Each endpoint definition includes a docstring explaining its functionality and behavior for different HTTP methods (GET). 
     * Error handling is implemented to capture exceptions and return appropriate error messages.   
 
 # **External Libraries**
 
 * Flask: Web framework for building web applications ([https://flask.palletsprojects.com/en/2.3.x/](https://flask.palletsprojects.com/en/2.3.x/)) 
-* `api.main_code`: Assumed to contain the `reviewer` function for review processing.  ️‍♀️ 
 * `api.dex`: Assumed to contain functionalities related to DexBot class and token retrieval.   
 * threading: Enables running asynchronous tasks.  
 * websockets: Library for establishing websocket connections ([https://readthedocs.org/projects/websockets/](https://readthedocs.org/projects/websockets/)) ️
@@ -68,6 +61,10 @@ This class facilitates communication with DexScreener for retrieving token infor
 ## Credits 🙌
 
 This project was created by **Dawit Neri**
+
+## NOTE 🗒
+
+You should ping the /dex path inorder to run the dexscreener scraper. You can use cronjob it works great.
 
 ## Support 💬
 
