@@ -21,14 +21,13 @@ This API offers functionalities related to reviews and token information retriev
     * Initializes the Flask application and defines routes for the API endpoints. 
 
 * **Routes**
-    * Each endpoint definition includes a docstring explaining its functionality and behavior for different HTTP methods (GET). 
+    * Each endpoint definition includes a docstring explaining its functionality and behavior. 
     * Error handling is implemented to capture exceptions and return appropriate error messages.   
 
 # **External Libraries**
 
 * Flask: Web framework for building web applications ([https://flask.palletsprojects.com/en/2.3.x/](https://flask.palletsprojects.com/en/2.3.x/)) 
 * `api.dex`: Assumed to contain functionalities related to DexBot class and token retrieval.   
-* threading: Enables running asynchronous tasks.  
 * websockets: Library for establishing websocket connections ([https://readthedocs.org/projects/websockets/](https://readthedocs.org/projects/websockets/)) ️
 * telebot: Library for interacting with the Telegram bot API ([https://pypi.org/project/pyTelegramBotAPI/](https://pypi.org/project/pyTelegramBotAPI/))  
 * datetime: Library for working with date and time objects (built-in Python module).  ️
@@ -37,7 +36,8 @@ This API offers functionalities related to reviews and token information retriev
 # **Environment Variables**
 
 * **API:** Stores the Telegram bot API key.  
-* **ID:** Stores the Telegram channel ID for sending messages.  
+* **ID:** Stores the Telegram channel ID for sending messages.
+* **ADDRESS:** Stores the Address of the dexscreener websocket. It is custom defined.  
 
 # **DexBot Class**
 
@@ -64,10 +64,9 @@ This project was created by **Dawit Neri**
 
 ## NOTE 🗒
 
-You should ping the /dex path inorder to run the dexscreener scraper. You can use cronjob it works great.
+If you want to run on a specific chain, define the chain in the class. You should ping the /dex path inorder to run the dexscreener scraper. You can use cronjob it works great.
 
 ## Support 💬
 
-If you encounter any issues or have any questions, feel free to reach out to dawitneri888@gmail.com or open an issue in the GitHub repository.  
-
+If you encounter any issues or have any questions, feel free to reach out to dawitneri888@gmail.com or open an issue in the GitHub repository.  Thank you for using my app.
   

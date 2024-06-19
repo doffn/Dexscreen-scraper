@@ -29,9 +29,9 @@ def dex():
         new.tg_send(str(mes))
     except Exception as e:
         print(e)
-        return '<body style="background-color:black; color:white;">Error occurred: {}</body>'.format(str(e))
+        return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
-    return '<body style="background-color:black; color:white;">dex endpoint 🚀</body>'
+    return '<body style="background-color:black; color:white;">dexscreener Trending is sent to your tweeter account 🚀</body>'
 
 if __name__ == '__main__':
     app.run()
