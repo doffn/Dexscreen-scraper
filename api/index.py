@@ -35,7 +35,7 @@ def dex():
     return f'''
         <body style="background-color:black; font-family: Arial, sans-serif; color:white">
             <div padding: 20px;">
-                <pre style="background-color: #333; padding: 10px;">{markdown(mes)}</pre>
+                <pre style="background-color: #333; padding: 10px; width:60%; ">{markdown(mes)}</pre>
             </div>
 
         </body>
