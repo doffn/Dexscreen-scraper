@@ -1,6 +1,7 @@
 from flask import Flask, request
 from api.dex import *
 import threading
+import markdown2
 
 app = Flask(__name__)
 
@@ -31,7 +32,30 @@ def dex():
         print(e)
         return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
-    return f'<body style="background-color:black; color:white;">dexscreener Trending is sent to your tweeter account 🚀<br><br><code>{mes}</code></body>'
+    # Convert Markdown to HTML
+    html_content = markdown2.markdown(mes)
+
+    return f'''
+        <body style="background-color:black; color:white; font-family: Arial, sans-serif;">
+            <p>dexscreener Trending is sent to your tweeter account 🚀</p>
+            <div style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
+                <code id="markdown-content" style="display: block; white-space: pre-wrap;">{html_content}</code>
+                <button onclick="copyToClipboard()">Copy Markdown</button>
+            </div>
+            <script>
+                function copyToClipboard() {{
+                    var copyText = document.getElementById("markdown-content");
+                    var range = document.createRange();
+                    range.selectNode(copyText);
+                    window.getSelection().removeAllRanges();
+                    window.getSelection().addRange(range);
+                    document.execCommand("copy");
+                    window.getSelection().removeAllRanges();
+                    alert("Copied the Markdown content!");
+                }}
+            </script>
+        </body>
+    '''
 
 if __name__ == '__main__':
     app.run()
