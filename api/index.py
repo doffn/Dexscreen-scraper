@@ -1,7 +1,7 @@
 from flask import Flask, request
+from flask_misaka import markdown
 from api.dex import *
 import threading
-import markdown2
 
 app = Flask(__name__)
 
@@ -32,30 +32,25 @@ def dex():
         print(e)
         return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
-    # Convert Markdown to HTML
-    html_content = markdown2.markdown(mes)
-
     return f'''
-        <body style="background-color:black; color:white; font-family: Arial, sans-serif;">
-            <p>dexscreener Trending is sent to your tweeter account 🚀</p>
-            <div style="border: 1px solid #ccc; padding: 10px; background-color: #f9f9f9;">
-                <code id="markdown-content" style="display: block; white-space: pre-wrap;">{html_content}</code>
+            <div style="background-color: #f9f9f9; padding: 20px;">
+                <p>dexscreener Trending is sent to your tweeter account 🚀</p>
+                <code style="display: block; white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">{markdown(mes)}</code>
                 <button onclick="copyToClipboard()">Copy Markdown</button>
             </div>
             <script>
                 function copyToClipboard() {{
-                    var copyText = document.getElementById("markdown-content");
+                    var copyText = document.querySelector('code');
                     var range = document.createRange();
                     range.selectNode(copyText);
                     window.getSelection().removeAllRanges();
                     window.getSelection().addRange(range);
-                    document.execCommand("copy");
+                    document.execCommand('copy');
                     window.getSelection().removeAllRanges();
-                    alert("Copied the Markdown content!");
+                    alert('Copied the Markdown content!');
                 }}
             </script>
-        </body>
-    '''
+        '''
 
 if __name__ == '__main__':
     app.run()
