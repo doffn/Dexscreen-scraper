@@ -35,7 +35,7 @@ def dex():
     return f'''
             <body style="background-color:black; color:white; font-family: Arial, sans-serif;">
             <h1>dexscreener Trending is sent to your tweeter account 🚀</h1>
-            <pre style="background-color: #333; padding: 10px;">{mes}</pre>
+            <span style="display:block" class="note">{mes}</span>
             </body>
         '''
 
