@@ -34,7 +34,7 @@ def dex():
 
     return f'''
         <body style="background-color:black; font-family: Arial, sans-serif; color:white">
-            <div>
+            <div style= "text-align: center; color:blue">
                 <h1>Dex screener trending data 📋</h1>
             </div>
             <div style="padding: 20px; text-align: center;">
