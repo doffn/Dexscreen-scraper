@@ -37,7 +37,7 @@ def dex():
             <div padding: 20px;">
                 <p>dexscreener Trending is sent to your tweeter account 🚀</p>
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; white-space: pre-wrap;">
-                    <code id="markdown-content"; style = "color:white; background-color: #f9f9f9; padding: 20px;">{markdown(mes)}</code>
+                    <code id="markdown-content"; style = "color:white; background-color: #f9f9f9; padding: 20px;">HI {markdown(mes)}</code>
                 </div>
                 <button onclick="copyToClipboard()">Copy Markdown</button>
             </div>
