@@ -98,7 +98,7 @@ class DexBot():
                 prices += f"{price}% "
                 
             
-            info = f"        {numbers[num]} *Token Name:* [{name}/ {(token['chainId'])}]({url})\n```{name}\n💸 Price: {price_usd} \n💎 TMCap: {market_cap:,}$ \n💧 Liquidity: {liquidity_usd:,}$ \n📢 volume: {volume:,}$ \n📝 Holders: {holders_h24}\n📆 Pool created: {time_ago} \n🌡 {prices}```"
+            info = f"{numbers[num]} *Token Name:* [{name}/ {(token['chainId'])}]({url})\n```{name}\n💸 Price: {price_usd} \n💎 TMCap: {market_cap:,}$ \n💧 Liquidity: {liquidity_usd:,}$ \n📢 volume: {volume:,}$ \n📝 Holders: {holders_h24}\n📆 Pool created: {time_ago} \n🌡 {prices}```"
 
             data += f"{info}\n"
             num += 1
