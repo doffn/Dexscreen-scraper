@@ -31,7 +31,7 @@ def dex():
         print(e)
         return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
-    return '<body style="background-color:black; color:white;">dexscreener Trending is sent to your tweeter account 🚀</body>'
+    return f'<body style="background-color:black; color:white;">dexscreener Trending is sent to your tweeter account 🚀<br><br><code>{mes}</code></body>'
 
 if __name__ == '__main__':
     app.run()
