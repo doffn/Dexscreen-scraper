@@ -33,11 +33,11 @@ def dex():
         return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
     return f'''
-        <body style="background-color:black; color:white; font-family: Arial, sans-serif;">
-            <div style="background-color: #f9f9f9; padding: 20px;">
+        <body style="background-color:black; font-family: Arial, sans-serif;">
+            <div padding: 20px;">
                 <p>dexscreener Trending is sent to your tweeter account 🚀</p>
                 <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; white-space: pre-wrap;">
-                    <code id="markdown-content">{markdown(mes)}</code>
+                    <code id="markdown-content"; style = "color:white">{markdown(mes)}</code>
                 </div>
                 <button onclick="copyToClipboard()">Copy Markdown</button>
             </div>
