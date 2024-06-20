@@ -34,8 +34,11 @@ def dex():
 
     return f'''
         <body style="background-color:black; font-family: Arial, sans-serif; color:white">
+            <div>
+                <h1>Dex screener trending data 📋</h1>
+            </div>
             <div style="padding: 20px; text-align: center;">
-                <pre style="background-color: #333; padding: 10px; width: 30%;">{markdown(mes)}</pre>
+                <pre style="background-color: #333; padding: 10px; width: 30%; display: inline-block; text-align: left;">{markdown(mes)}</pre>
             </div>
 
 
