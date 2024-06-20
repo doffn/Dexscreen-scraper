@@ -33,23 +33,10 @@ def dex():
         return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
 
     return f'''
-            <div style="background-color: #f9f9f9; padding: 20px;">
-                <p>dexscreener Trending is sent to your tweeter account 🚀</p>
-                <code style="display: block; white-space: pre-wrap; border: 1px solid #ccc; padding: 10px; margin-bottom: 10px;">{markdown(mes)}</code>
-                <button onclick="copyToClipboard()">Copy Markdown</button>
-            </div>
-            <script>
-                function copyToClipboard() {{
-                    var copyText = document.querySelector('code');
-                    var range = document.createRange();
-                    range.selectNode(copyText);
-                    window.getSelection().removeAllRanges();
-                    window.getSelection().addRange(range);
-                    document.execCommand('copy');
-                    window.getSelection().removeAllRanges();
-                    alert('Copied the Markdown content!');
-                }}
-            </script>
+            <body style="background-color:black; color:white; font-family: Arial, sans-serif;">
+            <h1>dexscreener Trending is sent to your tweeter account 🚀</h1>
+            <pre style="background-color: #333; padding: 10px;">{mes}</pre>
+            </body>
         '''
 
 if __name__ == '__main__':
