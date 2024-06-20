@@ -51,7 +51,7 @@ class DexBot():
     loop = asyncio.get_event_loop()
     response = loop.run_until_complete(self.connect())
     # print(response)
-    tokens = response["pairs"][:10][::-1]
+    tokens = response["pairs"][:10][::-1] # flipped the list
     data = ""
     numbers = ["🔟", "9️⃣", "8️⃣", "7️⃣", "6️⃣", "5️⃣", "4️⃣", "3️⃣", "2️⃣", "1️⃣"]
     num = 0
