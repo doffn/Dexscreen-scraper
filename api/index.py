@@ -35,24 +35,9 @@ def dex():
     return f'''
         <body style="background-color:black; font-family: Arial, sans-serif; color:white">
             <div padding: 20px;">
-                <p>dexscreener Trending is sent to your tweeter account 🚀</p>
-                <div style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; white-space: pre-wrap; width: 60%;">
-                    <code id="markdown-content"; style = "color:white; background-color: #f9f9f9;">{markdown(mes)}</code>
-                </div>
-                <button onclick="copyToClipboard()">Copy Markdown</button>
+                <pre style="background-color: #333; padding: 10px;">{markdown(mes)}</pre>
             </div>
-            <script>
-                function copyToClipboard() {{
-                    var copyText = document.getElementById("markdown-content");
-                    var range = document.createRange();
-                    range.selectNode(copyText);
-                    window.getSelection().removeAllRanges();
-                    window.getSelection().addRange(range);
-                    document.execCommand('copy');
-                    window.getSelection().removeAllRanges();
-                    alert('Copied the Markdown content!');
-                }}
-            </script>
+
         </body>
         '''
 
