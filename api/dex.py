@@ -11,19 +11,20 @@ import os
 Api = os.environ["API"]
 ID = "-1001873201570"
 
-headers = {
+headers =  {
     "Host": "io.dexscreener.com",
     "Connection": "Upgrade",
     "Pragma": "no-cache",
     "Cache-Control": "no-cache",
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "User-Agent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36",
     "Upgrade": "websocket",
     "Origin": "https://dexscreener.com",
     "Sec-WebSocket-Version": "13",
     "Accept-Encoding": "gzip, deflate, br, zstd",
     "Accept-Language": "en-US,en-IN;q=0.9,en;q=0.8",
+    "Sec-WebSocket-Key": "QvmwsgXQoeeZLZd45uUdQw==",
     "Sec-WebSocket-Extensions": "permessage-deflate; client_max_window_bits"
-}
+  }
 
 class DexBot():
   def __init__(self, api_key, channel_id, chain=False, max_token=10):
