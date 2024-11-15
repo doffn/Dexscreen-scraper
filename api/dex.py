@@ -36,9 +36,10 @@ class DexBot():
 
   async def connect(self):
     async with websockets.connect(self.addr, extra_headers=headers) as websocket:
-        message = "hi"
+        message = "ping"
         await websocket.send(message)
         response = await websocket.recv()
+        self.bot.send_message(self.channel_id, response, parse_mode='MarkdownV2', disable_web_page_preview=True)
         return json.loads(response)
       
   def tg_send(self, message):
