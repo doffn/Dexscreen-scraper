@@ -35,7 +35,7 @@ class DexBot():
     self.max_token = max_token
 
   async def connect(self):
-    async with websockets.connect(self.addr, extra_headers=headers) as websocket:
+    async with websockets.connect(self.addr, additional_headers=headers) as websocket:
         message = "ping"
         await websocket.send(message)
         response = await websocket.recv()
