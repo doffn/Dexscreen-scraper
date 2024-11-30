@@ -1,30 +1,34 @@
 import asyncio
-import websockets
-import telebot
-from telebot import formatting
-import json
-from datetime import datetime
-import time
+import base64
 import os
+from curl_cffi.requests import AsyncSession
+import json
+import nest_asyncio
+
+# Apply nest_asyncio
+nest_asyncio.apply()
 
 
 Api = os.environ["API"]
 ID = "-1001873201570"
 
-headers =  {
-    "Host": "io.dexscreener.com",
-    "Connection": "Upgrade",
-    "Pragma": "no-cache",
-    "Cache-Control": "no-cache",
-    "User-Agent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36",
-    "Upgrade": "websocket",
-    "Origin": "https://dexscreener.com",
-    "Sec-WebSocket-Version": "13",
-    "Accept-Encoding": "gzip, deflate, br, zstd",
-    "Accept-Language": "en-US,en-IN;q=0.9,en;q=0.8",
-    "Sec-WebSocket-Key": "QvmwsgXQoeeZLZd45uUdQw==",
-    "Sec-WebSocket-Extensions": "permessage-deflate; client_max_window_bits"
-  }
+def generate_sec_websocket_key():
+    random_bytes = os.urandom(16)
+    key = base64.b64encode(random_bytes).decode('utf-8')
+    return key
+
+def get_headers():
+    headers = {
+        "Host": "io.dexscreener.com",
+        "Connection": "Upgrade",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        "Upgrade": "websocket",
+        "Origin": "https://dexscreener.com",
+        'Sec-WebSocket-Version': '13',
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Sec-WebSocket-Key": generate_sec_websocket_key()
+    }
+    return headers
 
 class DexBot():
   def __init__(self, api_key, channel_id, chain=False, max_token=10):
@@ -36,13 +40,31 @@ class DexBot():
     self.max_token = max_token
 
   async def connect(self):
-    async with websockets.connect(self.addr, additional_headers=headers) as websocket:
-        message = "hi"
-        await websocket.send(message)
-        response = await websocket.recv()
-        print(response)
-        self.bot.send_message(self.channel_id, response, parse_mode='MarkdownV2', disable_web_page_preview=True)
-        return json.loads(response)
+    headers = get_headers()
+    try:
+        session = AsyncSession(headers=headers)
+        ws = await session.ws_connect(Api)
+
+        try:
+            # Receive only one message
+            data = await ws.arecv()
+            print(data[0])
+            return data
+            # await handle_message(data)
+        except Exception as e:
+            print(f"Error receiving message: {str(e)}")
+            return None
+        finally:
+            try:
+                await ws.close()
+            except:
+                pass
+            try:
+                await session.close()
+            except:
+                pass
+    except Exception as e:
+        print(f"Connection error: {str(e)}")
       
   def tg_send(self, message):
     try:

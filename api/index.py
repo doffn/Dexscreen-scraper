@@ -26,7 +26,7 @@ def root():
 def dex():
     try:
         new = DexBot(Api, ID, chain=False) # define the chain if you desire a specific chain eg. ETH, SOL, BASE
-        mes = new.token_getter()
+        mes = new.connect()
         new.tg_send(str(mes))  
     except Exception as e:
         print(e)
