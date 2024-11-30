@@ -2,6 +2,7 @@ from flask import Flask, request
 from flask_misaka import markdown
 from api.dex import *
 import threading
+import asyncio
 
 app = Flask(__name__)
 
@@ -25,25 +26,36 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        new = DexBot(Api, ID, chain=False) # define the chain if you desire a specific chain eg. ETH, SOL, BASE
-        mes = new.connect()
-        new.tg_send(str(mes))  
+        new = DexBot(Api, ID, chain=False)  # define the chain if you desire a specific chain eg. ETH, SOL, BASE
+        # Use token_getter instead of connect directly
+        mes = new.token_getter()
+        
+        # Send to Telegram in a separate thread to not block the response
+        def send_to_telegram():
+            new.tg_send(mes)
+        
+        threading.Thread(target=send_to_telegram).start()
+        
+        return f'''
+            <body style="background-color:black; font-family: Arial, sans-serif; color:white">
+                <div style="text-align: center;">
+                    <h1 style="color:lightblue">Dex screener trending data 📋</h1>
+                </div>
+                <div style="padding: 20px; text-align: center;">
+                    <pre style="background-color: #333; padding: 10px; margin: 0 auto; display: inline-block; text-align: left; color: white; border-radius: 5px;">{mes}</pre>
+                </div>
+            </body>
+            '''
+            
     except Exception as e:
         print(e)
-        return f'<body style="background-color:black; color:red;">Error occurred: {str(e)}. Unable to send message.</body>'
-
-    return f'''
-        <body style="background-color:black; font-family: Arial, sans-serif; color:white">
-            <div style= "text-align: center; color:blue">
-                <h1>Dex screener trending data 📋</h1>
-            </div>
-            <div style="padding: 20px; text-align: center;">
-                <pre style="background-color: #333; padding: 10px; width: 30%; display: inline-block; text-align: left;">{markdown(mes)}</pre>
-            </div>
-
-
-        </body>
-        '''
+        return f'''
+            <body style="background-color:black; color:red; font-family: Arial, sans-serif; text-align: center; padding: 20px;">
+                <h2>Error occurred</h2>
+                <p>{str(e)}</p>
+                <p>Unable to send message.</p>
+            </body>
+            '''
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)
