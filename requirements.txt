@@ -9,4 +9,5 @@ flask
 websockets
 Flask-Misaka
 curl-cffi
+ nest-asyncio
 
