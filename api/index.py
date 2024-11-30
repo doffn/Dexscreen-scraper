@@ -27,13 +27,7 @@ def root():
 def dex():
     try:
         new = DexBot(Api, ID, chain=False)
-        mes = new.token_getter()
-        
-        # Send to Telegram in a separate thread
-        def send_to_telegram():
-            new.tg_send(mes)
-        
-        threading.Thread(target=send_to_telegram).start()
+        mes = new.start()  # This will connect and send to Telegram immediately
         
         return f'''
             <body style="background-color:black; font-family: Arial, sans-serif; color:white">

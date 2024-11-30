@@ -12,15 +12,11 @@ import time
 # Apply nest_asyncio
 nest_asyncio.apply()
 
-Api = os.environ["API"]
-ID = "-1001873201570"
-
 class DexBot():
     def __init__(self, api_key, channel_id, chain=False, max_token=10):
         self.api_key = api_key
         self.channel_id = channel_id
         self.bot = telebot.TeleBot(api_key)
-        self.addr = os.environ['ADDRESS']
         self.chain = chain
         self.max_token = max_token
         self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h1/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
@@ -43,52 +39,12 @@ class DexBot():
         }
         return headers
 
-    async def connect(self):
-        headers = self.get_headers()
-        try:
-            session = AsyncSession(headers=headers)
-            ws = await session.ws_connect(self.url)
-
-            try:
-                data = await ws.arecv()
-                return json.loads(data[0])
-            except Exception as e:
-                print(f"Error receiving message: {str(e)}")
-                return None
-            finally:
-                try:
-                    await ws.close()
-                except:
-                    pass
-                try:
-                    await session.close()
-                except:
-                    pass
-        except Exception as e:
-            print(f"Connection error: {str(e)}")
-            return None
-
-    def tg_send(self, message):
-        try:
-            self.bot.send_message(self.channel_id, message, parse_mode='MarkdownV2', disable_web_page_preview=True)
-        except Exception as e:
-            print(e)
-
-    def token_getter(self):
-        loop = asyncio.new_event_loop()
-        asyncio.set_event_loop(loop)
-        response = loop.run_until_complete(self.connect())
-        loop.close()
-        
-        if not response or "pairs" not in response:
-            return "Error fetching data"
-            
-        tokens = response["pairs"][:10][::-1]
+    def format_token_data(self, tokens):
         data = ""
         numbers = ["🔟", "9️⃣", "8️⃣", "7️⃣", "6️⃣", "5️⃣", "4️⃣", "3️⃣", "2️⃣", "1️⃣"]
         num = 0
 
-        for token in tokens:
+        for token in tokens[::-1]:
             if num == self.max_token:
                 break
 
@@ -141,3 +97,49 @@ class DexBot():
                 num += 1
 
         return data
+
+    async def connect(self):
+        headers = self.get_headers()
+        try:
+            session = AsyncSession(headers=headers)
+            ws = await session.ws_connect(self.url)
+
+            try:
+                data = await ws.arecv()
+                response = json.loads(data[0])
+                
+                if "pairs" in response:
+                    tokens = response["pairs"][:10]
+                    formatted_data = self.format_token_data(tokens)
+                    self.tg_send(formatted_data)
+                    return formatted_data
+                return "No data available"
+                
+            except Exception as e:
+                print(f"Error receiving message: {str(e)}")
+                return "Error receiving data"
+            finally:
+                try:
+                    await ws.close()
+                except:
+                    pass
+                try:
+                    await session.close()
+                except:
+                    pass
+        except Exception as e:
+            print(f"Connection error: {str(e)}")
+            return f"Connection error: {str(e)}"
+
+    def tg_send(self, message):
+        try:
+            self.bot.send_message(self.channel_id, message, parse_mode='MarkdownV2', disable_web_page_preview=True)
+        except Exception as e:
+            print(f"Telegram sending error: {e}")
+
+    def start(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(self.connect())
+        loop.close()
+        return result
