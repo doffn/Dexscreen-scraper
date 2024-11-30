@@ -26,11 +26,10 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        new = DexBot(Api, ID, chain=False)  # define the chain if you desire a specific chain eg. ETH, SOL, BASE
-        # Use token_getter instead of connect directly
+        new = DexBot(Api, ID, chain=False)
         mes = new.token_getter()
         
-        # Send to Telegram in a separate thread to not block the response
+        # Send to Telegram in a separate thread
         def send_to_telegram():
             new.tg_send(mes)
         

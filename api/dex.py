@@ -23,6 +23,12 @@ class DexBot():
         self.addr = os.environ['ADDRESS']
         self.chain = chain
         self.max_token = max_token
+        self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h1/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
+
+    def generate_sec_websocket_key(self):
+        random_bytes = os.urandom(16)
+        key = base64.b64encode(random_bytes).decode('utf-8')
+        return key
 
     def get_headers(self):
         headers = {
@@ -37,21 +43,15 @@ class DexBot():
         }
         return headers
 
-    def generate_sec_websocket_key(self):
-        random_bytes = os.urandom(16)
-        key = base64.b64encode(random_bytes).decode('utf-8')
-        return key
-
     async def connect(self):
         headers = self.get_headers()
         try:
             session = AsyncSession(headers=headers)
-            ws = await session.ws_connect(Api)
+            ws = await session.ws_connect(self.url)
 
             try:
                 data = await ws.arecv()
-                print(data[0])
-                return json.loads(data[0])  # Parse JSON string to dict
+                return json.loads(data[0])
             except Exception as e:
                 print(f"Error receiving message: {str(e)}")
                 return None
@@ -75,9 +75,12 @@ class DexBot():
             print(e)
 
     def token_getter(self):
-        loop = asyncio.get_event_loop()
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
         response = loop.run_until_complete(self.connect())
-        if not response:
+        loop.close()
+        
+        if not response or "pairs" not in response:
             return "Error fetching data"
             
         tokens = response["pairs"][:10][::-1]
@@ -99,6 +102,7 @@ class DexBot():
                 liquidity_usd = int(float(token['liquidity'].get('usd', "0"))) if 'liquidity' in token else 0
                 pair_created_at = int(token.get('pairCreatedAt', "0"))
                 holders_h24 = int(token['makers'].get('h24', "0")) if 'makers' in token else 0
+                
                 price_change = [
                     token["priceChange"].get('m5', 0),
                     token["priceChange"].get('h1', 0),
