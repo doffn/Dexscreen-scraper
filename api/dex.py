@@ -5,6 +5,10 @@ from curl_cffi.requests import AsyncSession
 import json
 import nest_asyncio
 import telebot
+from telebot import formatting
+
+from datetime import datetime
+import time
 
 # Apply nest_asyncio
 nest_asyncio.apply()
@@ -13,23 +17,7 @@ nest_asyncio.apply()
 Api = os.environ["API"]
 ID = "-1001873201570"
 
-def generate_sec_websocket_key():
-    random_bytes = os.urandom(16)
-    key = base64.b64encode(random_bytes).decode('utf-8')
-    return key
 
-def get_headers():
-    headers = {
-        "Host": "io.dexscreener.com",
-        "Connection": "Upgrade",
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
-        "Upgrade": "websocket",
-        "Origin": "https://dexscreener.com",
-        'Sec-WebSocket-Version': '13',
-        "Accept-Encoding": "gzip, deflate, br, zstd",
-        "Sec-WebSocket-Key": generate_sec_websocket_key()
-    }
-    return headers
 
 class DexBot():
   def __init__(self, api_key, channel_id, chain=False, max_token=10):
@@ -40,8 +28,28 @@ class DexBot():
     self.chain = chain
     self.max_token = max_token
 
+  def get_headers():
+    headers = {
+        "Host": "io.dexscreener.com",
+        "Connection": "Upgrade",
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+        "Upgrade": "websocket",
+        "Origin": "https://dexscreener.com",
+        'Sec-WebSocket-Version': '13',
+        "Accept-Encoding": "gzip, deflate, br, zstd",
+        "Sec-WebSocket-Key": self.generate_sec_websocket_key()
+    }
+    return headers
+
+  def generate_sec_websocket_key():
+    random_bytes = os.urandom(16)
+    key = base64.b64encode(random_bytes).decode('utf-8')
+    return key
+
+
+
   async def connect(self):
-    headers = get_headers()
+    headers = self.get_headers()
     try:
         session = AsyncSession(headers=headers)
         ws = await session.ws_connect(Api)
