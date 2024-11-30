@@ -35,10 +35,23 @@ def dex():
                     <h1 style="color:lightblue">Dex screener trending data 📋</h1>
                 </div>
                 <div style="padding: 20px; text-align: center;">
-                    <pre style="background-color: #333; padding: 10px; margin: 0 auto; display: inline-block; text-align: left; color: white; border-radius: 5px;">{mes}</pre>
+                    <pre style="
+                        background-color: #333;
+                        padding: 10px;
+                        margin: 0 auto;
+                        display: inline-block;
+                        text-align: left;
+                        color: white;
+                        border-radius: 5px;
+                        width: 70%;
+                        word-wrap: break-word;
+                        white-space: pre-wrap;
+                        "> 
+                        {mes}
+                    </pre>
                 </div>
             </body>
-            '''
+        '''
             
     except Exception as e:
         print(e)
