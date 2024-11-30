@@ -8,4 +8,5 @@ pymongo==4.6.3
 flask
 websockets
 Flask-Misaka
+curl-cffi
 
