@@ -4,6 +4,7 @@ import os
 from curl_cffi.requests import AsyncSession
 import json
 import nest_asyncio
+import telebot
 
 # Apply nest_asyncio
 nest_asyncio.apply()
