@@ -4,22 +4,24 @@ import os
 from curl_cffi.requests import AsyncSession
 import json
 import nest_asyncio
-import telebot
-from telebot import formatting
 from datetime import datetime
 import time
 
 # Apply nest_asyncio
 nest_asyncio.apply()
 
+Api = os.environ["API"]
+ID = "-1001873201570"
+
+
 class DexBot():
-    def __init__(self, api_key, channel_id, chain=False, max_token=10):
+    def __init__(self, api_key, channel_id=1234, chain=False, max_token=10):
         self.api_key = api_key
         self.channel_id = channel_id
-        self.bot = telebot.TeleBot(api_key)
+        self.addr = os.environ['ADDRESS']
         self.chain = chain
         self.max_token = max_token
-        self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h1/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
+        self.url = Api
 
     def generate_sec_websocket_key(self):
         random_bytes = os.urandom(16)
@@ -102,18 +104,14 @@ class DexBot():
         headers = self.get_headers()
         try:
             session = AsyncSession(headers=headers)
-            ws = await session.ws_connect(self.url)
+            ws = await session.ws_connect(self.addr)
 
             try:
                 data = await ws.arecv()
-                response = json.loads(data[0])
-                
-                if "pairs" in response:
-                    tokens = response["pairs"][:10]
-                    formatted_data = self.format_token_data(tokens)
-                    self.tg_send(formatted_data)
-                    return formatted_data
-                return "No data available"
+                response = data[0]
+
+                return response
+      
                 
             except Exception as e:
                 print(f"Error receiving message: {str(e)}")
