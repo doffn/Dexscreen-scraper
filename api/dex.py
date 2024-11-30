@@ -18,7 +18,7 @@ class DexBot():
     def __init__(self, api_key, channel_id=1234, chain=False, max_token=10):
         self.api_key = api_key
         self.channel_id = channel_id
-        self.addr = os.environ['ADDRESS']
+        self.addr = "wss://io.dexscreener.com/dex/screener/v4/pairs/h1/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
         self.chain = chain
         self.max_token = max_token
         self.url = Api
