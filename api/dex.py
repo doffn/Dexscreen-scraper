@@ -8,6 +8,7 @@ from datetime import datetime
 import time
 import struct
 from decimal import Decimal, ROUND_DOWN
+import re
 
 # Apply nest_asyncio
 nest_asyncio.apply()
