@@ -6,22 +6,19 @@ import json
 import nest_asyncio
 from datetime import datetime
 import time
+import struct
+from decimal import Decimal, ROUND_DOWN
 
 # Apply nest_asyncio
 nest_asyncio.apply()
-
-Api = os.environ["API"]
-ID = "-1001873201570"
-
 
 class DexBot():
     def __init__(self, api_key, channel_id=1234, chain=False, max_token=10):
         self.api_key = api_key
         self.channel_id = channel_id
-        self.addr = "wss://io.dexscreener.com/dex/screener/v4/pairs/h1/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
         self.chain = chain
         self.max_token = max_token
-        self.url = Api
+        self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
 
     def generate_sec_websocket_key(self):
         random_bytes = os.urandom(16)
@@ -41,93 +38,82 @@ class DexBot():
         }
         return headers
 
-    def format_token_data(self, tokens):
-        data = ""
-        numbers = ["🔟", "9️⃣", "8️⃣", "7️⃣", "6️⃣", "5️⃣", "4️⃣", "3️⃣", "2️⃣", "1️⃣"]
-        num = 0
+    def format_token_data(self):
 
-        for token in tokens[::-1]:
-            if num == self.max_token:
-                break
+        """
+        Fetch information about specific tokens from the Dexscreener API.
 
-            if self.chain is False or self.chain.lower() in token["chainId"].lower():
-                prices = ""
-                url = f'https://dexscreener.com/{token.get("chainId", "-")}/{token.get("pairAddress", "-")}'
-                name = formatting.escape_markdown(token['baseToken']['symbol']) if 'baseToken' in token else "-"
-                price_usd = formatting.escape_markdown(str(token.get('priceUsd', "-")))
-                volume = int(float(token['volume'].get('h24', "0"))) if 'volume' in token and 'h24' in token['volume'] else 0
-                market_cap = int(float(token.get('marketCap', "0")))
-                liquidity_usd = int(float(token['liquidity'].get('usd', "0"))) if 'liquidity' in token else 0
-                pair_created_at = int(token.get('pairCreatedAt', "0"))
-                holders_h24 = int(token['makers'].get('h24', "0")) if 'makers' in token else 0
-                
-                price_change = [
-                    token["priceChange"].get('m5', 0),
-                    token["priceChange"].get('h1', 0),
-                    token["priceChange"].get('h6', 0),
-                    token["priceChange"].get('h24', 0)
-                ]
+        Args:
+            token_addresses (list): List of token addresses.
 
-                time_difference = datetime.now() - datetime.fromtimestamp(pair_created_at / 1000)
-                days = time_difference.days
-                hours = time_difference.seconds // 3600
-                minutes = (time_difference.seconds % 3600) // 60
+        Returns:
+            dict: A dictionary containing data for each token address or an error message.
+        """
 
-                if days > 0:
-                    time_ago = f"{days}d {hours}h ago"
-                elif hours > 0:
-                    time_ago = f"{hours}h {minutes}m ago"
+        token_addresses = self.start()
+
+        base_url = "https://api.dexscreener.com/latest/dex/tokens/"
+        results = {}
+
+        for address in token_addresses:
+            try:
+                # Make an API call for each token address
+                response = requests.get(f"{base_url}{address}")
+                if response.status_code == 200:
+                    data = response.json()
+                    # Store the relevant data for the token address
+                    pairs = data.get('pairs', [])  # 'pairs' contains token market data
+                    
+                    if pairs and len(pairs) > 0:
+                        results[address] = pairs[0]  # Store first pair's data
+                    else:
+                        results[address] = "No data available for this token"
                 else:
-                    time_ago = f"{minutes}m ago"
+                    # Handle HTTP errors
+                    results[address] = f"Error: Status code {response.status_code}, {response.text}"
+            except requests.RequestException as e:
+                # Handle request exceptions
+                results[address] = f"Error making request: {str(e)}"
 
-                for price in price_change[::-1]:
-                    price_value = float(price)
-                    if price_value >= 0 and price_value < 45:
-                        price = f"💹 {price_value:,.2f}"
-                    elif price_value > 45:
-                        price = f"💸 {price_value:,.2f}"
-                    elif price_value < 0 and price_value > -45:
-                        price = f"🩸 {price_value:,.2f}"
-                    elif price_value < -45:
-                        price = f"💥 {price_value:,.2f}"
-
-                    prices += f"{price}% "
-
-                info = f"{numbers[num]} *Token Name:* [{name}/ {(token['chainId'])}]({url})\n```{name}\n💸 Price: {price_usd} \n💎 TMCap: {market_cap:,}$ \n💧 Liquidity: {liquidity_usd:,}$ \n📢 volume: {volume:,}$ \n📝 Holders: {holders_h24}\n📆 Pool created: {time_ago} \n🌡 {prices}```"
-
-                data += f"{info}\n"
-                num += 1
-
-        return data
+        return json.dumps(results, indent=2)
+      
 
     async def connect(self):
         headers = self.get_headers()
         try:
             session = AsyncSession(headers=headers)
-            ws = await session.ws_connect(self.addr)
+            ws = await session.ws_connect(self.url)
 
-            try:
-                data = await ws.arecv()
-                response = data[0]
+            # Loop to keep receiving data until the connection is closed
+            while True:
+                try:
+                    # Receive data from WebSocket
+                    data = await ws.arecv()
 
-                return response
-      
-                
-            except Exception as e:
-                print(f"Error receiving message: {str(e)}")
-                return "Error receiving data"
-            finally:
-                try:
-                    await ws.close()
-                except:
-                    pass
-                try:
-                    await session.close()
-                except:
-                    pass
+                    if data:
+                        response = data[0]  # Assuming the first element contains the desired message
+                        # Process and return the data or handle it as needed
+                        #print(response)  # You can replace this with your desired processing logic
+                        if "pairs" in str(response):
+                          return response
+
+                    else:
+                        # If no data is received, break out of the loop
+                        print("No data received.")
+                        break
+
+                except Exception as e:
+                    print(f"Error receiving message: {str(e)}")
+                    break
+
+            # Closing the WebSocket and session after the loop ends
+            await ws.close()
+            await session.close()
+
         except Exception as e:
             print(f"Connection error: {str(e)}")
             return f"Connection error: {str(e)}"
+
 
     def tg_send(self, message):
         try:
@@ -138,6 +124,36 @@ class DexBot():
     def start(self):
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
-        result = loop.run_until_complete(self.connect())
+        mes = loop.run_until_complete(self.connect())
         loop.close()
-        return result
+
+        # Find data between start and end markers
+        start_marker = b'\x0c'  # Define start marker
+        end_marker = b'\x02'    # Define end marker
+
+        # Split the data by start_marker and end_marker and extract data between them
+        extracted_data = []
+        for chunk in mes.split(start_marker)[1:]:
+            data_segment = chunk.split(end_marker)[0]
+
+            if len(data_segment) > 30 and "solana" in str(data_segment):
+                data = str(data_segment[16:])
+                #print(data)
+
+                if "pump" in data:
+                  # Decode the bytes into a string
+                  # Regular expression to capture 43 characters before "pump" and "pump" itself
+                  pattern = r".{0,40}pump"
+                  data = re.findall(pattern, data)[0]
+
+                else:
+                  data = data[:91]
+                  data = re.sub(r'[^a-zA-Z0-9\s]', '', data)
+                  #print(data[-44:])
+                  data = data[-44:]
+
+
+                    
+                extracted_data.append(data)
+        #print(extracted_data)
+        return extracted_data
