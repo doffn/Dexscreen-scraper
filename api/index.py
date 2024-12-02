@@ -29,6 +29,8 @@ def dex():
     try:
         new = DexBot(Api, ID, chain=False)
         mes = new.format_token_data()  # This will connect and send to Telegram immediately
+
+        mes_json = json.dumps(mes)
         
         return f'''
             <body style="background-color:black; font-family: Arial, sans-serif; color:white">
@@ -53,7 +55,7 @@ def dex():
                     </pre>
                 </div>
 
-            <script> console.log({{mes}})</script>
+            <script> console.log({mes_json})</script>
             </body>
         '''
             
