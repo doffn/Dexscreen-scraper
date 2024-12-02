@@ -9,6 +9,7 @@ import time
 import struct
 from decimal import Decimal, ROUND_DOWN
 import re
+import requests
 
 # Apply nest_asyncio
 nest_asyncio.apply()
