@@ -148,6 +148,7 @@ class DexBot():
                 if "pump" in data:
                   # Decode the bytes into a string
                   # Regular expression to capture 43 characters before "pump" and "pump" itself
+                  data = data[47:]
                   pattern = r".{0,40}pump"
                   data = re.findall(pattern, data)[0]
 
