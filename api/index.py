@@ -52,6 +52,8 @@ def dex():
                         {mes}
                     </pre>
                 </div>
+
+            <script> console.log({{mes}})</script>
             </body>
         '''
             
