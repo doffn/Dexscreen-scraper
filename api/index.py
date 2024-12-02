@@ -29,30 +29,75 @@ def dex():
         new = DexBot(Api, ID, chain=False)
         mes = new.format_token_data()  # This will connect and send to Telegram immediately
         
+        # Format the mes string as JSON
+        formatted_json = json.dumps(json.loads(mes), indent=2)
+
         return f'''
-            <body style="background-color:black; font-family: Arial, sans-serif; color:white">
-                <div style="text-align: center;">
-                    <h1 style="color:lightblue">Dex screener trending data 📋</h1>
-                </div>
-                <div style="padding: 20px; text-align: center;">
-                    <pre style="
+            <html>
+            <head>
+                <style>
+                    body {{
+                        background-color: black;
+                        font-family: Arial, sans-serif;
+                        color: white;
+                        text-align: center;
+                    }}
+                    h1 {{
+                        color: lightblue;
+                    }}
+                    .json-container {{
                         background-color: #333;
-                        padding: 10px;
-                        margin: 0 auto;
+                        padding: 20px;
+                        margin: 20px auto;
                         display: inline-block;
                         text-align: left;
                         color: white;
                         border-radius: 5px;
-                        width: 70%;
+                        width: 80%;
+                        max-height: 500px;
+                        overflow-y: scroll;
                         word-wrap: break-word;
                         white-space: pre-wrap;
-                        "> 
-                        {mes}
-                    </pre>
+                    }}
+                    .copy-btn {{
+                        background-color: #4CAF50;
+                        color: white;
+                        border: none;
+                        padding: 10px 20px;
+                        font-size: 16px;
+                        border-radius: 5px;
+                        cursor: pointer;
+                        margin-top: 10px;
+                    }}
+                    .copy-btn:hover {{
+                        background-color: #45a049;
+                    }}
+                </style>
+            </head>
+            <body>
+                <div>
+                    <h1>Dex screener trending data 📋</h1>
                 </div>
+                <div class="json-container" id="jsonContainer">
+                    {formatted_json}
+                </div>
+                <button class="copy-btn" id="copyBtn">Copy JSON</button>
+                
+                <script>
+                    // Copy JSON to clipboard functionality
+                    document.getElementById('copyBtn').addEventListener('click', function() {{
+                        var jsonContainer = document.getElementById('jsonContainer');
+                        var range = document.createRange();
+                        range.selectNode(jsonContainer);
+                        window.getSelection().removeAllRanges();
+                        window.getSelection().addRange(range);
+                        document.execCommand('copy');
+                        window.getSelection().removeAllRanges();
+                    }});
+                </script>
             </body>
+            </html>
         '''
-            
     except Exception as e:
         print(e)
         return f'''
