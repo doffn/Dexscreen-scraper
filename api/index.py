@@ -16,9 +16,10 @@ def root():
                 <li>You need to add a bot inside a group. 🤖</li>
                 <li>You need to get the channel ID. 📨</li>
                 <li>You need to get the WebSocket URL for the filters for the Dexscreener. Use this format:
-                    <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/pairs/h24/1?rankBy[key]=trendingScoreH1&rankBy[order]=desc&filters[liquidity][min]=1000&filters[pairAge][max]=24</pre>
+                    <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
                 </li>
                 <li>You need to ping Dex for the desired time. Use a cron job. ⏰</li>
+               <li><span style="font-weight: bold; color: red;">NOTE:</span> This code is finetuned for Solana Tokens</li>
             </ol>
         </body>
     """
