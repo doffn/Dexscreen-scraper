@@ -72,8 +72,7 @@ class DexBot():
                     if pairs and len(pairs) > 0:
                         results[address] = pairs[0]  # Store first pair's data
                     else:
-                        results[address] = {"pairAddress": address,
-                                            "Error": "No data Retrieved"}
+                        pass
                 else:
                     # Handle HTTP errors
                     results[address] = f"Error: Status code {response.status_code}, {response.text}"
