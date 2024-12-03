@@ -80,7 +80,11 @@ class DexBot():
                 # Handle request exceptions
                 results[address] = f"Error making request: {str(e)}"
 
-        return json.dumps(results, indent=2)
+        # Extracting values as a list
+        results = list(results.values())
+        # Output the result as JSON
+
+        return json.dumps({"data": results}, indent=2)
       
 
     async def connect(self):
@@ -163,3 +167,7 @@ class DexBot():
                 extracted_data.append(data)
         #print(extracted_data)
         return extracted_data
+
+
+    def token_getter(self, message):
+        pass
