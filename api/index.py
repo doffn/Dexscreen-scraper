@@ -76,7 +76,7 @@ def ui():
         tokens = json.loads(json.dumps(mes))  # Parse JSON data into a Python object
 
         token_rows = ""
-        for token in tokens:
+        for token in tokens["data"]:
             # Extract data safely and handle missing values
             if isinstance(token, dict):
                 chain_id = token.get("chainId", "Unknown Chain")
