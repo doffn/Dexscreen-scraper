@@ -73,10 +73,12 @@ def ui():
         # Fetch the token data
         new = DexBot(Api, ID, chain=False)
         mes = new.format_token_data()  # This will connect and fetch the token data
-        tokens = json.loads(json.dumps(mes))  # Parse JSON data into a Python object
+        tokens = json.loads(json.dumps(mes)).get("data")  # Parse JSON data into a Python object
+
+        print(len(tokens))
 
         token_rows = ""
-        for token in tokens["data"]:
+        for token in tokens:
             # Extract data safely and handle missing values
             if isinstance(token, dict):
                 chain_id = token.get("chainId", "Unknown Chain")
