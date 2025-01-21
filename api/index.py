@@ -1,7 +1,6 @@
 from flask import Flask, request
 from api.dex import *
-import threading
-import asyncio
+import json
 
 app = Flask(__name__)
 
@@ -79,35 +78,39 @@ def ui():
         token_rows = ""
         for token in tokens:
             # Extract data safely and handle missing values
-            chain_id = token.get("chainId", "Unknown Chain")
-            dex_id = token.get("dexId", "Unknown Dex")
-            url = token.get("url", "#")
-            base_token = token.get("baseToken", {})
-            price_usd = token.get("priceUsd", "N/A")
-            volume = token.get("volume", {}).get("h24", 0)
-            image_url = token.get("info", {}).get("imageUrl", "https://via.placeholder.com/50")
-            socials = token.get("info", {}).get("socials", [])
-            token_name = base_token.get("name", "Unknown Token")
-            token_symbol = base_token.get("symbol", "N/A")
+            if isinstance(token, dict):
+                chain_id = token.get("chainId", "Unknown Chain")
+                dex_id = token.get("dexId", "Unknown Dex")
+                url = token.get("url", "#")
+                base_token = token.get("baseToken", {})
+                price_usd = token.get("priceUsd", "N/A")
+                volume = token.get("volume", {}).get("h24", 0)
+                image_url = token.get("info", {}).get("imageUrl", "https://via.placeholder.com/50")
+                socials = token.get("info", {}).get("socials", [])
+                token_name = base_token.get("name", "Unknown Token")
+                token_symbol = base_token.get("symbol", "N/A")
 
-            # Create HTML rows for each token
-            token_rows += f'''
-                <div class="token-row">
-                    <div class="token-image">
-                        <img src="{image_url}" alt="{token_symbol}">
+                # Create HTML rows for each token
+                token_rows += f'''
+                    <div class="token-row">
+                        <div class="token-image">
+                            <img src="{image_url}" alt="{token_symbol}">
+                        </div>
+                        <div class="token-info">
+                            <h3>{token_name} ({token_symbol})</h3>
+                            <p>Price: $ {float(price_usd):.2f}</p>
+                            <p>Volume (24h): $ {int(volume):,}</p>
+                            <p>Chain: {chain_id}, Dex: {dex_id}</p>
+                        </div>
+                        <div class="token-links">
+                            <a href="{url}" target="_blank" class="btn">View on Dex</a>
+                            {''.join([f'<a href="{social.get("url", "#")}" target="_blank" class="icon-{social.get("type", "link")}"><i class="bx bxl-{social.get("type", "link")}"></i></a>' for social in socials])}
+                        </div>
                     </div>
-                    <div class="token-info">
-                        <h3>{token_name} ({token_symbol})</h3>
-                        <p>Price: $ {float(price_usd):.2f}</p>
-                        <p>Volume (24h): $ {int(volume):,}</p>
-                        <p>Chain: {chain_id}, Dex: {dex_id}</p>
-                    </div>
-                    <div class="token-links">
-                        <a href="{url}" target="_blank" class="btn">View on Dex</a>
-                        {''.join([f'<a href="{social.get("url", "#")}" target="_blank" class="icon-{social.get("type", "link")}"><i class="bx bxl-{social.get("type", "link")}"></i></a>' for social in socials])}
-                    </div>
-                </div>
-            '''
+                '''
+            else:
+                # Handle cases where token is not a dictionary (optional)
+                token_rows += f'<div class="token-row">Error processing token data</div>'
 
         return f'''
             <html>
@@ -161,7 +164,6 @@ def ui():
         '''
     except Exception as e:
         return f"<h1>Error: {str(e)}</h1>"
-
 
 if __name__ == '__main__':
     app.run(debug=True)
