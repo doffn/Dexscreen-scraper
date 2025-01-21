@@ -75,6 +75,7 @@ def ui():
         mes = new.format_token_data()  # This will connect and fetch the token data
         tokens = json.loads(mes)  # Parse JSON data into a Python object
         tokens = tokens.get("data")
+        print(type(tokens), len(tokens))
         token_rows = ""
         for token in tokens:
             # Extract data safely and handle missing values
@@ -90,6 +91,12 @@ def ui():
                 token_name = base_token.get("name", "Unknown Token")
                 token_symbol = base_token.get("symbol", "N/A")
 
+                # Check if the price is a valid number before converting
+                if price_usd != "N/A":
+                    price_usd = float(price_usd)
+                else:
+                    price_usd = 0.0  # Default to 0.0 or another value if unavailable
+
                 # Create HTML rows for each token
                 token_rows += f'''
                     <div class="token-row">
@@ -98,7 +105,7 @@ def ui():
                         </div>
                         <div class="token-info">
                             <h3>{token_name} ({token_symbol})</h3>
-                            <p>Price: $ {float(price_usd):.2f}</p>
+                            <p>Price: $ {price_usd:.2f}</p>
                             <p>Volume (24h): $ {int(volume):,}</p>
                             <p>Chain: {chain_id}, Dex: {dex_id}</p>
                         </div>
