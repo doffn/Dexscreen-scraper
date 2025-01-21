@@ -14,7 +14,7 @@ import requests
 # Apply nest_asyncio
 nest_asyncio.apply()
 
-Api = os.environ["API"]  # 6098595418:AAFpqdwwoMXPPv8VxroKZIejJ5LYky8rtGY
+Api = os.environ["API"]  
 ID = "-1001873201570"
 
 class DexBot():
