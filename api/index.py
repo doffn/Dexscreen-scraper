@@ -1,5 +1,4 @@
 from flask import Flask, request
-from flask_misaka import markdown
 from api.dex import *
 import threading
 import asyncio
