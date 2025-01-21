@@ -134,7 +134,7 @@ def ui():
                                 </svg>
                                 Price USD
                             </div>
-                            <div class="text-lg font-bold {float(price_change.get('h24', 0)) > 0 ? 'text-green-400' : 'text-red-400'}">
+                            <div class="text-lg font-bold {float(price_change.get('h24', 0))} > 0 ? 'text-green-400' : 'text-red-400'">
                                 {float(token.get('priceUsd', 0)):.5f}
                             </div>
                             <div class="text-sm text-gray-400">
