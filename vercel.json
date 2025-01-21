@@ -13,7 +13,7 @@
       "dest": "api/index.py"
     },
     {
-      "src": "/service",
+      "src": "/ui",
       "dest": "api/index.py"
     },
     {
