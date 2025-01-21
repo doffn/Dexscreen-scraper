@@ -11,3 +11,4 @@ websockets
 Flask-Misaka
 curl-cffi
 nest-asyncio
+logging
