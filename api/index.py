@@ -73,7 +73,7 @@ def ui():
         # Fetch the token data
         new = DexBot(Api, ID, chain=False)
         mes = new.format_token_data()  # This will connect and fetch the token data
-        tokens = json.loads(json.dumps(mes))  # Parse JSON data into a Python object
+        tokens = json.loads(mes)  # Parse JSON data into a Python object
         tokens = tokens.get("data")
         token_rows = ""
         for token in tokens:
