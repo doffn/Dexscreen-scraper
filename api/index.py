@@ -134,11 +134,11 @@ def ui():
                                 </svg>
                                 Price USD
                             </div>
-                            <div class="text-lg font-bold ${float(price_change.get('h24', 0)) > 0 ? 'text-green-400' : 'text-red-400'}">
-                                ${float(token.get('priceUsd', 0)):.5f}
+                            <div class="text-lg font-bold {float(price_change.get('h24', 0)) > 0 ? 'text-green-400' : 'text-red-400'}">
+                                {float(token.get('priceUsd', 0)):.5f}
                             </div>
                             <div class="text-sm text-gray-400">
-                                24h: ${float(price_change.get('h24', 0)):.2f}%
+                                24h: {float(price_change.get('h24', 0)):.2f}%
                             </div>
                         </div>
 
@@ -150,7 +150,7 @@ def ui():
                                 24h Volume
                             </div>
                             <div class="text-lg font-bold">
-                                ${float(volume.get('h24', 0)):,.2f}
+                                {float(volume.get('h24', 0)):,.2f}
                             </div>
                         </div>
 
@@ -163,7 +163,7 @@ def ui():
                                 Liquidity
                             </div>
                             <div class="text-lg font-bold">
-                                ${float(liquidity.get('usd', 0)):,.2f}
+                                {float(liquidity.get('usd', 0)):,.2f}
                             </div>
                         </div>
 
@@ -175,7 +175,7 @@ def ui():
                                 Market Cap
                             </div>
                             <div class="text-lg font-bold">
-                                ${float(token.get('marketCap', 0)):,.2f}
+                                {float(token.get('marketCap', 0)):,.2f}
                             </div>
                         </div>
                     </div>
