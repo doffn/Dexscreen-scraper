@@ -5,7 +5,7 @@ schedule
 logging
 psutil
 pymongo==4.6.3
-Flask==2.1.2
+flask==2.1.2
 Werkzeug==2.1.2
 websockets
 Flask-Misaka
