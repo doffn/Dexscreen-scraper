@@ -3,7 +3,7 @@ datetime
 schedule
 psutil
 flask==2.1.2
-Werkzeug==2.1.2
+Werkzeug==3.0.6
 websockets
 Flask-Misaka
 curl-cffi
