@@ -98,7 +98,7 @@ class DexBot():
             while True:
                 try:
                     # Receive data from WebSocket
-                    data = await ws.arecv()
+                    data = await ws.recv()
 
                     if data:
                         response = data[0]  # Assuming the first element contains the desired message
