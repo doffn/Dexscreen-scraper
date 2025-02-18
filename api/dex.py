@@ -158,7 +158,7 @@ class DexBot():
         for token in filtered_words:
             # Check if token contains an ETH address
             if "0x" in token:
-                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[1]
+                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[-1]
             # Check if token contains 'pump' keyword
             elif "pump" in token:
                 token = re.findall(r".{0,39}pump", token)[0]
