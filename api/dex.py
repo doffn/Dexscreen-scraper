@@ -137,37 +137,34 @@ class DexBot():
         mes = loop.run_until_complete(self.connect())
         loop.close()
 
-        # Find data between start and end markers
-        start_marker = b'\x0c'  # Define start marker
-        end_marker = b'\x02'    # Define end marker
+        # Decode the message, replacing non-printable characters with spaces
+        decoded_text = ''.join(chr(b) if 32 <= b <= 126 else ' ' for b in mes)
 
-        # Split the data by start_marker and end_marker and extract data between them
+        # Split the string by whitespace into words and filter out short words
+        words = [word for word in decoded_text.split() if len(word) >= 55]
+
+        # Filter out special characters from words
+        filtered_words = [re.sub(r'["*<$@(),.].*', '', word) for word in words]
+
+        # Extract data from words
         extracted_data = []
-        for chunk in mes.split(start_marker)[1:]:
-            data_segment = chunk.split(end_marker)[0]
+        for token in filtered_words:
+            # Check if token contains an ETH address
+            if "0x" in token:
+                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[0]
+                print(token)
+            # Check if token contains 'pump' keyword
+            elif "pump" in token:
+                token = re.findall(r".{0,39}pump", token)[0]
+            # Otherwise extract the last 44 characters
+            else:
+                token = token[-44:]
+            
+            extracted_data.append(token)
 
-            if len(data_segment) > 30 and "solana" in str(data_segment):
-                data = str(data_segment[16:])
-                #print(data)
+        
 
-                if "pump" in data:
-                  # Decode the bytes into a string
-                  # Regular expression to capture 43 characters before "pump" and "pump" itself
-                  data = data[47:]
-                  pattern = r".{0,40}pump"
-                  data = re.findall(pattern, data)[0]
-
-                else:
-                  data = data[:91]
-                  data = re.sub(r'[^a-zA-Z0-9\s]', '', data)
-                  #print(data[-44:])
-                  data = data[-44:]
-
-
-                    
-                extracted_data.append(data)
-        print(extracted_data)
-        return extracted_data
+        return extracted_data[:50]
 
 
     def token_getter(self, message):
