@@ -133,44 +133,44 @@ class DexBot():
 
 
     def start(self):
-            loop = asyncio.new_event_loop()
-            asyncio.set_event_loop(loop)
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
 
-            # Fetch the message using the async connect method
-            mes = loop.run_until_complete(self.connect())
-            loop.close()
+        # Fetch the message using the async connect method
+        mes = loop.run_until_complete(self.connect())
+        loop.close()
 
-            # Ensure decoded_text is not None or empty
-            if not mes:
-                return []
+        # Ensure decoded_text is not None or empty
+        if not mes:
+            return []
 
-            # Decode the message, replacing non-printable characters with spaces
-            decoded_text = ''.join(chr(b) if 32 <= b <= 126 else ' ' for b in mes)
+        # Decode the message, replacing non-printable characters with spaces
+        decoded_text = ''.join(chr(b) if 32 <= b <= 126 else ' ' for b in mes)
 
-            # Split the string by whitespace into words and filter out short words
-            words = [word for word in decoded_text.split() if len(word) >= 55]
+        # Split the string by whitespace into words and filter out short words
+        words = [word for word in decoded_text.split() if len(word) >= 55]
 
-            # Filter out special characters from words
-            filtered_words = [re.sub(r'["*<$@(),.].*', '', word) for word in words]
+        # Filter out special characters from words
+        filtered_words = [re.sub(r'["*<$@(),.].*', '', word) for word in words]
 
-            # Extract data from words
-            extracted_data = []
-            for token in filtered_words:
-                # Check if token contains an ETH address
-                if "0x" in token:
-                    token = re.search(r'(0x[0-9a-fA-F]+)', token).group(1)
-                # Check if token contains 'pump' keyword
-                elif "pump" in token:
-                    token = re.findall(r".{0,39}pump", token)[0]
-                # Otherwise extract the last 44 characters
-                else:
-                    token = token[-44:]
-                
-                extracted_data.append(token)
+        # Extract data from words
+        extracted_data = []
+        for token in filtered_words:
+            # Check if token contains an ETH address
+            if "0x" in token:
+                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[0]
+            # Check if token contains 'pump' keyword
+            elif "pump" in token:
+                token = re.findall(r".{0,39}pump", token)[0]
+            # Otherwise extract the last 44 characters
+            else:
+                token = token[-44:]
+            
+            extracted_data.append(token)
 
-            print(len(extracted_data))
-                
+        print(len(extracted_data))
+            
 
-            return extracted_data
+        return extracted_data
 
 
