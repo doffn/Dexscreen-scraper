@@ -166,7 +166,7 @@ class DexBot():
 
                     
                 extracted_data.append(data)
-        #print(extracted_data)
+        print(extracted_data)
         return extracted_data
 
 
