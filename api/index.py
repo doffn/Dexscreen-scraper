@@ -36,7 +36,7 @@ def dex():
                     <h1 style="color:lightblue">Dex screener trending data 📋</h1>
                 </div>
                 <div style="padding: 20px; text-align: center;">
-                    <pre style="
+                    <pre id="jsonData" onclick="copyToClipboard()" style="
                         background-color: #333;
                         padding: 10px;
                         margin: 0 auto;
@@ -48,12 +48,22 @@ def dex():
                         word-wrap: break-word;
                         white-space: pre-wrap;
                         overflow-y: scroll;
-                        "> 
-                        {mes}
+                        cursor: pointer;
+                    " title="Click to copy JSON data">
+{mes}
                     </pre>
                 </div>
-
-            <script> console.log({mes_json})</script>
+                <script>
+                    function copyToClipboard() {{
+                        var jsonData = document.getElementById("jsonData").innerText;
+                        navigator.clipboard.writeText(jsonData).then(function() {{
+                            alert("JSON data copied to clipboard!");
+                        }}, function(err) {{
+                            console.error("Could not copy text: ", err);
+                        }});
+                    }}
+                    console.log({mes_json});
+                </script>
             </body>
         '''
             
@@ -65,7 +75,8 @@ def dex():
                 <p>{str(e)}</p>
                 <p>Unable to send message.</p>
             </body>
-            '''
+        '''
+
 
 @app.route('/ui', methods=['GET'])
 def ui():
