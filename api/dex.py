@@ -92,13 +92,13 @@ class DexBot():
         headers = self.get_headers()
         try:
             session = AsyncSession(headers=headers)
-            ws = await session.ws_connect(self.url)
+            ws = await session.ws_connect(self.url, timeout=8)
 
             # Loop to keep receiving data until the connection is closed
             while True:
                 try:
                     # Receive data from WebSocket
-                    data = await ws.arecv()
+                    data = await ws.recv()
 
                     if data:
                         response = data[0]  # Assuming the first element contains the desired message
