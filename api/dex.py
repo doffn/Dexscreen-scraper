@@ -93,20 +93,36 @@ class DexBot():
         try:
             session = AsyncSession(headers=headers)
             ws = await session.ws_connect(self.url)
-            try:
-                # Wait up to 8 seconds for a message from the WebSocket
-                data = await asyncio.wait_for(ws.recv(), timeout=8)
-                if data and "pairs" in str(data):
-                    return data
-            except asyncio.TimeoutError:
-                print("WebSocket connection timed out.")
-                return None
-            finally:
-                await ws.close()
-                await session.close()
+
+            # Loop to keep receiving data until the connection is closed
+            while True:
+                try:
+                    # Receive data from WebSocket
+                    data = await ws.arecv()
+
+                    if data:
+                        response = data[0]  # Assuming the first element contains the desired message
+                        # Process and return the data or handle it as needed
+                        #print(response)  # You can replace this with your desired processing logic
+                        if "pairs" in str(response):
+                          return response
+
+                    else:
+                        # If no data is received, break out of the loop
+                        print("No data received.")
+                        break
+
+                except Exception as e:
+                    print(f"Error receiving message: {str(e)}")
+                    break
+
+            # Closing the WebSocket and session after the loop ends
+            await ws.close()
+            await session.close()
+
         except Exception as e:
-            print(f"Connection error: {e}")
-            return None
+            print(f"Connection error: {str(e)}")
+            return f"Connection error: {str(e)}"
 
 
     def tg_send(self, message):
