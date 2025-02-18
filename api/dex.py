@@ -155,7 +155,7 @@ class DexBot():
                 print(token)
             # Check if token contains 'pump' keyword
             elif "pump" in token:
-                token = re.findall(r".{0,39}pump", token)[0]
+                token = re.findall(r".{0,41}pump", token)[0]
             # Otherwise extract the last 44 characters
             else:
                 token = token[-44:]
