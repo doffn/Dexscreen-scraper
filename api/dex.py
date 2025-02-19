@@ -76,7 +76,7 @@ class DexBot():
                                             "Error": "No data Retrieved"}
                 else:
                     # Handle HTTP errors
-                    results[address] = f"Error: Status code {response.status_code}, {response.text}"
+                    results[address] = f"Error: Status code {response.status_code}"
             except requests.RequestException as e:
                 # Handle request exceptions
                 results[address] = f"Error making request: {str(e)}"
