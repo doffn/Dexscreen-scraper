@@ -16,7 +16,7 @@ def dex():
 
         mes_json = json.dumps(mes)
         
-        return render_template("dex.html")
+        return render_template("dex.html", mes=mes_json)
             
     except Exception as e:
         print(e)
