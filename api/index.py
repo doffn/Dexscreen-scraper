@@ -25,79 +25,59 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        dex_bot = DexBot(Api, ID, chain=False)
-        token_data = dex_bot.format_token_data()  # This will connect and send to Telegram immediately
-        # Pretty-print the JSON for readability
-        mes_json = json.dumps(token_data, indent=4)
-    except Exception as e:
-        app.logger.exception("Error in /dex route:")
-        return f"An error occurred: {e}", 500
+        new = DexBot(Api, ID, chain=False)
+        mes = new.format_token_data()  # This will connect and send to Telegram immediately
 
-    html_template = '''
-    <!DOCTYPE html>
-    <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Dex Screener Trending Data</title>
-        <style>
-            body {
-                background-color: black;
-                font-family: Arial, sans-serif;
-                color: white;
-                margin: 0;
-                padding: 0;
-            }
-            .container {
-                text-align: center;
-                padding: 20px;
-            }
-            .json-box {
-                background-color: #333;
-                padding: 10px;
-                margin: 20px auto;
-                display: inline-block;
-                text-align: left;
-                border-radius: 5px;
-                width: 70%;
-                word-wrap: break-word;
-                white-space: pre-wrap;
-                overflow-y: auto;
-                cursor: pointer;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="container">
-            <h1 style="color: lightblue;">Dex Screener Trending Data 📋</h1>
-            <pre id="jsonData" class="json-box" title="Click to copy JSON data" onclick="copyToClipboard()">
-{{ mes_json }}
-            </pre>
-        </div>
-        <script>
-            function copyToClipboard() {
-                const jsonDataElement = document.getElementById('jsonData');
-                const text = jsonDataElement.textContent;
-                navigator.clipboard.writeText(text)
-                    .then(() => {
-                        console.log('Text copied to clipboard');
-                        jsonDataElement.title = "Copied!";
-                        setTimeout(() => {
-                            jsonDataElement.title = "Click to copy JSON data";
-                        }, 2000);
-                        alert("JSON data copied to clipboard!");
-                    })
-                    .catch(err => {
-                        console.error('Failed to copy: ', err);
-                        jsonDataElement.title = "Error while copying!";
-                        setTimeout(() => {
-                            jsonDataElement.title = "Click to copy JSON data";
-                        }, 2000);
-                    });
-            }
-        </script>
-    </body>
-    </html>
-    '''
+        mes_json = json.dumps(mes)
+        
+        return f'''
+            <body style="background-color:black; font-family: Arial, sans-serif; color:white">
+                <div style="text-align: center;">
+                    <h1 style="color:lightblue">Dex screener trending data 📋</h1>
+                </div>
+                <div style="padding: 20px; text-align: center;">
+                    <pre id="jsonData" onclick="copyToClipboard()" style="
+                        background-color: #333;
+                        padding: 10px;
+                        margin: 0 auto;
+                        display: inline-block;
+                        text-align: left;
+                        color: white;
+                        border-radius: 5px;
+                        width: 70%;
+                        word-wrap: break-word;
+                        white-space: pre-wrap;
+                        overflow-y: scroll;
+                        cursor: pointer;
+                    " title="Click to copy JSON data">
+{mes}
+                    </pre>
+                </div>
+                <script>
+                    function copyToClipboard() {{
+                        const text = document.getElementById('jsonData').textContent;
+                        navigator.clipboard.writeText(text)
+                            .then(() => {{
+                                console.log('Text copied to clipboard');
+                                // Optionally, you can provide feedback to the user
+                                // like changing the title of the pre tag.
+                                document.getElementById('jsonData').title = "Copied!";
+                                setTimeout(()=>{{
+                                    document.getElementById('jsonData').title = "Click to copy JSON data";
+                                }},2000);
+                                alert("JSON data copied to clipboard!");
+                            }})
+                            .catch(err => {{
+                                console.error('Failed to copy: ', err);
+                                document.getElementById('jsonData').title = "Error while copy!";
+                                setTimeout(()=>{{
+                                    document.getElementById('jsonData').title = "Click to copy JSON data";
+                                }},2000);
+                            }});
+                    }}
+                </script>
+            </body>
+        '''
             
     except Exception as e:
         print(e)
