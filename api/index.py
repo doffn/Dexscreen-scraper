@@ -47,7 +47,6 @@ def dex():
                         width: 70%;
                         word-wrap: break-word;
                         white-space: pre-wrap;
-                        overflow-y: scroll;
                         cursor: pointer;
                     " title="Click to copy JSON data">
 {mes}
