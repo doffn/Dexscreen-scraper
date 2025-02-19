@@ -1,45 +1,65 @@
-<body style="background-color:black; font-family: Arial, sans-serif; color:white">
-    <div style="text-align: center;">
-        <h1 style="color:lightblue">Dex screener trending data 📋</h1>
-    </div>
-    <div style="padding: 20px; text-align: center;">
-        <pre id="jsonData" onclick="copyToClipboard()" style="
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dex Screener Trending Data</title>
+    <style>
+        body {
+            background-color: black;
+            font-family: Arial, sans-serif;
+            color: white;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            text-align: center;
+            padding: 20px;
+        }
+        .json-box {
             background-color: #333;
             padding: 10px;
-            margin: 0 auto;
+            margin: 20px auto;
             display: inline-block;
             text-align: left;
-            color: white;
             border-radius: 5px;
             width: 70%;
             word-wrap: break-word;
             white-space: pre-wrap;
             cursor: pointer;
-        " title="Click to copy JSON data">
-{{mes}}
-        </pre>
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 style="color:lightblue">Dex Screener Trending Data 📋</h1>
+        <div style="padding: 20px;">
+            <!-- Use Jinja2 syntax to insert the JSON data -->
+            <pre id="jsonData" class="json-box" onclick="copyToClipboard()" title="Click to copy JSON data">
+{{ mes }}
+            </pre>
+        </div>
     </div>
     <script>
-        function copyToClipboard() {{
-            const text = document.getElementById('jsonData').textContent;
+        function copyToClipboard() {
+            const jsonDataElement = document.getElementById('jsonData');
+            const text = jsonDataElement.textContent;
             navigator.clipboard.writeText(text)
-                .then(() => {{
+                .then(() => {
                     console.log('Text copied to clipboard');
-                    // Optionally, you can provide feedback to the user
-                    // like changing the title of the pre tag.
-                    document.getElementById('jsonData').title = "Copied!";
-                    setTimeout(()=>{{
-                        document.getElementById('jsonData').title = "Click to copy JSON data";
-                    }},2000);
+                    jsonDataElement.title = "Copied!";
+                    setTimeout(() => {
+                        jsonDataElement.title = "Click to copy JSON data";
+                    }, 2000);
                     alert("JSON data copied to clipboard!");
-                }})
-                .catch(err => {{
+                })
+                .catch(err => {
                     console.error('Failed to copy: ', err);
-                    document.getElementById('jsonData').title = "Error while copy!";
-                    setTimeout(()=>{{
-                        document.getElementById('jsonData').title = "Click to copy JSON data";
-                    }},2000);
-                }});
-        }}
+                    jsonDataElement.title = "Error while copying!";
+                    setTimeout(() => {
+                        jsonDataElement.title = "Click to copy JSON data";
+                    }, 2000);
+                });
+        }
     </script>
 </body>
+</html>
