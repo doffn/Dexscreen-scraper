@@ -82,7 +82,7 @@
                                 24h Volume
                             </div>
                             <div class="text-lg font-bold">
-                                {{ volume.h24 | float | format(',.2f') }}
+                                {{ "{:,.2f}".format(volume.h24 | float) }}
                             </div>
                         </div>
 
@@ -98,7 +98,7 @@
                                 Liquidity
                             </div>
                             <div class="text-lg font-bold">
-                                {{ liquidity.usd | float | format(',.2f') }}
+                                {{ "{:,.2f}".format(liquidity.usd | float) }}
                             </div>
                         </div>
 
@@ -112,7 +112,7 @@
                                 Market Cap
                             </div>
                             <div class="text-lg font-bold">
-                                {{ token.marketCap | float | format(',.2f') }}
+                                {{ "{:,.2f}".format(token.marketCap | float) }}
                             </div>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
                                 </svg>
                                 <div>
                                     <div class="text-sm text-gray-400">Buys</div>
-                                    <div class="font-bold">{{ txns.buys | default(0) | int | format(',') }}</div>
+                                    <div class="font-bold">{{ "{:,}".format(txns.buys | default(0) | int) }}</div>
                                 </div>
                             </div>
                             <div class="flex items-center gap-3">
@@ -144,7 +144,7 @@
                                 </svg>
                                 <div>
                                     <div class="text-sm text-gray-400">Sells</div>
-                                    <div class="font-bold">{{ txns.sells | default(0) | int | format(',') }}</div>
+                                    <div class="font-bold">{{ "{:,}".format(txns.sells | default(0) | int) }}</div>
                                 </div>
                             </div>
                         </div>
