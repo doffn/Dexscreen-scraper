@@ -31,9 +31,9 @@
 </head>
 <body>
     <div class="container">
-        <h1 style="color:lightblue">Dex Screener Trending Data 📋</h1>
+        <h1 style="color: lightblue;">Dex Screener Trending Data 📋</h1>
         <div style="padding: 20px;">
-            <!-- Use Jinja2 syntax to insert the JSON data -->
+            <!-- Use the safe filter to avoid escaping newline characters -->
             <pre id="jsonData" class="json-box" onclick="copyToClipboard()" title="Click to copy JSON data">
 {{ mes|safe }}
             </pre>
