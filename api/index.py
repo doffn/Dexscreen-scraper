@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def root():
-    return render_template("index.html")
+    return render_template("templates/index.html")
 
 @app.route('/dex', methods=['GET'])
 def dex():
