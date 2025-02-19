@@ -55,14 +55,25 @@ def dex():
                 </div>
                 <script>
                     function copyToClipboard() {{
-                        var jsonData = document.getElementById("jsonData").innerText;
-                        navigator.clipboard.writeText(jsonData).then(function() {{
-                            alert("JSON data copied to clipboard!");
-                        }}, function(err) {{
-                            console.error("Could not copy text: ", err);
-                        }});
+                        const text = document.getElementById('jsonData').textContent;
+                        navigator.clipboard.writeText(text)
+                            .then(() => {{
+                                console.log('Text copied to clipboard');
+                                // Optionally, you can provide feedback to the user
+                                // like changing the title of the pre tag.
+                                document.getElementById('jsonData').title = "Copied!";
+                                setTimeout(()=>{{
+                                    document.getElementById('jsonData').title = "Click to copy JSON data";
+                                }},2000);
+                            }})
+                            .catch(err => {{
+                                console.error('Failed to copy: ', err);
+                                document.getElementById('jsonData').title = "Error while copy!";
+                                setTimeout(()=>{{
+                                    document.getElementById('jsonData').title = "Click to copy JSON data";
+                                }},2000);
+                            }});
                     }}
-                    console.log({mes_json});
                 </script>
             </body>
         '''
