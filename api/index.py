@@ -14,7 +14,7 @@ def dex():
         new = DexBot(Api, ID, chain=False)
         mes = new.format_token_data()  # This will connect and send to Telegram immediately
 
-        mes_json = json.dumps(mes)
+        mes_json = json.dumps(mes, indent=4)
         
         return render_template("dex.html", mes=mes_json)
             
