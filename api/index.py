@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 from api.dex import *
 import json
 
-app = Flask(__name__,template_folder='../templates')
+app = Flask(__name__, template_folder='../templates')
 
 @app.route('/', methods=['GET'])
 def root():
@@ -16,53 +16,7 @@ def dex():
 
         mes_json = json.dumps(mes)
         
-        return f'''
-            <body style="background-color:black; font-family: Arial, sans-serif; color:white">
-                <div style="text-align: center;">
-                    <h1 style="color:lightblue">Dex screener trending data 📋</h1>
-                </div>
-                <div style="padding: 20px; text-align: center;">
-                    <pre id="jsonData" onclick="copyToClipboard()" style="
-                        background-color: #333;
-                        padding: 10px;
-                        margin: 0 auto;
-                        display: inline-block;
-                        text-align: left;
-                        color: white;
-                        border-radius: 5px;
-                        width: 70%;
-                        word-wrap: break-word;
-                        white-space: pre-wrap;
-                        cursor: pointer;
-                    " title="Click to copy JSON data">
-{mes}
-                    </pre>
-                </div>
-                <script>
-                    function copyToClipboard() {{
-                        const text = document.getElementById('jsonData').textContent;
-                        navigator.clipboard.writeText(text)
-                            .then(() => {{
-                                console.log('Text copied to clipboard');
-                                // Optionally, you can provide feedback to the user
-                                // like changing the title of the pre tag.
-                                document.getElementById('jsonData').title = "Copied!";
-                                setTimeout(()=>{{
-                                    document.getElementById('jsonData').title = "Click to copy JSON data";
-                                }},2000);
-                                alert("JSON data copied to clipboard!");
-                            }})
-                            .catch(err => {{
-                                console.error('Failed to copy: ', err);
-                                document.getElementById('jsonData').title = "Error while copy!";
-                                setTimeout(()=>{{
-                                    document.getElementById('jsonData').title = "Click to copy JSON data";
-                                }},2000);
-                            }});
-                    }}
-                </script>
-            </body>
-        '''
+        return render_template("dex.html")
             
     except Exception as e:
         print(e)
