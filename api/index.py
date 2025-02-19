@@ -65,6 +65,7 @@ def dex():
                                 setTimeout(()=>{{
                                     document.getElementById('jsonData').title = "Click to copy JSON data";
                                 }},2000);
+                                alert("JSON data copied to clipboard!");
                             }})
                             .catch(err => {{
                                 console.error('Failed to copy: ', err);
