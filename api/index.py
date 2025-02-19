@@ -2,11 +2,11 @@ from flask import Flask, request, render_template
 from api.dex import *
 import json
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='../templates')
 
 @app.route('/', methods=['GET'])
 def root():
-    return render_template("templates/index.html")
+    return render_template("index.html")
 
 @app.route('/dex', methods=['GET'])
 def dex():
