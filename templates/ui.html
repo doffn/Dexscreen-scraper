@@ -64,11 +64,11 @@
                                 </svg>
                                 Price USD
                             </div>
-                            <div class="text-lg font-bold {% if price_change.h24 | float > 0 %}text-green-400{% else %}text-red-400{% endif %}">
-                                {{ token.priceUsd | float | round(5) }}
+                            <div class="text-lg font-bold {% if price_change.h24 | default(0) | float > 0 %}text-green-400{% else %}text-red-400{% endif %}">
+                                {{ token.priceUsd | default(0) | float | round(5) }}
                             </div>
                             <div class="text-sm text-gray-400">
-                                24h: {{ price_change.h24 | float | round(2) }}%
+                                24h: {{ price_change.h24 | default(0) | float | round(2) }}%
                             </div>
                         </div>
 
@@ -82,7 +82,7 @@
                                 24h Volume
                             </div>
                             <div class="text-lg font-bold">
-                                {{ "{:,.2f}".format(volume.h24 | float) }}
+                                {{ "{:,.2f}".format(volume.h24 | default(0) | float) }}
                             </div>
                         </div>
 
@@ -98,7 +98,7 @@
                                 Liquidity
                             </div>
                             <div class="text-lg font-bold">
-                                {{ "{:,.2f}".format(liquidity.usd | float) }}
+                                {{ "{:,.2f}".format(liquidity.usd | default(0) | float) }}
                             </div>
                         </div>
 
@@ -112,7 +112,7 @@
                                 Market Cap
                             </div>
                             <div class="text-lg font-bold">
-                                {{ "{:,.2f}".format(token.marketCap | float) }}
+                                {{ "{:,.2f}".format(token.marketCap | default(0) | float) }}
                             </div>
                         </div>
                     </div>
