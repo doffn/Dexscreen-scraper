@@ -4,9 +4,7 @@ from api.dex import DexBot  # Ensure DexBot is correctly imported
 
 app = Flask(__name__, template_folder='../templates')
 
-# Define Api and ID as needed for your DexBot initialization
-Api = "YOUR_API"  # Replace with your actual API or configuration
-ID = "YOUR_ID"    # Replace with your actual ID or token
+
 
 @app.route('/', methods=['GET'])
 def root():
@@ -23,7 +21,7 @@ def dex():
         print(generated_text)
 
         # Initialize DexBot with the generated filter string
-        new_bot = DexBot(Api, ID, generated_text)
+        new_bot = DexBot(Api, generated_text)
         mes = new_bot.format_token_data()
 
         # Format the response JSON nicely for display

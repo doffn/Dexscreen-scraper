@@ -277,20 +277,36 @@
 
             let filterString = "wss://io.dexscreener.com/dex/screener/v5/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc";
 
-            if (liquidityMin.value || liquidityMax.value) {
-                filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '') || ''}&filters[liquidity][max]=${liquidityMax.value.replace(/,/g, '') || ''}`;
+            // Add only set values for each filter
+            if (liquidityMin.value) {
+                filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '')}`;
             }
-            if (marketCapMin.value || marketCapMax.value) {
-                filterString += `&filters[marketCap][min]=${marketCapMin.value.replace(/,/g, '') || ''}&filters[marketCap][max]=${marketCapMax.value.replace(/,/g, '') || ''}`;
+            if (liquidityMax.value) {
+                filterString += `&filters[liquidity][max]=${liquidityMax.value.replace(/,/g, '')}`;
             }
-            if (fdvMin.value || fdvMax.value) {
-                filterString += `&filters[fdv][min]=${fdvMin.value.replace(/,/g, '') || ''}&filters[fdv][max]=${fdvMax.value.replace(/,/g, '') || ''}`;
+            if (marketCapMin.value) {
+                filterString += `&filters[marketCap][min]=${marketCapMin.value.replace(/,/g, '')}`;
             }
-            if (pairAgeMin.value || pairAgeMax.value) {
-                filterString += `&filters[pairAge][min]=${pairAgeMin.value.replace(/,/g, '') || ''}&filters[pairAge][max]=${pairAgeMax.value.replace(/,/g, '') || ''}`;
+            if (marketCapMax.value) {
+                filterString += `&filters[marketCap][max]=${marketCapMax.value.replace(/,/g, '')}`;
             }
-            if (txns24Min.value || txns24Max.value) {
-                filterString += `&filters[txns][h24][min]=${txns24Min.value.replace(/,/g, '') || ''}&filters[txns][h24][max]=${txns24Max.value.replace(/,/g, '') || ''}`;
+            if (fdvMin.value) {
+                filterString += `&filters[fdv][min]=${fdvMin.value.replace(/,/g, '')}`;
+            }
+            if (fdvMax.value) {
+                filterString += `&filters[fdv][max]=${fdvMax.value.replace(/,/g, '')}`;
+            }
+            if (pairAgeMin.value) {
+                filterString += `&filters[pairAge][min]=${pairAgeMin.value.replace(/,/g, '')}`;
+            }
+            if (pairAgeMax.value) {
+                filterString += `&filters[pairAge][max]=${pairAgeMax.value.replace(/,/g, '')}`;
+            }
+            if (txns24Min.value) {
+                filterString += `&filters[txns][h24][min]=${txns24Min.value.replace(/,/g, '')}`;
+            }
+            if (txns24Max.value) {
+                filterString += `&filters[txns][h24][max]=${txns24Max.value.replace(/,/g, '')}`;
             }
             if (chain) {
                 filterString += `&filters[chainIds][0]=${chain}`;

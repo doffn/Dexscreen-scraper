@@ -18,7 +18,7 @@ Api = os.environ["API"]
 ID = "-1001873201570"
 
 class DexBot():
-    def __init__(self, api_key, url, channel_id=1234, max_token=10):
+    def __init__(self, api_key, url, channel_id=ID, max_token=10):
         self.api_key = api_key
         self.channel_id = channel_id
         self.max_token = max_token
