@@ -20,6 +20,8 @@ def dex():
         if not generated_text:
             return "<h2>No generated text provided.</h2>", 400
 
+        print(generated_text)
+
         # Initialize DexBot with the generated filter string
         new_bot = DexBot(Api, ID, generated_text)
         mes = new_bot.format_token_data()
