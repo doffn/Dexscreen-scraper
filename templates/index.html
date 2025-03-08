@@ -9,6 +9,8 @@
             background-color: #121212;
             color: #e0e0e0;
             font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
         }
 
         .filters-container {
@@ -108,19 +110,46 @@
             background-color: rgba(0,0,0,0.5);
             z-index: 900;
         }
+        
+        /* Social icons container */
+        .social-container {
+            position: fixed;
+            bottom: 10px;
+            width: 100%;
+            text-align: center;
+        }
+        .social-container a {
+            margin: 0 10px;
+            color: #e0e0e0;
+            text-decoration: none;
+        }
+        .social-container a svg {
+            vertical-align: middle;
+            width: 32px;
+            height: 32px;
+            transition: transform 0.3s;
+        }
+        .social-container a:hover svg {
+            transform: scale(1.1);
+        }
     </style>
 </head>
 <body>
-    <h1>Hello User! 👋</h1>
-    <p>This will scrape from Dexscreener trending tokens by running the <a href="/dex" style="color: #64b5f6; text-decoration: underline;">/dex</a> path.</p>
+    <h1>Welcome, Amazing User! 😊</h1>
+    <p>
+        We’re thrilled to have you here! 🚀 Set up your custom filters below to start scraping Dexscreener’s trending tokens. 
+        Follow the simple steps, and if you have any questions, join our community via our social channels below!
+    </p>
     <ol>
-        <li>You need to add a bot inside a group. 🤖</li>
-        <li>You need to get the channel ID. 📨</li>
-        <li>You need to get the WebSocket URL for the filters for the Dexscreener. Use this format:
-            <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
+        <li>Add a bot to your group 🤖</li>
+        <li>Obtain your channel ID 📨</li>
+        <li>
+            Get the WebSocket URL for Dexscreener filters. Use this format:
+            <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
         </li>
-        <li>You need to ping Dex for the desired time. Use a cron job. ⏰</li>
-        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is finetuned for Solana Tokens</li>
+        <li>Add custom filters on the main URL by clicking "ADD FILTER" 🔧</li>
+        <li>Schedule a cron job to ping Dex at your desired time ⏰</li>
+        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is working perfectly! 👍</li>
     </ol>
 
     <button id="addFilterButton" style="background-color: #1e88e5; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">ADD FILTER</button>
@@ -316,5 +345,28 @@
             window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
         });
     </script>
+    
+    <!-- Social icons bottom center -->
+    <div class="social-container">
+        <a href="https://t.me/doffn" target="_blank" title="Telegram">
+            <!-- Telegram Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="#0088cc">
+                <circle cx="120" cy="120" r="120" fill="#0088cc"/>
+                <path d="M100.3 158.1l-.4 15.7c.6 0 .9-.3 1.3-.7l26.2-25.2 54.3 39.8c10 5.6 17.2 2.8 19.8-8.1l36.1-168.8c2.9-13.3-4.8-18.7-13.7-15.4L21.8 106.7c-11.5 4.3-11.4 10.8 2.3 13.6l56.2 17.5 130.7-81.8c6.1-3.8 11.7-1.8 8.9 3.6L100.3 158.1z"/>
+            </svg>
+        </a>
+        <a href="https://twitter.com/doffneri" target="_blank" title="Twitter">
+            <!-- Twitter Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1DA1F2">
+                <path d="M24 4.557a9.95 9.95 0 0 1-2.828.775A4.932 4.932 0 0 0 23.337 3a9.864 9.864 0 0 1-3.127 1.195 4.92 4.92 0 0 0-8.38 4.482A13.957 13.957 0 0 1 1.671 3.149a4.922 4.922 0 0 0 1.523 6.574A4.904 4.904 0 0 1 .96 9.064v.062a4.92 4.92 0 0 0 3.946 4.827 4.902 4.902 0 0 1-2.224.084 4.922 4.922 0 0 0 4.6 3.417A9.867 9.867 0 0 1 0 19.54a13.94 13.94 0 0 0 7.548 2.212c9.058 0 14.01-7.504 14.01-14.009 0-.213-.004-.425-.014-.636A10.012 10.012 0 0 0 24 4.557z"/>
+            </svg>
+        </a>
+        <a href="mailto:dawitneri888@example.com" target="_blank" title="Gmail">
+            <!-- Gmail Icon SVG -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D44638">
+                <path d="M12 13.065L0 6.3V18c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2V6.3l-12 6.765zM12 11l12-6H0l12 6z"/>
+            </svg>
+        </a>
+    </div>
 </body>
 </html>
