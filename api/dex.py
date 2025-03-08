@@ -22,7 +22,7 @@ class DexBot():
         self.api_key = api_key
         self.channel_id = channel_id
         self.max_token = max_token
-        #self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
+        self.url = url
         self.url = url
         
 
