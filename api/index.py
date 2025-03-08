@@ -11,7 +11,7 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        new = DexBot(Api, ID, chain=False)
+        new = DexBot(Api, ID, chain="sonic")
         mes = new.format_token_data()  # This will connect and send to Telegram immediately
 
         mes_json = json.dumps(json.loads(mes), indent=4)
