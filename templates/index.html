@@ -286,32 +286,32 @@
       // Format the number with commas
       input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
-    
+  
     // Open popup when "ADD FILTER" button is clicked
     document.getElementById('addFilterButton').addEventListener('click', function() {
       document.getElementById('filterPopup').style.display = 'block';
       document.getElementById('modalOverlay').style.display = 'block';
     });
-    
+  
     // Show or hide the custom chain input based on selection
     document.getElementById('chainSelect').addEventListener('change', function() {
       const customChainGroup = document.getElementById('customChainGroup');
       customChainGroup.style.display = this.value === 'custom' ? 'block' : 'none';
     });
-    
+  
     // Close popup when clicking outside of it (on the modal overlay)
     document.getElementById('modalOverlay').addEventListener('click', function() {
       document.getElementById('filterPopup').style.display = 'none';
       document.getElementById('modalOverlay').style.display = 'none';
     });
-    
+  
     // Handle form submission and redirect to /dex with the filter string as a query parameter
     document.getElementById('submitFilters').addEventListener('click', function() {
       let chain = document.getElementById('chainSelect').value;
       if (chain === 'custom') {
         chain = document.getElementById('customChain').value;
       }
-      
+  
       let liquidityMin = document.getElementById('liquidityMin');
       let liquidityMax = document.getElementById('liquidityMax');
       let marketCapMin = document.getElementById('marketCapMin');
@@ -322,9 +322,9 @@
       let pairAgeMax = document.getElementById('pairAgeMax');
       let txns24Min = document.getElementById('txns24Min');
       let txns24Max = document.getElementById('txns24Max');
-      
+  
       let isValid = true;
-      
+  
       // Validate numeric inputs
       [liquidityMin, liquidityMax, marketCapMin, marketCapMax, fdvMin, fdvMax, pairAgeMin, pairAgeMax, txns24Min, txns24Max].forEach(input => {
         if (input.value && isNaN(input.value.replace(/,/g, ''))) {
@@ -334,13 +334,13 @@
           input.classList.remove('error');
         }
       });
-      
+  
       if (!isValid) {
         return; // Don't proceed if invalid
       }
-      
+  
       let filterString = "";
-      
+  
       // Add only set values for each filter
       if (liquidityMin.value) {
         filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '')}`;
@@ -375,11 +375,16 @@
       if (chain) {
         filterString += `&filters[chainIds][0]=${chain}`;
       }
-      
-      // Redirect to /dex with the filter string as a query parameter
-      window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
+  
+      // If no filterString, redirect to /dex without filters
+      if (filterString === "") {
+        window.location.href = "/dex";  // No filter query parameter
+      } else {
+        // Redirect to /dex with the filter string as a query parameter
+        window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
+      }
     });
-  </script>
+  </script>  
   
   <!-- Social icons bottom center -->
   <div class="social-container">
