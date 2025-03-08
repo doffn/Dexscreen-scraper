@@ -13,15 +13,15 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
+        text = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc"
         # Retrieve the filter string from the query parameter
         generated_text = request.args.get('generated_text', '')
-        if not generated_text:
-            return "<h2>No generated text provided.</h2>", 400
-
+        if generated_text:
+            generated_text = "
         print(generated_text)
 
         # Initialize DexBot with the generated filter string
-        new_bot = DexBot(Api, generated_text)
+        new_bot = DexBot(Api, text)
         mes = new_bot.format_token_data()
 
         # Format the response JSON nicely for display
