@@ -10,7 +10,7 @@
             color: #e0e0e0;
             font-family: Arial, sans-serif;
             margin: 0;
-            padding: 0;
+            padding-bottom: 80px; /* extra space for social icons */
         }
 
         .filters-container {
@@ -119,14 +119,14 @@
             text-align: center;
         }
         .social-container a {
-            margin: 0 10px;
+            margin: 0 12px;
             color: #e0e0e0;
             text-decoration: none;
         }
         .social-container a svg {
             vertical-align: middle;
-            width: 32px;
-            height: 32px;
+            width: 36px;
+            height: 36px;
             transition: transform 0.3s;
         }
         .social-container a:hover svg {
@@ -137,19 +137,19 @@
 <body>
     <h1>Welcome, Amazing User! 😊</h1>
     <p>
-        We’re thrilled to have you here! 🚀 Set up your custom filters below to start scraping Dexscreener’s trending tokens. 
-        Follow the simple steps, and if you have any questions, join our community via our social channels below!
+        We’re thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener’s trending tokens.
+        Simply follow the steps, add your personal touches, and feel free to reach out via our social channels if you need any help.
     </p>
     <ol>
         <li>Add a bot to your group 🤖</li>
-        <li>Obtain your channel ID 📨</li>
+        <li>Grab your channel ID 📨</li>
         <li>
-            Get the WebSocket URL for Dexscreener filters. Use this format:
+            Use the following format for the Dexscreener WebSocket URL:
             <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
         </li>
-        <li>Add custom filters on the main URL by clicking "ADD FILTER" 🔧</li>
-        <li>Schedule a cron job to ping Dex at your desired time ⏰</li>
-        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is working perfectly! 👍</li>
+        <li>Click "ADD FILTER" to customize additional parameters 🔧</li>
+        <li>Set up a cron job to ping Dex at your desired schedule ⏰</li>
+        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is running smoothly! 👍</li>
     </ol>
 
     <button id="addFilterButton" style="background-color: #1e88e5; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">ADD FILTER</button>
@@ -349,22 +349,21 @@
     <!-- Social icons bottom center -->
     <div class="social-container">
         <a href="https://t.me/doffn" target="_blank" title="Telegram">
-            <!-- Telegram Icon SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="#0088cc">
-                <circle cx="120" cy="120" r="120" fill="#0088cc"/>
-                <path d="M100.3 158.1l-.4 15.7c.6 0 .9-.3 1.3-.7l26.2-25.2 54.3 39.8c10 5.6 17.2 2.8 19.8-8.1l36.1-168.8c2.9-13.3-4.8-18.7-13.7-15.4L21.8 106.7c-11.5 4.3-11.4 10.8 2.3 13.6l56.2 17.5 130.7-81.8c6.1-3.8 11.7-1.8 8.9 3.6L100.3 158.1z"/>
+            <!-- Improved Telegram Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#0088cc">
+                <path d="M446.7 98.6l-63.7 300.4c-4.8 22.8-17.3 28.5-35.1 17.8l-97.8-72.1-47.3 45.6c-5.2 5.2-9.6 9.6-19.7 9.6l7-101.6L347.5 71c8.9-8.4-1.9-13-13.8-8.6L107.4 212.7c-19.1 8-18.8 18.8 3.9 12.1l112.3-35.2 47.7 45.9c8.9 8.9 17.2 12.2 26.1 7.9l46.4-18.4c21.9-8.6 30.1-21.6 25.4-42.6z"/>
             </svg>
         </a>
         <a href="https://twitter.com/doffneri" target="_blank" title="Twitter">
-            <!-- Twitter Icon SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#1DA1F2">
-                <path d="M24 4.557a9.95 9.95 0 0 1-2.828.775A4.932 4.932 0 0 0 23.337 3a9.864 9.864 0 0 1-3.127 1.195 4.92 4.92 0 0 0-8.38 4.482A13.957 13.957 0 0 1 1.671 3.149a4.922 4.922 0 0 0 1.523 6.574A4.904 4.904 0 0 1 .96 9.064v.062a4.92 4.92 0 0 0 3.946 4.827 4.902 4.902 0 0 1-2.224.084 4.922 4.922 0 0 0 4.6 3.417A9.867 9.867 0 0 1 0 19.54a13.94 13.94 0 0 0 7.548 2.212c9.058 0 14.01-7.504 14.01-14.009 0-.213-.004-.425-.014-.636A10.012 10.012 0 0 0 24 4.557z"/>
+            <!-- Improved Twitter Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1DA1F2">
+                <path d="M459.4 151.7c.32 4.54.32 9.09.32 13.64 0 138.72-105.58 298.56-298.56 298.56-59.5 0-114.68-17.22-161.29-47.13 8.44.97 16.55 1.3 25.05 1.3 49.05 0 94.22-16.55 130.19-44.83-46.1-.97-84.79-31.24-98.1-72.77 6.5 1.3 13.08 1.63 19.81 1.63 9.42 0 18.84-1.3 27.61-3.57-48.07-9.7-84.14-51.98-84.14-103.04v-1.3c14.18 7.91 30.38 12.67 47.61 13.28-28.44-19-47.61-51.49-47.61-88.34 0-19.47 5.2-37.36 14.29-52.87 51.98 63.66 129.27 105.3 216.25 109.78-1.63-7.91-2.6-15.83-2.6-24.11 0-58.48 47.61-105.3 105.3-105.3 30.38 0 57.76 12.67 77.02 33.2 24.11-4.8 46.1-13.64 66.3-25.91-7.91 24.77-24.77 45.51-46.1 58.48 21.01-2.3 41.21-8.09 59.8-16.24-13.92 20.74-31.5 39.12-51.98 53.74z"/>
             </svg>
         </a>
-        <a href="mailto:dawitneri888@example.com" target="_blank" title="Gmail">
-            <!-- Gmail Icon SVG -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="#D44638">
-                <path d="M12 13.065L0 6.3V18c0 1.104.896 2 2 2h20c1.104 0 2-.896 2-2V6.3l-12 6.765zM12 11l12-6H0l12 6z"/>
+        <a href="mailto:your-dawitneri888@example.com" target="_blank" title="Gmail">
+            <!-- Improved Gmail Icon -->
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#D44638">
+                <path d="M502.3 190.8L327.4 338.3c-35.3 28.4-85.5 28.4-120.8 0L9.7 190.8C3.4 185.2 0 177.4 0 169.2V80c0-26.5 21.5-48 48-48h416c26.5 0 48 21.5 48 48v89.2c0 8.2-3.4 16-9.7 21.6zM480 128H32v41.1l201.2 162.2c12.5 10.1 31.3 10.1 43.8 0L480 169.1V128zM480 336v89.1c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336l160 128c26.2 20.9 61.8 20.9 88 0l160-128z"/>
             </svg>
         </a>
     </div>
