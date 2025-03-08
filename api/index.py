@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template
 import json
-from api.dex import DexBot  # Ensure DexBot is correctly imported
+from api.dex import *  # Ensure DexBot is correctly imported
 
 app = Flask(__name__, template_folder='../templates')
 
