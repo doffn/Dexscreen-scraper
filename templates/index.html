@@ -1,371 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dexscreener Bot Setup</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding-bottom: 80px; /* extra space for social icons */
-        }
-
-        .filters-container {
-            font-family: Arial, sans-serif;
-            padding: 15px;
-            border: 1px solid #555;
-            border-radius: 8px;
-            max-width: 350px;
-            background: #333;
-            margin-top: 20px;
-        }
-
-        .filter-group {
-            margin: 15px 0;
-        }
-
-        .filter-label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
-
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
-
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid #555;
-            padding: 5px;
-            border-radius: 5px;
-            width: 100%;
-            background: #444;
-        }
-
-        .input-prefix, .input-suffix {
-            padding: 0 5px;
-            font-weight: bold;
-        }
-
-        input {
-            border: none;
-            outline: none;
-            flex-grow: 1;
-            background: transparent;
-            text-align: left;
-            color: #e0e0e0;
-        }
-
-        select {
-            border: 1px solid #555;
-            padding: 5px;
-            border-radius: 5px;
-            background: #444;
-            color: #e0e0e0;
-            width: 100%;
-        }
-
-        button {
-            cursor: pointer;
-        }
-
-        #filterPopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            width: 400px;
-        }
-
-        #filterPopup h2 {
-            margin: 0 0 15px;
-            text-align: center;
-            color: #64b5f6;
-        }
-
-        .error {
-            border: 2px solid #ff5722;
-        }
-
-        /* Modal overlay to darken the background when popup is open */
-        #modalOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 900;
-        }
-        
-        /* Social icons container */
-        .social-container {
-            position: fixed;
-            bottom: 10px;
-            width: 100%;
-            text-align: center;
-        }
-        .social-container a {
-            margin: 0 12px;
-            color: #e0e0e0;
-            text-decoration: none;
-        }
-        .social-container a svg {
-            vertical-align: middle;
-            width: 36px;
-            height: 36px;
-            transition: transform 0.3s;
-        }
-        .social-container a:hover svg {
-            transform: scale(1.1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dexscreener Bot Setup</title>
+  <!-- Boxicons CSS -->
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+  <style>
+    body {
+      background-color: #121212;
+      color: #e0e0e0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      padding-bottom: 80px; /* extra space for social icons */
+    }
+    
+    .container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+    }
+    
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    
+    p {
+      text-align: center;
+      margin-bottom: 20px;
+      line-height: 1.6;
+    }
+    
+    ol {
+      max-width: 600px;
+      margin: 0 auto 20px;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+    
+    button#addFilterButton {
+      display: block;
+      margin: 20px auto;
+      background-color: #1e88e5;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    
+    .filters-container {
+      font-family: Arial, sans-serif;
+      padding: 15px;
+      border: 1px solid #555;
+      border-radius: 8px;
+      max-width: 350px;
+      background: #333;
+      margin: 20px auto;
+    }
+    
+    .filter-group {
+      margin: 15px 0;
+    }
+    
+    .filter-label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 5px;
+    }
+    
+    .input-row {
+      display: flex;
+      gap: 10px;
+    }
+    
+    .input-wrapper {
+      display: flex;
+      align-items: center;
+      border: 1px solid #555;
+      padding: 5px;
+      border-radius: 5px;
+      width: 100%;
+      background: #444;
+    }
+    
+    .input-prefix, .input-suffix {
+      padding: 0 5px;
+      font-weight: bold;
+    }
+    
+    input {
+      border: none;
+      outline: none;
+      flex-grow: 1;
+      background: transparent;
+      text-align: left;
+      color: #e0e0e0;
+    }
+    
+    select {
+      border: 1px solid #555;
+      padding: 5px;
+      border-radius: 5px;
+      background: #444;
+      color: #e0e0e0;
+      width: 100%;
+    }
+    
+    button {
+      cursor: pointer;
+    }
+    
+    #filterPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #222;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
+      z-index: 1000;
+      width: 400px;
+    }
+    
+    #filterPopup h2 {
+      margin: 0 0 15px;
+      text-align: center;
+      color: #64b5f6;
+    }
+    
+    .error {
+      border: 2px solid #ff5722;
+    }
+    
+    /* Modal overlay to darken the background when popup is open */
+    #modalOverlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      z-index: 900;
+    }
+    
+    /* Social icons container */
+    .social-container {
+      position: fixed;
+      bottom: 10px;
+      width: 100%;
+      text-align: center;
+    }
+    .social-container a {
+      margin: 0 12px;
+      color: #e0e0e0;
+      text-decoration: none;
+      font-size: 36px;
+      transition: transform 0.3s;
+    }
+    .social-container a:hover {
+      transform: scale(1.1);
+    }
+  </style>
 </head>
 <body>
-    <h1>Welcome, Amazing User! 😊</h1>
+  <div class="container">
+    <h1>Welcome, User! 😊</h1>
     <p>
-        We’re thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener’s trending tokens.
-        Simply follow the steps, add your personal touches, and feel free to reach out via our social channels if you need any help.
+      I am thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener’s trending tokens.
+      Follow the steps, add your personal touches, and feel free to reach out via our social channels.
     </p>
     <ol>
-        <li>Add a bot to your group 🤖</li>
-        <li>Grab your channel ID 📨</li>
-        <li>
-            Use the following format for the Dexscreener WebSocket URL:
-            <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
-        </li>
-        <li>Click "ADD FILTER" to customize additional parameters 🔧</li>
-        <li>Set up a cron job to ping Dex at your desired schedule ⏰</li>
-        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is running smoothly! 👍</li>
+      <li>Add a bot to your group 🤖</li>
+      <li>Grab your channel ID 📨</li>
+      <li>
+        Use the following format for the Dexscreener WebSocket URL:
+        <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
+      </li>
+      <li>Click "ADD FILTER" to customize additional parameters 🔧</li>
+      <li>Set up a cron job to ping Dex at your desired schedule ⏰</li>
+      <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is running perfectly! 👍</li>
     </ol>
-
-    <button id="addFilterButton" style="background-color: #1e88e5; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">ADD FILTER</button>
-
-    <!-- Modal overlay -->
-    <div id="modalOverlay"></div>
-
-    <div id="filterPopup">
-        <h2>DEX FILTERS</h2>
-
-        <div class="filter-group">
-            <span class="filter-label">Chain:</span>
-            <select id="chainSelect">
-                <option value="">Select a chain</option>
-                <option value="solana">Solana</option>
-                <option value="base">Base</option>
-                <option value="ethereum">Ethereum</option>
-                <option value="bsc">BSC</option>
-                <option value="avalanche">Avalanche</option>
-                <option value="pulsechain">PulseChain</option>
-                <option value="sonic">Sonic</option>
-                <option value="ton">TON</option>
-                <option value="custom">Custom Chain</option>
-            </select>
-        </div>
-
-        <div class="filter-group" id="customChainGroup" style="display: none;">
-            <span class="filter-label">Enter Your Desired Chain:</span>
-            <input type="text" id="customChain" placeholder="Enter your desired chain">
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label">Liquidity:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="liquidityMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="liquidityMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label">Market Cap:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="marketCapMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="marketCapMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label">FDV:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="fdvMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="fdvMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label">Pair Age (Hours):</span>
-            <div class="input-row">
-                <input type="text" placeholder="Min" inputmode="numeric" id="pairAgeMin" oninput="formatNumber(this)">
-                <input type="text" placeholder="Max" inputmode="numeric" id="pairAgeMax" oninput="formatNumber(this)">
-            </div>
-        </div>
-
-        <div class="filter-group">
-            <span class="filter-label">24H Transactions:</span>
-            <div class="input-row">
-                <input type="text" placeholder="Min" inputmode="numeric" id="txns24Min" oninput="formatNumber(this)">
-                <input type="text" placeholder="Max" inputmode="numeric" id="txns24Max" oninput="formatNumber(this)">
-            </div>
-        </div>
-
-        <button id="submitFilters" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; width: 100%;">SUBMIT</button>
-    </div>
-
-    <div id="filterResult" style="margin-top: 20px;"></div>
-
-    <script>
-        function formatNumber(input) {
-            // Remove non-numeric characters except for commas
-            let value = input.value.replace(/[^0-9]/g, '');
-            // Format the number with commas
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
-
-        // Open popup when "ADD FILTER" button is clicked
-        document.getElementById('addFilterButton').addEventListener('click', function() {
-            document.getElementById('filterPopup').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        });
-
-        // Show or hide the custom chain input based on selection
-        document.getElementById('chainSelect').addEventListener('change', function() {
-            const customChainGroup = document.getElementById('customChainGroup');
-            customChainGroup.style.display = this.value === 'custom' ? 'block' : 'none';
-        });
-
-        // Close popup when clicking outside of it (on the modal overlay)
-        document.getElementById('modalOverlay').addEventListener('click', function() {
-            document.getElementById('filterPopup').style.display = 'none';
-            document.getElementById('modalOverlay').style.display = 'none';
-        });
-
-        // Handle form submission and redirect to /dex with the filter string as a query parameter
-        document.getElementById('submitFilters').addEventListener('click', function() {
-            let chain = document.getElementById('chainSelect').value;
-            if (chain === 'custom') {
-                chain = document.getElementById('customChain').value;
-            }
-
-            let liquidityMin = document.getElementById('liquidityMin');
-            let liquidityMax = document.getElementById('liquidityMax');
-            let marketCapMin = document.getElementById('marketCapMin');
-            let marketCapMax = document.getElementById('marketCapMax');
-            let fdvMin = document.getElementById('fdvMin');
-            let fdvMax = document.getElementById('fdvMax');
-            let pairAgeMin = document.getElementById('pairAgeMin');
-            let pairAgeMax = document.getElementById('pairAgeMax');
-            let txns24Min = document.getElementById('txns24Min');
-            let txns24Max = document.getElementById('txns24Max');
-
-            let isValid = true;
-
-            // Validate numeric inputs
-            [liquidityMin, liquidityMax, marketCapMin, marketCapMax, fdvMin, fdvMax, pairAgeMin, pairAgeMax, txns24Min, txns24Max].forEach(input => {
-                if (input.value && isNaN(input.value.replace(/,/g, ''))) {
-                    input.classList.add('error');
-                    isValid = false;
-                } else {
-                    input.classList.remove('error');
-                }
-            });
-
-            if (!isValid) {
-                return; // Don't proceed if invalid
-            }
-
-            let filterString = "wss://io.dexscreener.com/dex/screener/v5/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc";
-
-            // Add only set values for each filter
-            if (liquidityMin.value) {
-                filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '')}`;
-            }
-            if (liquidityMax.value) {
-                filterString += `&filters[liquidity][max]=${liquidityMax.value.replace(/,/g, '')}`;
-            }
-            if (marketCapMin.value) {
-                filterString += `&filters[marketCap][min]=${marketCapMin.value.replace(/,/g, '')}`;
-            }
-            if (marketCapMax.value) {
-                filterString += `&filters[marketCap][max]=${marketCapMax.value.replace(/,/g, '')}`;
-            }
-            if (fdvMin.value) {
-                filterString += `&filters[fdv][min]=${fdvMin.value.replace(/,/g, '')}`;
-            }
-            if (fdvMax.value) {
-                filterString += `&filters[fdv][max]=${fdvMax.value.replace(/,/g, '')}`;
-            }
-            if (pairAgeMin.value) {
-                filterString += `&filters[pairAge][min]=${pairAgeMin.value.replace(/,/g, '')}`;
-            }
-            if (pairAgeMax.value) {
-                filterString += `&filters[pairAge][max]=${pairAgeMax.value.replace(/,/g, '')}`;
-            }
-            if (txns24Min.value) {
-                filterString += `&filters[txns][h24][min]=${txns24Min.value.replace(/,/g, '')}`;
-            }
-            if (txns24Max.value) {
-                filterString += `&filters[txns][h24][max]=${txns24Max.value.replace(/,/g, '')}`;
-            }
-            if (chain) {
-                filterString += `&filters[chainIds][0]=${chain}`;
-            }
-
-            // Redirect to /dex with the filter string as a query parameter
-            window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
-        });
-    </script>
     
-    <!-- Social icons bottom center -->
-    <div class="social-container">
-        <a href="https://t.me/doffn" target="_blank" title="Telegram">
-            <!-- Improved Telegram Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" fill="#0088cc">
-                <path d="M446.7 98.6l-63.7 300.4c-4.8 22.8-17.3 28.5-35.1 17.8l-97.8-72.1-47.3 45.6c-5.2 5.2-9.6 9.6-19.7 9.6l7-101.6L347.5 71c8.9-8.4-1.9-13-13.8-8.6L107.4 212.7c-19.1 8-18.8 18.8 3.9 12.1l112.3-35.2 47.7 45.9c8.9 8.9 17.2 12.2 26.1 7.9l46.4-18.4c21.9-8.6 30.1-21.6 25.4-42.6z"/>
-            </svg>
-        </a>
-        <a href="https://twitter.com/doffneri" target="_blank" title="Twitter">
-            <!-- Improved Twitter Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#1DA1F2">
-                <path d="M459.4 151.7c.32 4.54.32 9.09.32 13.64 0 138.72-105.58 298.56-298.56 298.56-59.5 0-114.68-17.22-161.29-47.13 8.44.97 16.55 1.3 25.05 1.3 49.05 0 94.22-16.55 130.19-44.83-46.1-.97-84.79-31.24-98.1-72.77 6.5 1.3 13.08 1.63 19.81 1.63 9.42 0 18.84-1.3 27.61-3.57-48.07-9.7-84.14-51.98-84.14-103.04v-1.3c14.18 7.91 30.38 12.67 47.61 13.28-28.44-19-47.61-51.49-47.61-88.34 0-19.47 5.2-37.36 14.29-52.87 51.98 63.66 129.27 105.3 216.25 109.78-1.63-7.91-2.6-15.83-2.6-24.11 0-58.48 47.61-105.3 105.3-105.3 30.38 0 57.76 12.67 77.02 33.2 24.11-4.8 46.1-13.64 66.3-25.91-7.91 24.77-24.77 45.51-46.1 58.48 21.01-2.3 41.21-8.09 59.8-16.24-13.92 20.74-31.5 39.12-51.98 53.74z"/>
-            </svg>
-        </a>
-        <a href="mailto:your-dawitneri888@example.com" target="_blank" title="Gmail">
-            <!-- Improved Gmail Icon -->
-            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="#D44638">
-                <path d="M502.3 190.8L327.4 338.3c-35.3 28.4-85.5 28.4-120.8 0L9.7 190.8C3.4 185.2 0 177.4 0 169.2V80c0-26.5 21.5-48 48-48h416c26.5 0 48 21.5 48 48v89.2c0 8.2-3.4 16-9.7 21.6zM480 128H32v41.1l201.2 162.2c12.5 10.1 31.3 10.1 43.8 0L480 169.1V128zM480 336v89.1c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V336l160 128c26.2 20.9 61.8 20.9 88 0l160-128z"/>
-            </svg>
-        </a>
+    <button id="addFilterButton">ADD FILTER</button>
+  </div>
+  
+  <!-- Modal overlay -->
+  <div id="modalOverlay"></div>
+  
+  <div id="filterPopup">
+    <h2>DEX FILTERS</h2>
+    <div class="filter-group">
+      <span class="filter-label">Chain:</span>
+      <select id="chainSelect">
+        <option value="">Select a chain</option>
+        <option value="solana">Solana</option>
+        <option value="base">Base</option>
+        <option value="ethereum">Ethereum</option>
+        <option value="bsc">BSC</option>
+        <option value="avalanche">Avalanche</option>
+        <option value="pulsechain">PulseChain</option>
+        <option value="sonic">Sonic</option>
+        <option value="ton">TON</option>
+        <option value="custom">Custom Chain</option>
+      </select>
     </div>
+    
+    <div class="filter-group" id="customChainGroup" style="display: none;">
+      <span class="filter-label">Enter Your Desired Chain:</span>
+      <input type="text" id="customChain" placeholder="Enter your desired chain">
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-label">Liquidity:</span>
+      <div class="input-row">
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Min" inputmode="numeric" id="liquidityMin" oninput="formatNumber(this)">
+        </div>
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Max" inputmode="numeric" id="liquidityMax" oninput="formatNumber(this)">
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-label">Market Cap:</span>
+      <div class="input-row">
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Min" inputmode="numeric" id="marketCapMin" oninput="formatNumber(this)">
+        </div>
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Max" inputmode="numeric" id="marketCapMax" oninput="formatNumber(this)">
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-label">FDV:</span>
+      <div class="input-row">
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Min" inputmode="numeric" id="fdvMin" oninput="formatNumber(this)">
+        </div>
+        <div class="input-wrapper">
+          <span class="input-prefix">$</span>
+          <input type="text" placeholder="Max" inputmode="numeric" id="fdvMax" oninput="formatNumber(this)">
+        </div>
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-label">Pair Age (Hours):</span>
+      <div class="input-row">
+        <input type="text" placeholder="Min" inputmode="numeric" id="pairAgeMin" oninput="formatNumber(this)">
+        <input type="text" placeholder="Max" inputmode="numeric" id="pairAgeMax" oninput="formatNumber(this)">
+      </div>
+    </div>
+    
+    <div class="filter-group">
+      <span class="filter-label">24H Transactions:</span>
+      <div class="input-row">
+        <input type="text" placeholder="Min" inputmode="numeric" id="txns24Min" oninput="formatNumber(this)">
+        <input type="text" placeholder="Max" inputmode="numeric" id="txns24Max" oninput="formatNumber(this)">
+      </div>
+    </div>
+    
+    <button id="submitFilters" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; width: 100%;">SUBMIT</button>
+  </div>
+  
+  <div id="filterResult" style="margin-top: 20px;"></div>
+  
+  <script>
+    function formatNumber(input) {
+      // Remove non-numeric characters except for commas
+      let value = input.value.replace(/[^0-9]/g, '');
+      // Format the number with commas
+      input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    
+    // Open popup when "ADD FILTER" button is clicked
+    document.getElementById('addFilterButton').addEventListener('click', function() {
+      document.getElementById('filterPopup').style.display = 'block';
+      document.getElementById('modalOverlay').style.display = 'block';
+    });
+    
+    // Show or hide the custom chain input based on selection
+    document.getElementById('chainSelect').addEventListener('change', function() {
+      const customChainGroup = document.getElementById('customChainGroup');
+      customChainGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+    });
+    
+    // Close popup when clicking outside of it (on the modal overlay)
+    document.getElementById('modalOverlay').addEventListener('click', function() {
+      document.getElementById('filterPopup').style.display = 'none';
+      document.getElementById('modalOverlay').style.display = 'none';
+    });
+    
+    // Handle form submission and redirect to /dex with the filter string as a query parameter
+    document.getElementById('submitFilters').addEventListener('click', function() {
+      let chain = document.getElementById('chainSelect').value;
+      if (chain === 'custom') {
+        chain = document.getElementById('customChain').value;
+      }
+      
+      let liquidityMin = document.getElementById('liquidityMin');
+      let liquidityMax = document.getElementById('liquidityMax');
+      let marketCapMin = document.getElementById('marketCapMin');
+      let marketCapMax = document.getElementById('marketCapMax');
+      let fdvMin = document.getElementById('fdvMin');
+      let fdvMax = document.getElementById('fdvMax');
+      let pairAgeMin = document.getElementById('pairAgeMin');
+      let pairAgeMax = document.getElementById('pairAgeMax');
+      let txns24Min = document.getElementById('txns24Min');
+      let txns24Max = document.getElementById('txns24Max');
+      
+      let isValid = true;
+      
+      // Validate numeric inputs
+      [liquidityMin, liquidityMax, marketCapMin, marketCapMax, fdvMin, fdvMax, pairAgeMin, pairAgeMax, txns24Min, txns24Max].forEach(input => {
+        if (input.value && isNaN(input.value.replace(/,/g, ''))) {
+          input.classList.add('error');
+          isValid = false;
+        } else {
+          input.classList.remove('error');
+        }
+      });
+      
+      if (!isValid) {
+        return; // Don't proceed if invalid
+      }
+      
+      let filterString = "wss://io.dexscreener.com/dex/screener/v5/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc";
+      
+      // Add only set values for each filter
+      if (liquidityMin.value) {
+        filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '')}`;
+      }
+      if (liquidityMax.value) {
+        filterString += `&filters[liquidity][max]=${liquidityMax.value.replace(/,/g, '')}`;
+      }
+      if (marketCapMin.value) {
+        filterString += `&filters[marketCap][min]=${marketCapMin.value.replace(/,/g, '')}`;
+      }
+      if (marketCapMax.value) {
+        filterString += `&filters[marketCap][max]=${marketCapMax.value.replace(/,/g, '')}`;
+      }
+      if (fdvMin.value) {
+        filterString += `&filters[fdv][min]=${fdvMin.value.replace(/,/g, '')}`;
+      }
+      if (fdvMax.value) {
+        filterString += `&filters[fdv][max]=${fdvMax.value.replace(/,/g, '')}`;
+      }
+      if (pairAgeMin.value) {
+        filterString += `&filters[pairAge][min]=${pairAgeMin.value.replace(/,/g, '')}`;
+      }
+      if (pairAgeMax.value) {
+        filterString += `&filters[pairAge][max]=${pairAgeMax.value.replace(/,/g, '')}`;
+      }
+      if (txns24Min.value) {
+        filterString += `&filters[txns][h24][min]=${txns24Min.value.replace(/,/g, '')}`;
+      }
+      if (txns24Max.value) {
+        filterString += `&filters[txns][h24][max]=${txns24Max.value.replace(/,/g, '')}`;
+      }
+      if (chain) {
+        filterString += `&filters[chainIds][0]=${chain}`;
+      }
+      
+      // Redirect to /dex with the filter string as a query parameter
+      window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
+    });
+  </script>
+  
+  <!-- Social icons bottom center -->
+  <div class="social-container">
+    <a href="https://t.me/doffn" target="_blank" title="Telegram">
+      <i class='bx bxl-telegram'></i>
+    </a>
+    <a href="https://twitter.com/doffneri" target="_blank" title="Twitter">
+      <i class='bx bxl-twitter'></i>
+    </a>
+    <a href="mailto:your-dawitneri888@example.com" target="_blank" title="Gmail">
+      <i class='bx bxl-gmail'></i>
+    </a>
+  </div>
 </body>
 </html>
