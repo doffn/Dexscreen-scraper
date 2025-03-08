@@ -66,6 +66,7 @@
             border-radius: 5px;
             background: #444;
             color: #e0e0e0;
+            width: 100%;
         }
 
         button {
@@ -120,10 +121,20 @@
             <select id="chainSelect">
                 <option value="">Select a chain</option>
                 <option value="solana">Solana</option>
+                <option value="base">Base</option>
                 <option value="ethereum">Ethereum</option>
-                <option value="binance">Binance Smart Chain</option>
-                <!-- Add more chains as needed -->
+                <option value="bsc">BSC</option>
+                <option value="avalanche">Avalanche</option>
+                <option value="pulsechain">PulseChain</option>
+                <option value="sonic">Sonic</option>
+                <option value="ton">TON</option>
+                <option value="custom">Custom Chain</option>
             </select>
+        </div>
+
+        <div class="filter-group" id="customChainGroup" style="display: none;">
+            <span class="filter-label">Enter Your Desired Chain:</span>
+            <input type="text" id="customChain" placeholder="Enter your desired chain">
         </div>
 
         <div class="filter-group">
@@ -201,8 +212,17 @@
             document.getElementById('filterPopup').style.display = 'block';
         });
 
+        document.getElementById('chainSelect').addEventListener('change', function() {
+            const customChainGroup = document.getElementById('customChainGroup');
+            customChainGroup.style.display = this.value === 'custom' ? 'block' : 'none';
+        });
+
         document.getElementById('submitFilters').addEventListener('click', function() {
             let chain = document.getElementById('chainSelect').value;
+            if (chain === 'custom') {
+                chain = document.getElementById('customChain').value;
+            }
+
             let liquidityMin = document.getElementById('liquidityMin');
             let liquidityMax = document.getElementById('liquidityMax');
             let marketCapMin = document.getElementById('marketCapMin');
