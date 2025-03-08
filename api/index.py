@@ -27,7 +27,7 @@ def dex():
         print(generated_text)
 
         # Initialize DexBot with the generated filter string (or default if none)
-        new_bot = DexBot(Api, text)
+        new_bot = DexBot(Api, url=text)
         
         # Format the response data
         mes = new_bot.format_token_data()
