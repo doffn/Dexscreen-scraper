@@ -24,9 +24,9 @@ class DexBot():
         self.chain = chain
         self.max_token = max_token
         self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
-        try:
-            if chain:
-                self.url += "&filters[chainIds][0]={chain}"
+        if chain:
+            self.url += "&filters[chainIds][0]={chain}"
+    
 
     def generate_sec_websocket_key(self):
         random_bytes = os.urandom(16)
