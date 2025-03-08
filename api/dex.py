@@ -1,304 +1,173 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dexscreener Bot Setup</title>
-    <style>
-        body {
-            background-color: #121212;
-            color: #e0e0e0;
-            font-family: Arial, sans-serif;
+import asyncio
+import base64
+import os
+from curl_cffi.requests import AsyncSession
+import json
+import nest_asyncio
+from datetime import datetime
+import time
+import struct
+from decimal import Decimal, ROUND_DOWN
+import re
+import requests
+
+# Apply nest_asyncio
+nest_asyncio.apply()
+
+Api = os.environ["API"]  
+ID = "-1001873201570"
+
+class DexBot():
+    def __init__(self, api_key, url, channel_id=1234, max_token=10):
+        self.api_key = api_key
+        self.channel_id = channel_id
+        self.chain = chain
+        self.max_token = max_token
+        #self.url = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"
+        self.url = url
+        
+
+    def generate_sec_websocket_key(self):
+        random_bytes = os.urandom(16)
+        key = base64.b64encode(random_bytes).decode('utf-8')
+        return key
+
+    def get_headers(self):
+        headers = {
+            "Host": "io.dexscreener.com",
+            "Connection": "Upgrade",
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+            "Upgrade": "websocket",
+            "Origin": "https://dexscreener.com",
+            'Sec-WebSocket-Version': '13',
+            "Accept-Encoding": "gzip, deflate, br, zstd",
+            "Sec-WebSocket-Key": self.generate_sec_websocket_key()
         }
+        return headers
 
-        .filters-container {
-            font-family: Arial, sans-serif;
-            padding: 15px;
-            border: 1px solid #555;
-            border-radius: 8px;
-            max-width: 350px;
-            background: #333;
-            margin-top: 20px;
-        }
+    def format_token_data(self):
 
-        .filter-group {
-            margin: 15px 0;
-        }
+        """
+        Fetch information about specific tokens from the Dexscreener API.
 
-        .filter-label {
-            font-weight: bold;
-            display: block;
-            margin-bottom: 5px;
-        }
+        Args:
+            token_addresses (list): List of token addresses.
 
-        .input-row {
-            display: flex;
-            gap: 10px;
-        }
+        Returns:
+            dict: A dictionary containing data for each token address or an error message.
+        """
 
-        .input-wrapper {
-            display: flex;
-            align-items: center;
-            border: 1px solid #555;
-            padding: 5px;
-            border-radius: 5px;
-            width: 100%;
-            background: #444;
-        }
+        token_addresses = self.start()
 
-        .input-prefix, .input-suffix {
-            padding: 0 5px;
-            font-weight: bold;
-        }
+        base_url = "https://api.dexscreener.com/latest/dex/tokens/"
+        results = {}
 
-        input {
-            border: none;
-            outline: none;
-            flex-grow: 1;
-            background: transparent;
-            text-align: left;
-            color: #e0e0e0;
-        }
+        for address in token_addresses:
+            try:
+                # Make an API call for each token address
+                response = requests.get(f"{base_url}{address}")
+                if response.status_code == 200:
+                    data = response.json()
+                    # Store the relevant data for the token address
+                    pairs = data.get('pairs', [])  # 'pairs' contains token market data
+                    
+                    if pairs and len(pairs) > 0:
+                        results[address] = pairs[0]  # Store first pair's data
+                    else:
+                        results[address] = {"pairAddress": address,
+                                            "Error": "No data Retrieved"}
+                else:
+                    # Handle HTTP errors
+                    results[address] = f"Error: Status code {response.status_code}"
+            except requests.RequestException as e:
+                # Handle request exceptions
+                results[address] = f"Error making request: {str(e)}"
 
-        select {
-            border: 1px solid #555;
-            padding: 5px;
-            border-radius: 5px;
-            background: #444;
-            color: #e0e0e0;
-            width: 100%;
-        }
+        # Extracting values as a list
+        results = list(results.values())
+        # Output the result as JSON
 
-        button {
-            cursor: pointer;
-        }
+        return json.dumps({"data": results}, indent=2)
+      
 
-        #filterPopup {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: #222;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
-            z-index: 1000;
-            width: 400px;
-        }
+    async def connect(self):
+        headers = self.get_headers()
+        try:
+            session = AsyncSession(headers=headers)
+            ws = await session.ws_connect(self.url)
 
-        #filterPopup h2 {
-            margin: 0 0 15px;
-            text-align: center;
-            color: #64b5f6;
-        }
+            # Loop to keep receiving data until the connection is closed
+            while True:
+                try:
+                    # Receive data from WebSocket
+                    data = await ws.recv()
 
-        .error {
-            border: 2px solid #ff5722;
-        }
+                    if data:
+                        response = data[0]  # Assuming the first element contains the desired message
+                        # Process and return the data or handle it as needed
+                        #print(response)  # You can replace this with your desired processing logic
+                        if "pairs" in str(response):
+                          return response
 
-        /* Modal overlay to darken the background when popup is open */
-        #modalOverlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0,0,0,0.5);
-            z-index: 900;
-        }
-    </style>
-</head>
-<body>
-    <h1>Hello User! 👋</h1>
-    <p>This will scrape from Dexscreener trending tokens by running the <a href="/dex" style="color: #64b5f6; text-decoration: underline;">/dex</a> path.</p>
-    <ol>
-        <li>You need to add a bot inside a group. 🤖</li>
-        <li>You need to get the channel ID. 📨</li>
-        <li>You need to get the WebSocket URL for the filters for the Dexscreener. Use this format:
-            <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
-        </li>
-        <li>You need to ping Dex for the desired time. Use a cron job. ⏰</li>
-        <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is finetuned for Solana Tokens</li>
-    </ol>
+                    else:
+                        # If no data is received, break out of the loop
+                        print("No data received.")
+                        break
 
-    <button id="addFilterButton" style="background-color: #1e88e5; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px;">ADD FILTER</button>
+                except Exception as e:
+                    print(f"Error receiving message: {str(e)}")
+                    break
 
-    <!-- Modal overlay -->
-    <div id="modalOverlay"></div>
+            # Closing the WebSocket and session after the loop ends
+            await ws.close()
+            await session.close()
 
-    <div id="filterPopup">
-        <h2>DEX FILTERS</h2>
+        except Exception as e:
+            print(f"Connection error: {str(e)}")
+            return f"Connection error: {str(e)}"
 
-        <div class="filter-group">
-            <span class="filter-label">Chain:</span>
-            <select id="chainSelect">
-                <option value="">Select a chain</option>
-                <option value="solana">Solana</option>
-                <option value="base">Base</option>
-                <option value="ethereum">Ethereum</option>
-                <option value="bsc">BSC</option>
-                <option value="avalanche">Avalanche</option>
-                <option value="pulsechain">PulseChain</option>
-                <option value="sonic">Sonic</option>
-                <option value="ton">TON</option>
-                <option value="custom">Custom Chain</option>
-            </select>
-        </div>
 
-        <div class="filter-group" id="customChainGroup" style="display: none;">
-            <span class="filter-label">Enter Your Desired Chain:</span>
-            <input type="text" id="customChain" placeholder="Enter your desired chain">
-        </div>
+    def tg_send(self, message):
+        try:
+            self.bot.send_message(self.channel_id, message, parse_mode='MarkdownV2', disable_web_page_preview=True)
+        except Exception as e:
+            print(f"Telegram sending error: {e}")
 
-        <div class="filter-group">
-            <span class="filter-label">Liquidity:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="liquidityMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="liquidityMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
+    def start(self):
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        mes = loop.run_until_complete(self.connect())
+        loop.close()
 
-        <div class="filter-group">
-            <span class="filter-label">Market Cap:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="marketCapMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="marketCapMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
+        # Decode the message, replacing non-printable characters with spaces
+        decoded_text = ''.join(chr(b) if 32 <= b <= 126 else ' ' for b in mes)
 
-        <div class="filter-group">
-            <span class="filter-label">FDV:</span>
-            <div class="input-row">
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Min" inputmode="numeric" id="fdvMin" oninput="formatNumber(this)">
-                </div>
-                <div class="input-wrapper">
-                    <span class="input-prefix">$</span>
-                    <input type="text" placeholder="Max" inputmode="numeric" id="fdvMax" oninput="formatNumber(this)">
-                </div>
-            </div>
-        </div>
+        # Split the string by whitespace into words and filter out short words
+        words = [word for word in decoded_text.split() if len(word) >= 55]
 
-        <div class="filter-group">
-            <span class="filter-label">Pair Age (Hours):</span>
-            <div class="input-row">
-                <input type="text" placeholder="Min" inputmode="numeric" id="pairAgeMin" oninput="formatNumber(this)">
-                <input type="text" placeholder="Max" inputmode="numeric" id="pairAgeMax" oninput="formatNumber(this)">
-            </div>
-        </div>
+        # Filter out special characters from words
+        filtered_words = [re.sub(r'["*<$@(),.].*', '', word) for word in words]
 
-        <div class="filter-group">
-            <span class="filter-label">24H Transactions:</span>
-            <div class="input-row">
-                <input type="text" placeholder="Min" inputmode="numeric" id="txns24Min" oninput="formatNumber(this)">
-                <input type="text" placeholder="Max" inputmode="numeric" id="txns24Max" oninput="formatNumber(this)">
-            </div>
-        </div>
+        # Extract data from words
+        extracted_data = []
+        for token in filtered_words:
+            # Check if token contains an ETH address
+            if "0x" in token:
+                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[-1]
+                print(token)
+            # Check if token contains 'pump' keyword
+            elif "pump" in token:
+                token = re.findall(r".{0,40}pump", token)[0]
+            # Otherwise extract the last 44 characters
+            else:
+                token = token[-44:]
+            
+            extracted_data.append(token)
 
-        <button id="submitFilters" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; width: 100%;">SUBMIT</button>
-    </div>
+        
 
-    <div id="filterResult" style="margin-top: 20px;"></div>
+        return extracted_data[:60]
 
-    <script>
-        function formatNumber(input) {
-            // Remove non-numeric characters except for commas
-            let value = input.value.replace(/[^0-9]/g, '');
-            // Format the number with commas
-            input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-        }
 
-        // Open popup when "ADD FILTER" button is clicked
-        document.getElementById('addFilterButton').addEventListener('click', function() {
-            document.getElementById('filterPopup').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        });
-
-        // Show or hide the custom chain input based on selection
-        document.getElementById('chainSelect').addEventListener('change', function() {
-            const customChainGroup = document.getElementById('customChainGroup');
-            customChainGroup.style.display = this.value === 'custom' ? 'block' : 'none';
-        });
-
-        // Close popup when clicking outside of it (on the modal overlay)
-        document.getElementById('modalOverlay').addEventListener('click', function() {
-            document.getElementById('filterPopup').style.display = 'none';
-            document.getElementById('modalOverlay').style.display = 'none';
-        });
-
-        // Handle form submission and redirect to /dex with the filter string as a query parameter
-        document.getElementById('submitFilters').addEventListener('click', function() {
-            let chain = document.getElementById('chainSelect').value;
-            if (chain === 'custom') {
-                chain = document.getElementById('customChain').value;
-            }
-
-            let liquidityMin = document.getElementById('liquidityMin');
-            let liquidityMax = document.getElementById('liquidityMax');
-            let marketCapMin = document.getElementById('marketCapMin');
-            let marketCapMax = document.getElementById('marketCapMax');
-            let fdvMin = document.getElementById('fdvMin');
-            let fdvMax = document.getElementById('fdvMax');
-            let pairAgeMin = document.getElementById('pairAgeMin');
-            let pairAgeMax = document.getElementById('pairAgeMax');
-            let txns24Min = document.getElementById('txns24Min');
-            let txns24Max = document.getElementById('txns24Max');
-
-            let isValid = true;
-
-            // Validate numeric inputs
-            [liquidityMin, liquidityMax, marketCapMin, marketCapMax, fdvMin, fdvMax, pairAgeMin, pairAgeMax, txns24Min, txns24Max].forEach(input => {
-                if (input.value && isNaN(input.value.replace(/,/g, ''))) {
-                    input.classList.add('error');
-                    isValid = false;
-                } else {
-                    input.classList.remove('error');
-                }
-            });
-
-            if (!isValid) {
-                return; // Don't proceed if invalid
-            }
-
-            let filterString = "wss://io.dexscreener.com/dex/screener/v5/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc";
-
-            if (liquidityMin.value || liquidityMax.value) {
-                filterString += `&filters[liquidity][min]=${liquidityMin.value.replace(/,/g, '') || ''}&filters[liquidity][max]=${liquidityMax.value.replace(/,/g, '') || ''}`;
-            }
-            if (marketCapMin.value || marketCapMax.value) {
-                filterString += `&filters[marketCap][min]=${marketCapMin.value.replace(/,/g, '') || ''}&filters[marketCap][max]=${marketCapMax.value.replace(/,/g, '') || ''}`;
-            }
-            if (fdvMin.value || fdvMax.value) {
-                filterString += `&filters[fdv][min]=${fdvMin.value.replace(/,/g, '') || ''}&filters[fdv][max]=${fdvMax.value.replace(/,/g, '') || ''}`;
-            }
-            if (pairAgeMin.value || pairAgeMax.value) {
-                filterString += `&filters[pairAge][min]=${pairAgeMin.value.replace(/,/g, '') || ''}&filters[pairAge][max]=${pairAgeMax.value.replace(/,/g, '') || ''}`;
-            }
-            if (txns24Min.value || txns24Max.value) {
-                filterString += `&filters[txns][h24][min]=${txns24Min.value.replace(/,/g, '') || ''}&filters[txns][h24][max]=${txns24Max.value.replace(/,/g, '') || ''}`;
-            }
-            if (chain) {
-                filterString += `&filters[chainIds][0]=${chain}`;
-            }
-
-            // Redirect to /dex with the filter string as a query parameter
-            window.location.href = "/dex?generated_text=" + encodeURIComponent(filterString);
-        });
-    </script>
-</body>
-</html>
+    def token_getter(self, message):
+        pass
