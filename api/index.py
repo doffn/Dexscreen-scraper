@@ -17,7 +17,7 @@ def dex():
         # Retrieve the filter string from the query parameter
         generated_text = request.args.get('generated_text', '')
         if generated_text:
-            generated_text = "
+            text += generated_text
         print(generated_text)
 
         # Initialize DexBot with the generated filter string
