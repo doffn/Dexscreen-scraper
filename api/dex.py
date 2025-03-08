@@ -23,7 +23,6 @@ class DexBot():
         self.channel_id = channel_id
         self.max_token = max_token
         self.url = url
-        self.url = url
         
 
     def generate_sec_websocket_key(self):
@@ -94,6 +93,7 @@ class DexBot():
         try:
             session = AsyncSession(headers=headers)
             ws = await session.ws_connect(self.url)
+            print(self.url)
 
             # Loop to keep receiving data until the connection is closed
             while True:
