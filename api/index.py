@@ -16,8 +16,11 @@ def dex():
         # Default URL for Dex
         text = "wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc"
         
-        # Retrieve the filter string from the query parameter
-        generated_text = request.args.get('generated_text', '')
+        try:
+            # Retrieve the filter string from the query parameter
+            generated_text = request.args.get('generated_text', '')
+        except:
+            generated_text = ""
         
         # If there's a generated_text, append it to the URL
         if generated_text:
