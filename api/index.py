@@ -13,7 +13,7 @@ def root():
 @app.route('/dex', methods=['GET'])
 def dex():
     try:
-        text = """wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc"""
+        text = """wss://io.dexscreener.com/dex/screener/v5/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc"""
         # Retrieve the filter string from the query parameter
         generated_text = request.args.get('generated_text', '')
         if generated_text:
