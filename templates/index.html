@@ -312,18 +312,19 @@
     <h1>Welcome, User! 😊</h1>
     <p>
       I am thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener's trending tokens.
-      Follow the steps, add your personal touches, and feel free to reach out via our social channels.
-    </p>
+      Follow the steps, add your personal touches, and feel free to reach out via our social channels. You can process the data 
+      for furture functionality. TG bot can be integrated in this code. 
     <ol>
       <li>Add a bot to your group 🤖</li>
       <li>Grab your channel ID 📨</li>
+      <li>Update the token_getter method to use inside telegram</li>
       <li>
-        Use the following format for the Dexscreener WebSocket URL:
-        <pre>wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
+        by default this [URL](https://dexscreen-scraper.vercel.app/dex) is scraped.:
+        <pre>wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
       </li>
-      <li>Click "ADD FILTER" to customize additional parameters 🔧</li>
-      <li>Set up a cron job to ping Dex at your desired schedule ⏰</li>
-      <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is running perfectly! 👍</li>
+      <li>Click "ADD FILTER" to customize additional filters 🔧</li>
+      <li>You can include additional filters outside the specified ones if you like</li>
+      <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is Up and running perfectly! If there is a problem contact me👍</li>
     </ol>
     
     <button id="addFilterButton">ADD FILTER</button>
@@ -338,7 +339,7 @@
     <div class="filter-group">
       <span class="filter-label">Chain:</span>
       <select id="chainSelect">
-        <option value="">Select a chain</option>
+        <option value="">Select a chain(default all)</option>
         <option value="solana">Solana</option>
         <option value="base">Base</option>
         <option value="ethereum">Ethereum</option>
