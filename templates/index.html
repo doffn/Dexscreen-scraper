@@ -309,27 +309,35 @@
 </head>
 <body>
   <div class="container">
-    <h1>Welcome, User! 😊</h1>
+    <h1>👋 Welcome, User!</h1>
     <p>
-      I am thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener's trending tokens.
-      Follow the steps, add your personal touches, and feel free to reach out via our social channels. You can process the data 
-      for furture functionality. TG bot can be integrated in this code. 
+        Excited to have you here! 🚀 This tool helps you scrape trending tokens from Dexscreener.  
+        Just follow the simple steps below to set up your filters and start analyzing data.  
+        You can even integrate a Telegram bot to get real-time updates! 📡
+    </p>
+
     <ol>
-      <li>Add a bot to your group 🤖</li>
-      <li>Grab your channel ID 📨</li>
-      <li>Update the token_getter method to use inside telegram</li>
-      <li>
-        by default this [URL](https://dexscreen-scraper.vercel.app/dex) is scraped.:
-        <pre>wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
-      </li>
-      <li>Click "ADD FILTER" to customize additional filters 🔧</li>
-      <li>You can include additional filters outside the specified ones if you like</li>
-      <li><span style="font-weight: bold; color: #ff5722;">NOTE:</span> This code is Up and running perfectly! If there is a problem contact me👍</li>
+        <li>🤖 <strong>Add a bot</strong> to your Telegram group.</li>
+        <li>📩 <strong>Find your channel ID</strong> (needed for the bot).</li>
+        <li>⚙️ <strong>Update</strong> the <code>token_getter</code> method to work inside Telegram.</li>
+        <li>
+            🌍 By default, the following URL is scraped:  
+            <a href="https://dexscreen-scraper.vercel.app/dex" target="_blank" rel="noopener noreferrer">
+                Open Dexscreener Scraper 🔗
+            </a>
+            <pre>wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&rankBy[order]=desc</pre>
+        </li>
+        <li>🛠️ Click <strong>"ADD FILTER"</strong> to customize additional filters.</li>
+        <li>📌 You can add extra filters beyond the default ones if needed.</li>
+        <li>
+            ⚠️ <span style="font-weight: bold; color: #ff5722;">NOTE:</span>  
+            This tool is running smoothly! If you run into any issues, feel free to reach out. 👍
+        </li>
     </ol>
-    
-    <button id="addFilterButton">ADD FILTER</button>
-  </div>
-  
+
+    <button id="addFilterButton">➕ ADD FILTER</button>
+</div>
+
   <!-- Modal overlay -->
   <div id="modalOverlay"></div>
   
