@@ -7,57 +7,100 @@
   <!-- Boxicons CSS -->
   <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <style>
-    body {
-      background-color: #121212;
-      color: #e0e0e0;
-      font-family: Arial, sans-serif;
+    :root {
+      --primary-bg: #121212;
+      --secondary-bg: #222;
+      --card-bg: #333;
+      --input-bg: #444;
+      --border-color: #555;
+      --text-color: #e0e0e0;
+      --accent-color: #1e88e5;
+      --success-color: #4caf50;
+      --error-color: #ff5722;
+      --highlight-color: #64b5f6;
+    }
+
+    * {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
+    }
+    
+    body {
+      background-color: var(--primary-bg);
+      color: var(--text-color);
+      font-family: Arial, sans-serif;
       padding-bottom: 80px; /* extra space for social icons */
+      line-height: 1.6;
     }
     
     .container {
+      width: 100%;
       max-width: 800px;
-      margin: 20px auto;
+      margin: 0 auto;
       padding: 20px;
     }
     
     h1 {
       text-align: center;
       margin-bottom: 10px;
+      font-size: clamp(1.5rem, 5vw, 2rem);
     }
     
     p {
       text-align: center;
       margin-bottom: 20px;
-      line-height: 1.6;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      padding: 0 10px;
     }
     
     ol {
+      width: 100%;
       max-width: 600px;
       margin: 0 auto 20px;
-      padding-left: 20px;
-      line-height: 1.6;
+      padding-left: 25px;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+    }
+    
+    li {
+      margin-bottom: 8px;
+    }
+    
+    pre {
+      background-color: var(--input-bg);
+      padding: 10px;
+      border-radius: 5px;
+      overflow-x: auto;
+      font-size: 0.85rem;
+      margin: 5px 0;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
     
     button#addFilterButton {
       display: block;
       margin: 20px auto;
-      background-color: #1e88e5;
+      background-color: var(--accent-color);
       color: white;
-      padding: 10px 15px;
+      padding: 12px 20px;
       border: none;
       border-radius: 5px;
       cursor: pointer;
+      font-size: clamp(0.9rem, 3vw, 1rem);
+      transition: background-color 0.3s;
+    }
+    
+    button#addFilterButton:hover {
+      background-color: #0d6efd;
     }
     
     .filters-container {
-      font-family: Arial, sans-serif;
       padding: 15px;
-      border: 1px solid #555;
+      border: 1px solid var(--border-color);
       border-radius: 8px;
+      width: 100%;
       max-width: 350px;
-      background: #333;
+      background: var(--card-bg);
       margin: 20px auto;
     }
     
@@ -68,22 +111,24 @@
     .filter-label {
       font-weight: bold;
       display: block;
-      margin-bottom: 5px;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
     }
     
     .input-row {
       display: flex;
       gap: 10px;
+      flex-wrap: wrap;
     }
     
     .input-wrapper {
       display: flex;
       align-items: center;
-      border: 1px solid #555;
-      padding: 5px;
+      border: 1px solid var(--border-color);
+      padding: 8px 5px;
       border-radius: 5px;
       width: 100%;
-      background: #444;
+      background: var(--input-bg);
     }
     
     .input-prefix, .input-suffix {
@@ -97,16 +142,20 @@
       flex-grow: 1;
       background: transparent;
       text-align: left;
-      color: #e0e0e0;
+      color: var(--text-color);
+      font-size: 0.95rem;
+      padding: 5px;
+      width: 100%;
     }
     
     select {
-      border: 1px solid #555;
-      padding: 5px;
+      border: 1px solid var(--border-color);
+      padding: 10px 5px;
       border-radius: 5px;
-      background: #444;
-      color: #e0e0e0;
+      background: var(--input-bg);
+      color: var(--text-color);
       width: 100%;
+      font-size: 0.95rem;
     }
     
     button {
@@ -119,22 +168,26 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: #222;
+      background-color: var(--secondary-bg);
       padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.7);
       z-index: 1000;
-      width: 400px;
+      width: 90%;
+      max-width: 400px;
+      max-height: 90vh;
+      overflow-y: auto;
     }
     
     #filterPopup h2 {
       margin: 0 0 15px;
       text-align: center;
-      color: #64b5f6;
+      color: var(--highlight-color);
+      font-size: clamp(1.25rem, 4vw, 1.5rem);
     }
     
     .error {
-      border: 2px solid #ff5722;
+      border: 2px solid var(--error-color);
     }
     
     /* Modal overlay to darken the background when popup is open */
@@ -153,18 +206,60 @@
     .social-container {
       position: fixed;
       bottom: 10px;
+      left: 0;
       width: 100%;
       text-align: center;
+      padding: 10px 0;
+      background-color: rgba(18, 18, 18, 0.8);
     }
+    
     .social-container a {
       margin: 0 12px;
-      color: #e0e0e0;
+      color: var(--text-color);
       text-decoration: none;
-      font-size: 36px;
+      font-size: clamp(24px, 8vw, 36px);
       transition: transform 0.3s;
+      display: inline-block;
     }
+    
     .social-container a:hover {
       transform: scale(1.1);
+    }
+    
+    #submitFilters {
+      background-color: var(--success-color);
+      color: white;
+      padding: 12px 15px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 20px;
+      width: 100%;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+    
+    #submitFilters:hover {
+      background-color: #3e9e40;
+    }
+    
+    /* Responsive adjustments */
+    @media (max-width: 480px) {
+      .input-row {
+        flex-direction: column;
+      }
+      
+      ol {
+        padding-left: 20px;
+      }
+      
+      .container {
+        padding: 15px;
+      }
+      
+      #filterPopup {
+        padding: 15px;
+      }
     }
   </style>
 </head>
@@ -172,7 +267,7 @@
   <div class="container">
     <h1>Welcome, User! 😊</h1>
     <p>
-      I am thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener’s trending tokens.
+      I am thrilled to have you here! 🚀 Customize your filters below to start scraping Dexscreener's trending tokens.
       Follow the steps, add your personal touches, and feel free to reach out via our social channels.
     </p>
     <ol>
@@ -180,7 +275,7 @@
       <li>Grab your channel ID 📨</li>
       <li>
         Use the following format for the Dexscreener WebSocket URL:
-        <pre style="background-color: #333; padding: 10px;">wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
+        <pre>wss://io.dexscreener.com/dex/screener/v4/pairs/h24/1?rankBy[key]=trendingScoreH6&amp;rankBy[order]=desc</pre>
       </li>
       <li>Click "ADD FILTER" to customize additional parameters 🔧</li>
       <li>Set up a cron job to ping Dex at your desired schedule ⏰</li>
@@ -261,20 +356,28 @@
     <div class="filter-group">
       <span class="filter-label">Pair Age (Hours):</span>
       <div class="input-row">
-        <input type="text" placeholder="Min" inputmode="numeric" id="pairAgeMin" oninput="formatNumber(this)">
-        <input type="text" placeholder="Max" inputmode="numeric" id="pairAgeMax" oninput="formatNumber(this)">
+        <div class="input-wrapper">
+          <input type="text" placeholder="Min" inputmode="numeric" id="pairAgeMin" oninput="formatNumber(this)">
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Max" inputmode="numeric" id="pairAgeMax" oninput="formatNumber(this)">
+        </div>
       </div>
     </div>
     
     <div class="filter-group">
       <span class="filter-label">24H Transactions:</span>
       <div class="input-row">
-        <input type="text" placeholder="Min" inputmode="numeric" id="txns24Min" oninput="formatNumber(this)">
-        <input type="text" placeholder="Max" inputmode="numeric" id="txns24Max" oninput="formatNumber(this)">
+        <div class="input-wrapper">
+          <input type="text" placeholder="Min" inputmode="numeric" id="txns24Min" oninput="formatNumber(this)">
+        </div>
+        <div class="input-wrapper">
+          <input type="text" placeholder="Max" inputmode="numeric" id="txns24Max" oninput="formatNumber(this)">
+        </div>
       </div>
     </div>
     
-    <button id="submitFilters" style="background-color: #4caf50; color: white; padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; width: 100%;">SUBMIT</button>
+    <button id="submitFilters">SUBMIT</button>
   </div>
   
   <div id="filterResult" style="margin-top: 20px;"></div>
@@ -291,6 +394,7 @@
     document.getElementById('addFilterButton').addEventListener('click', function() {
       document.getElementById('filterPopup').style.display = 'block';
       document.getElementById('modalOverlay').style.display = 'block';
+      document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
     });
     
     // Show or hide the custom chain input based on selection
@@ -303,6 +407,12 @@
     document.getElementById('modalOverlay').addEventListener('click', function() {
       document.getElementById('filterPopup').style.display = 'none';
       document.getElementById('modalOverlay').style.display = 'none';
+      document.body.style.overflow = ''; // Re-enable scrolling
+    });
+    
+    // Stop propagation of clicks inside the popup to prevent closing when clicking inside
+    document.getElementById('filterPopup').addEventListener('click', function(e) {
+      e.stopPropagation();
     });
     
     // Handle form submission and redirect to /dex with the filter string as a query parameter
@@ -376,8 +486,8 @@
         filterString += `&filters[chainIds][0]=${chain}`;
       }
       
-       // If no filterString, redirect to /dex without filters
-       if (filterString == "") {
+      // If no filterString, redirect to /dex without filters
+      if (filterString == "") {
         window.location.href = "/dex";  // No filter query parameter
       } else {
         // Redirect to /dex with the filter string as a query parameter
