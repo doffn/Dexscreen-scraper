@@ -179,11 +179,46 @@
       overflow-y: auto;
     }
     
+    #filterPopup::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    #filterPopup::-webkit-scrollbar-track {
+      background: var(--secondary-bg);
+    }
+    
+    #filterPopup::-webkit-scrollbar-thumb {
+      background: var(--border-color);
+      border-radius: 4px;
+    }
+    
+    #filterPopup::-webkit-scrollbar-thumb:hover {
+      background: #777;
+    }
+    
     #filterPopup h2 {
       margin: 0 0 15px;
       text-align: center;
       color: var(--highlight-color);
       font-size: clamp(1.25rem, 4vw, 1.5rem);
+      position: sticky;
+      top: 0;
+      background-color: var(--secondary-bg);
+      padding: 5px 0;
+      z-index: 2;
+    }
+    
+    .close-btn {
+      position: absolute;
+      right: 15px;
+      top: 15px;
+      background: transparent;
+      border: none;
+      color: var(--text-color);
+      font-size: 1.5rem;
+      line-height: 1;
+      cursor: pointer;
+      z-index: 3;
     }
     
     .error {
@@ -211,6 +246,7 @@
       text-align: center;
       padding: 10px 0;
       background-color: rgba(18, 18, 18, 0.8);
+      z-index: 800;
     }
     
     .social-container a {
@@ -237,6 +273,7 @@
       width: 100%;
       font-size: 1rem;
       font-weight: bold;
+      transition: background-color 0.3s;
     }
     
     #submitFilters:hover {
@@ -259,6 +296,13 @@
       
       #filterPopup {
         padding: 15px;
+        width: 95%;
+        max-height: 85vh;
+      }
+      
+      .close-btn {
+        right: 10px;
+        top: 10px;
       }
     }
   </style>
@@ -289,6 +333,7 @@
   <div id="modalOverlay"></div>
   
   <div id="filterPopup">
+    <button class="close-btn" id="closePopup">&times;</button>
     <h2>DEX FILTERS</h2>
     <div class="filter-group">
       <span class="filter-label">Chain:</span>
@@ -390,12 +435,25 @@
       input.value = value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     }
     
-    // Open popup when "ADD FILTER" button is clicked
-    document.getElementById('addFilterButton').addEventListener('click', function() {
+    // Function to open popup
+    function openPopup() {
       document.getElementById('filterPopup').style.display = 'block';
       document.getElementById('modalOverlay').style.display = 'block';
       document.body.style.overflow = 'hidden'; // Prevent scrolling behind modal
-    });
+    }
+    
+    // Function to close popup
+    function closePopup() {
+      document.getElementById('filterPopup').style.display = 'none';
+      document.getElementById('modalOverlay').style.display = 'none';
+      document.body.style.overflow = ''; // Re-enable scrolling
+    }
+    
+    // Open popup when "ADD FILTER" button is clicked
+    document.getElementById('addFilterButton').addEventListener('click', openPopup);
+    
+    // Close popup with close button
+    document.getElementById('closePopup').addEventListener('click', closePopup);
     
     // Show or hide the custom chain input based on selection
     document.getElementById('chainSelect').addEventListener('change', function() {
@@ -404,15 +462,18 @@
     });
     
     // Close popup when clicking outside of it (on the modal overlay)
-    document.getElementById('modalOverlay').addEventListener('click', function() {
-      document.getElementById('filterPopup').style.display = 'none';
-      document.getElementById('modalOverlay').style.display = 'none';
-      document.body.style.overflow = ''; // Re-enable scrolling
-    });
+    document.getElementById('modalOverlay').addEventListener('click', closePopup);
     
     // Stop propagation of clicks inside the popup to prevent closing when clicking inside
     document.getElementById('filterPopup').addEventListener('click', function(e) {
       e.stopPropagation();
+    });
+    
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('filterPopup').style.display === 'block') {
+        closePopup();
+      }
     });
     
     // Handle form submission and redirect to /dex with the filter string as a query parameter
