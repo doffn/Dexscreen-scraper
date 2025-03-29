@@ -5,9 +5,9 @@
     <title>Dex Screener Trending Data</title>
     <style>
         body {
-            background-color: #282c34; /* Dark background */
-            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; /* Monospace font */
-            color: #43d37a; /* green text */
+            background-color: #282c34;
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace;
+            color: #43d37a;
             margin: 0;
             padding: 0;
             line-height: 1.6;
@@ -17,7 +17,7 @@
             padding: 40px 20px;
         }
         .code-block {
-            background-color: #3e4451; /* Darker code block background */
+            background-color: #3e4451;
             padding: 20px;
             margin: 30px auto;
             text-align: left;
@@ -37,8 +37,8 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background-color: #61afef; /* Blue button */
-            color: #282c34; /* Dark text on button */
+            background-color: #61afef;
+            color: #282c34;
             border: none;
             padding: 8px 15px;
             border-radius: 5px;
@@ -46,15 +46,30 @@
             transition: background-color 0.3s ease;
         }
         .copy-button:hover {
-            background-color: #3d82c2; /* Darker blue on hover */
+            background-color: #3d82c2;
         }
         h1 {
-            color: #61afef; /* Blue heading */
+            color: #61afef;
             margin-bottom: 20px;
+        }
+        .home-link {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            color: #61afef;
+            text-decoration: none; /* Remove underline */
+            font-family: 'Arial', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+        .home-link:hover {
+            color: #3d82c2;
         }
     </style>
 </head>
 <body>
+    <a href="/" class="home-link"> ⬅️HOME</a>
     <div class="container">
         <h1>Dex Screener Trending Data 📋</h1>
         <div class="code-block">
