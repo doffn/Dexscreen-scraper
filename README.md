@@ -1,61 +1,150 @@
-## API Documentation 
 
-This serves as a guide for the provided Flask API .
+# 📈 Dexscreener Scraper 📊
 
-# **Introduction**
+A Python tool for extracting real-time trading data from Dexscreener (dexscreener.com) via WebSocket ⚡ and HTTP requests 🌐.
 
-This API offers functionalities related to reviews and token information retrieval . The code uses Flask for the web framework and interacts with an external service (DexScreener) through websockets for retrieving token data .
+## Description 📝
 
-# **API Endpoints**
+This project provides a Flask based Python script 🐍 designed to automate the retrieval of live trading data from Dexscreener. It utilizes both WebSocket connections 🔌 for real-time updates and HTTP requests 📡 for static data, enabling users to efficiently monitor 👁️ and analyze decentralized exchange (DEX) activity. 
 
-* **Root (`/`)** (GET):
-    * Returns a basic message acknowledging a user's access to the API.    *Cool!* 
+## Features ✨
 
-* **Dex (`/dex`)** (GET):
-    * Retrieves token information from DexScreener. 
-    * If successful, returns a message indicating the dex endpoint has been accessed. In case of errors, an error message is printed.  *Dex endpoint accessed! ✅*  *Error! ⚠️*
+* **Real-time WebSocket Data 🚀:** Captures live price updates 💰, volume changes 📈, and other dynamic data directly from Dexscreener's WebSocket feed.
+* **HTTP Data Retrieval 📦:** Fetches static data, such as token information ℹ️ and historical data 🕰️, using dexscreener official api.
+* **Modular Design 🧩:** Filters can be added as desired 🛠️, allowing users to customize data retrieval and processing.
+* **Data Parsing and Formatting 📄:** Parses the raw data from Dexscreener into a structured format (e.g., JSON) for easy use in other applications.
+* **Error Handling 🛡️:** Implements robust error handling to ensure stable and reliable data retrieval.
 
-# **Code Structure**
+## Installation 🛠️
 
-* **Flask App Setup**
-    * Initializes the Flask application and defines routes for the API endpoints. 
+1.  **Clone the repository 📥:**
 
-* **Routes**
-    * Each endpoint definition includes a docstring explaining its functionality and behavior. 
-    * Error handling is implemented to capture exceptions and return appropriate error messages.   
+    ```bash
+    git clone [https://github.com/doffn/Dexscreen-scraper.git](https://github.com/doffn/Dexscreen-scraper.git)
+    cd Dexscreener-scraper
+    ```
 
-# **External Libraries**
+2.  **Install dependencies 📦:**
 
-* Flask: Web framework for building web applications ([https://flask.palletsprojects.com/en/2.3.x/](https://flask.palletsprojects.com/en/2.3.x/)) 
-* `api.dex`: Assumed to contain functionalities related to DexBot class and token retrieval.   
-* websockets: Library for establishing websocket connections ([https://readthedocs.org/projects/websockets/](https://readthedocs.org/projects/websockets/)) ️
-* telebot: Library for interacting with the Telegram bot API ([https://pypi.org/project/pyTelegramBotAPI/](https://pypi.org/project/pyTelegramBotAPI/))  
-* datetime: Library for working with date and time objects (built-in Python module).  ️
-* os: Library for interacting with the operating system (built-in Python module).  ️
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-# **Environment Variables**
+## Usage 🚀
 
-* **API:** Stores the Telegram bot API key.  
-* **ID:** Stores the Telegram channel ID for sending messages.
-* **ADDRESS:** Stores the Address of the dexscreener websocket. It is custom defined.  
+1.  **Run the scraper 🏃:**
 
-# **DexBot Class**
+    ```bash
+    python -m flask run
+    ```
 
-This class facilitates communication with DexScreener for retrieving token information. 
+2.  **Configuration (Optional) ⚙️:**
+    * Modify the `Filter` to customize the scraping parameters, such as target trading pairs 🎯, data output 📄, and WebSocket connection settings 🔌.
+    * You may need to inspect the Dexscreener website 🌐 to identify the correct trading filter identifiers.
 
-* **__init__(self, api_key, channel_id, chain=False, max_token=10):**
-    * Initializes the class with the provided API key, channel ID, optional chain parameter (for filtering tokens by chain), and the maximum number of tokens to retrieve.   ℹ️
+## Example Output 📊
 
-* **connect(self):** (Asynchronous function)
-    * Establishes a websocket connection with DexScreener and returns the initial response data.  ️ ✨
+The script outputs data in JSON format 📄 to the console or as specified in the configuration. Example:
 
-* **tg_send(self, message):**
-    * Sends a message to the specified Telegram channel using the Telegram bot API.   
+```json
+{
+      "chainId": "bsc",
+      "dexId": "pancakeswap",
+      "url": "https://dexscreener.com/bsc/0x8c022004014db789d8fe2c97ac619fade5ffa244",
+      "pairAddress": "0x8c022004014Db789d8fE2c97aC619FADE5ffA244",
+      "labels": [
+        "v3"
+      ],
+      "baseToken": {
+        "address": "0xcCe08BeFb7640357166932399311a434e54799c5",
+        "name": "Muppets",
+        "symbol": "MUPPETS"
+      },
+      "quoteToken": {
+        "address": "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c",
+        "name": "Wrapped BNB",
+        "symbol": "WBNB"
+      },
+      "priceNative": "0.00001594",
+      "priceUsd": "0.009610",
+      "txns": {
+        "m5": {
+          "buys": 124,
+          "sells": 97
+        },
+        "h1": {
+          "buys": 2346,
+          "sells": 1919
+        },
+        "h6": {
+          "buys": 21345,
+          "sells": 17708
+        },
+        "h24": {
+          "buys": 27700,
+          "sells": 23008
+        }
+      },
+      "volume": {
+        "h24": 23690217.59,
+        "h6": 21011813.68,
+        "h1": 2983195.4,
+        "m5": 142060.36
+      },
+      "priceChange": {
+        "m5": 2.67,
+        "h1": -12.71,
+        "h6": 1012,
+        "h24": 12341
+      },
+      "liquidity": {
+        "usd": 528595.18,
+        "base": 30637307,
+        "quote": 388.4129
+      },
+      "fdv": 9610615,
+      "marketCap": 9610615,
+      "pairCreatedAt": 1743245657000,
+      "info": {
+        "imageUrl": "https://dd.dexscreener.com/ds-data/tokens/bsc/0xcce08befb7640357166932399311a434e54799c5.png?key=c661a2",
+        "header": "https://dd.dexscreener.com/ds-data/tokens/bsc/0xcce08befb7640357166932399311a434e54799c5/header.png?key=c661a2",
+        "openGraph": "https://cdn.dexscreener.com/token-images/og/bsc/0xcce08befb7640357166932399311a434e54799c5?timestamp=1743273900000",
+        "websites": [
+          {
+            "label": "Website",
+            "url": "https://linktr.ee/muppetsbinance"
+          }
+        ],
+        "socials": [
+          {
+            "type": "twitter",
+            "url": "https://x.com/BNBCHAIN/status/1905935769803350315"
+          }
+        ]
+      }
+    },
+```
 
-* **token_getter(self):**
-    * Retrieves token information from DexScreener using a websocket connection.
-    * Parses the response data and formats it into a markdown string containing details like token name, price, market cap, etc.  🪄 ✨
-    * Returns the formatted markdown string containing token information.  
+## Dependencies 📦
+
+* `Flask`
+* `websockets`
+* `requests`
+* `json` (standard Python library)
+
+## Ethical Considerations ⚖️
+
+* This project is intended for personal and educational use 📚.
+* Users are responsible for complying with Dexscreener's terms of service 📜.
+* Avoid excessive requests 🛑 that could overload Dexscreener's servers.
+
+## Disclaimer ⚠️
+
+This project is provided "as is" without any warranty 🚫. Use it at your own risk ⚠️. The developers are not responsible for any consequences resulting from its use.
+
+## Contributing 🤝
+
+Pull requests are welcome 🎉. For major changes, please open an issue 💬 first to discuss what you would like to change.
 
 
 ## Credits 🙌
@@ -64,7 +153,7 @@ This project was created by **Dawit Neri**
 
 ## NOTE 🗒
 
-If you want to run on a specific chain, define the chain in the class. You should ping the /dex path inorder to run the dexscreener scraper. You can use cronjob it works great.
+If you want to run on a specific filter, define the filter. By default the `/dex` route gives the home page of dexscreener without any filter.
 
 ## Support 💬
 
