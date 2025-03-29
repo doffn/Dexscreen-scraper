@@ -11,10 +11,17 @@
             margin: 0;
             padding: 0;
             line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
         }
         .container {
             text-align: center;
             padding: 40px 20px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .code-block {
             background-color: #3e4451;
@@ -54,14 +61,15 @@
         }
         .home-link {
             position: fixed;
-            top: 10px;
-            left: 10px;
+            top: 20px; /* Lower from the top */
+            left: 20px; /* More left */
             color: #61afef;
-            text-decoration: none; /* Remove underline */
+            text-decoration: none;
             font-family: 'Arial', sans-serif;
-            font-size: 16px;
+            font-size: 20px; /* Larger font size */
             font-weight: bold;
             transition: color 0.3s ease;
+            z-index: 10; /* Ensure it's above other elements */
         }
         .home-link:hover {
             color: #3d82c2;
