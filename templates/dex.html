@@ -5,61 +5,77 @@
     <title>Dex Screener Trending Data</title>
     <style>
         body {
-            background-color: black;
-            font-family: Arial, sans-serif;
-            color: white;
+            background-color: #282c34; /* Dark background */
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, monospace; /* Monospace font */
+            color: #abb2bf; /* Light text */
             margin: 0;
             padding: 0;
+            line-height: 1.6;
         }
         .container {
             text-align: center;
-            padding: 20px;
+            padding: 40px 20px;
         }
-        .json-box {
-            background-color: #333;
-            padding: 10px;
-            margin: 20px auto;
-            display: inline-block;
+        .code-block {
+            background-color: #3e4451; /* Darker code block background */
+            padding: 20px;
+            margin: 30px auto;
             text-align: left;
-            border-radius: 5px;
-            width: 70%;
-            word-wrap: break-word;
+            border-radius: 8px;
+            width: 80%;
+            max-width: 900px;
+            overflow-x: auto;
+            position: relative;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            font-size: 14px;
+        }
+        .code-block pre {
+            margin: 0;
             white-space: pre-wrap;
+        }
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #61afef; /* Blue button */
+            color: #282c34; /* Dark text on button */
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .copy-button:hover {
+            background-color: #3d82c2; /* Darker blue on hover */
+        }
+        h1 {
+            color: #61afef; /* Blue heading */
+            margin-bottom: 20px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1 style="color: lightblue;">Dex Screener Trending Data 📋</h1>
-        <div style="padding: 20px;">
-            <!-- Use the safe filter to avoid escaping newline characters -->
-            <pre id="jsonData" class="json-box" onclick="copyToClipboard()" title="Click to copy JSON data">
-{{ mes|safe }}
-            </pre>
+        <h1>Dex Screener Trending Data 📋</h1>
+        <div class="code-block">
+            <pre id="jsonData">{{ mes|safe }}</pre>
+            <button class="copy-button" id="copyButton">Copy</button>
         </div>
     </div>
     <script>
-        function copyToClipboard() {
+        document.getElementById('copyButton').addEventListener('click', () => {
             const jsonDataElement = document.getElementById('jsonData');
             const text = jsonDataElement.textContent;
             navigator.clipboard.writeText(text)
                 .then(() => {
                     console.log('Text copied to clipboard');
-                    jsonDataElement.title = "Copied!";
-                    setTimeout(() => {
-                        jsonDataElement.title = "Click to copy JSON data";
-                    }, 2000);
                     alert("JSON data copied to clipboard!");
                 })
                 .catch(err => {
                     console.error('Failed to copy: ', err);
-                    jsonDataElement.title = "Error while copying!";
-                    setTimeout(() => {
-                        jsonDataElement.title = "Click to copy JSON data";
-                    }, 2000);
+                    alert("Error copying JSON data!");
                 });
-        }
+        });
     </script>
 </body>
 </html>

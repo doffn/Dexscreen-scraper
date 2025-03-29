@@ -20,7 +20,7 @@ This project provides a Flask based Python script 🐍 designed to automate the 
 1.  **Clone the repository 📥:**
 
     ```bash
-    git clone [https://github.com/doffn/Dexscreen-scraper.git](https://github.com/doffn/Dexscreen-scraper.git)
+    git clone https://github.com/doffn/Dexscreen-scraper.git
     cd Dexscreener-scraper
     ```
 
