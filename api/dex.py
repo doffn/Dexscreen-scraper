@@ -150,18 +150,22 @@ class DexBot():
         # Extract data from words
         extracted_data = []
         for token in filtered_words:
-            # Check if token contains an ETH address
-            if "0x" in token:
-                token = re.findall(r'(0x[0-9a-fA-F]+)', token)[-1]
-                print(token)
-            # Check if token contains 'pump' keyword
-            elif "pump" in token:
-                token = re.findall(r".{0,40}pump", token)[0]
-            # Otherwise extract the last 44 characters
-            else:
-                token = token[-44:]
+            try:
+                # Check if token contains an ETH address
+                if "0x" in token:
+                    token = re.findall(r'(0x[0-9a-fA-F]+)', token)[-1]
+                    print(token)
+                # Check if token contains 'pump' keyword
+                elif "pump" in token:
+                    token = re.findall(r".{0,40}pump", token)[0]
+                # Otherwise extract the last 44 characters
+                else:
+                    token = token[-44:]
+
             
-            extracted_data.append(token)
+                extracted_data.append(token)
+            except Exception as e:
+                print(f"There is an error in the token list: {e}")
 
         
 
