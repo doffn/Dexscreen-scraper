@@ -158,6 +158,11 @@ class DexBot():
                 # Check if token contains 'pump' keyword
                 elif "pump" in token:
                     token = re.findall(r".{0,40}pump", token)[0]
+                    # Remove leading 'V' if present
+                    if token.startswith("V"):
+                        token = token[1:]
+
+
                 # Otherwise extract the last 44 characters
                 else:
                     token = token[-44:]
