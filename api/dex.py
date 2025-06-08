@@ -14,7 +14,7 @@ import requests
 # Apply nest_asyncio
 nest_asyncio.apply()
 
-Api = os.environ["API"]  
+Api = "TG bot API here
 ID = "Channel ID"
 
 class DexBot():
