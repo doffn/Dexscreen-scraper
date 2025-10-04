@@ -174,8 +174,9 @@ class DexBot():
 
         
 
-        return extracted_data[:60]
+        return extracted_data
 
 
     def token_getter(self, message):
         pass
+
