@@ -18,7 +18,7 @@ ID = "Channel ID"
 
 
 class DexBot():
-    def __init__(self, api_key, url, channel_id=ID, max_token=10):
+    def __init__(self, api_key, url, channel_id=ID, max_token=70):
         self.api_key = api_key
         self.channel_id = channel_id
         self.max_token = max_token
