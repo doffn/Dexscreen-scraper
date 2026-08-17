@@ -42,6 +42,16 @@ class DexBot():
 
     def format_token_data(self):
 
+        """
+        Fetch information about specific tokens from the Dexscreener API.
+
+        Args:
+            token_addresses (list): List of token addresses.
+
+        Returns:
+            dict: A dictionary containing data for each token address or an error message.
+        """
+
         token_addresses = self.start()
 
         base_url = "https://api.dexscreener.com/latest/dex/tokens/"
@@ -49,35 +59,28 @@ class DexBot():
 
         for address in token_addresses:
             try:
-                response = requests.get(
-                    f"{base_url}{address}",
-                    timeout=15
-                )
-
+                # Make an API call for each token address
+                response = requests.get(f"{base_url}{address}")
                 if response.status_code == 200:
                     data = response.json()
-                    pairs = data.get('pairs', [])
-
-                    if pairs:
-                        results[address] = pairs[0]
+                    # Store the relevant data for the token address
+                    pairs = data.get('pairs', [])  # 'pairs' contains token market data
+                    
+                    if pairs and len(pairs) > 0:
+                        results[address] = pairs[0]  # Store first pair's data
                     else:
-                        results[address] = {
-                            "pairAddress": address,
-                            "Error": "No data Retrieved"
-                        }
+                        results[address] = {"pairAddress": address,
+                                            "Error": "No data Retrieved"}
                 else:
-                    results[address] = {
-                        "pairAddress": address,
-                        "Error": f"Status code {response.status_code}"
-                    }
-
+                    # Handle HTTP errors
+                    results[address] = f"Error: Status code {response.status_code}"
             except requests.RequestException as e:
-                results[address] = {
-                    "pairAddress": address,
-                    "Error": str(e)
-                }
+                # Handle request exceptions
+                results[address] = f"Error making request: {str(e)}"
 
+        # Extracting values as a list
         results = list(results.values())
+        # Output the result as JSON
 
         return json.dumps({"data": results}, indent=2)
 
@@ -157,70 +160,64 @@ class DexBot():
             print(f"Telegram sending error: {e}")
 
     def start(self):
-
+        # Run the async connection
         loop = asyncio.new_event_loop()
         asyncio.set_event_loop(loop)
+        mes = loop.run_until_complete(self.connect())
+        loop.close()
 
-        try:
-            mes = loop.run_until_complete(self.connect())
-        finally:
-            loop.close()
+        # Decode message, replacing non-printable characters with space
+        decoded_text = ''.join(chr(b) if 32 <= b <= 126 else ' ' for b in mes)
 
-        if not mes:
-            print("WebSocket returned nothing.")
-            return []
+        # Split into long words
+        words = [w for w in decoded_text.split() if len(w) >= 65]
 
-        # Decode bytes if necessary
-        if isinstance(mes, bytes):
-            decoded_text = mes.decode(
-                "utf-8",
-                errors="ignore"
-            )
-        else:
-            decoded_text = str(mes)
 
-        print("Message received:")
-        print(decoded_text[:500])
-
-        # Find addresses directly instead of splitting into words
         extracted_tokens = []
 
-        # ETH / EVM
-        eth_matches = re.findall(
-            r'0x[0-9a-fA-F]{40}',
-            decoded_text
-        )
+        for token in words:
+            try:
+                token_lower = token.lower()
 
-        extracted_tokens.extend(eth_matches)
+                # Skip URLs
+                if any(substr in token_lower for substr in ["https", "http", "//", ".com"]):
+                    continue
 
-        # Solana / Pump addresses
-        sol_matches = re.findall(
-            r'\b[A-HJ-NP-Za-km-z1-9]{32,44}\b',
-            decoded_text
-        )
+                # ETH addresses
+                if "0x" in token_lower:
+                    eth_match = re.findall(r'0x[0-9a-fA-F]{40,}', token)
+                    if eth_match:
+                        extracted_tokens.append(eth_match[-1])
+                        continue
 
-        for token in sol_matches:
-            if token not in extracted_tokens:
-                extracted_tokens.append(token)
+                # Pump tokens
+                if "pump" in token_lower:
+                    pump_match = re.search(r'.{0,40}pump', token, re.IGNORECASE)
+                    if pump_match:
+                        extracted_tokens.append(pump_match.group(0).lstrip('V'))
+                        continue
 
-        # Pump addresses
-        pump_matches = re.findall(
-            r'\b[A-HJ-NP-Za-km-z1-9]{20,44}pump\b',
-            decoded_text,
-            re.IGNORECASE
-        )
+                # Bonk tokens
+                if "bonk" in token_lower:
+                    bonk_match = re.search(r'.{0,40}bonk', token, re.IGNORECASE)
+                    if bonk_match.startswith('V'):
+                        bonk_match = sol_token[1:]
+                    if bonk_match:
+                        extracted_tokens.append(bonk_match.group(0))
+                        continue
 
-        for token in pump_matches:
-            if token not in extracted_tokens:
-                extracted_tokens.append(token)
+                # Solana-like addresses (last 44 chars)
+                sol_token = token[-44:]
+                if sol_token.startswith('V'):
+                    sol_token = sol_token[1:]
+                extracted_tokens.append(sol_token)
 
-        # Remove duplicates
-        extracted_tokens = list(dict.fromkeys(extracted_tokens))
+            except Exception as e:
+                print(f"Error processing token '{token}': {e}")
+
 
         print("Extraction complete")
-        print("Tokens found:", extracted_tokens)
-
-        return extracted_tokens[:self.max_token]
+        return extracted_tokens[:70]
 
     def token_getter(self, message):
         pass
