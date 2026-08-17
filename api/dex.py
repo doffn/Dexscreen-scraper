@@ -224,4 +224,3 @@ class DexBot():
 
     def token_getter(self, message):
         pass
-
